@@ -8,7 +8,9 @@ import androidx.compose.material3.darkColorScheme
 import androidx.compose.material3.dynamicDarkColorScheme
 import androidx.compose.material3.dynamicLightColorScheme
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.Immutable
+import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import com.example.ui.theme.AppTypography
@@ -89,20 +91,43 @@ private val DarkColors = darkColorScheme(
     surfaceContainerHighest = surfaceContainerHighestDark,
 )
 
-@Immutable
-data class ColorFamily(
-    val color: Color,
-    val onColor: Color,
-    val colorContainer: Color,
-    val onColorContainer: Color
+data class CustomColorScheme(
+    val backgroundColor: Color,
+    val foregroundColor: Color,
+    val iconColor: Color,
+
+    val activeBackgroundColor: Color,
+    val activeForegroundColor: Color
 )
 
-val unspecified_scheme = ColorFamily(
-    Color.Unspecified, Color.Unspecified, Color.Unspecified, Color.Unspecified
+private val customColorSchemeLight = CustomColorScheme(
+    backgroundColor = backgroundColorLight,
+    foregroundColor = foregroundColorLight,
+    iconColor = iconColorLight,
+    activeBackgroundColor = activeBackgroundColorLight,
+    activeForegroundColor = activeForegroundColorLight
 )
+
+private val customColorSchemeDark = CustomColorScheme(
+    backgroundColor = backgroundColorDark,
+    foregroundColor = foregroundColorDark,
+    iconColor = iconColorDark,
+    activeBackgroundColor = activeBackgroundColorDark,
+    activeForegroundColor = activeForegroundColorDark
+)
+
+val LocalColorScheme = staticCompositionLocalOf {
+    CustomColorScheme(
+        backgroundColor = Color.Unspecified,
+        foregroundColor = Color.Unspecified,
+        iconColor = Color.Unspecified,
+        activeBackgroundColor = Color.Unspecified,
+        activeForegroundColor = Color.Unspecified
+    )
+}
 
 @Composable
-fun AppTheme(
+fun ToDoListTheme(
     darkTheme: Boolean = isSystemInDarkTheme(),
     content: @Composable() () -> Unit
 ) {
@@ -114,9 +139,16 @@ fun AppTheme(
             if (darkTheme) DarkColors else LightColors
         }
 
-    MaterialTheme(
-        colorScheme = colorScheme,
-        typography = AppTypography,
-        content = content
-    )
+    val customColorScheme = when {
+        darkTheme -> customColorSchemeDark
+        else -> customColorSchemeLight
+    }
+
+    CompositionLocalProvider(LocalColorScheme provides customColorScheme) {
+        MaterialTheme(
+            colorScheme = colorScheme,
+            typography = AppTypography,
+            content = content
+        )
+    }
 }
