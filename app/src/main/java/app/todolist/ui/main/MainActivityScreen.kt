@@ -1,21 +1,26 @@
 package app.todolist.ui.main
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Row
+import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.ModalNavigationDrawer
+import androidx.compose.material3.Surface
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
+import androidx.compose.ui.Modifier
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import app.todolist.ui.component.AppDrawer
 import app.todolist.ui.navigation.NavigationActions
 import app.todolist.ui.navigation.NavigationGraph
 import app.todolist.ui.navigation.Tabs
+import app.todolist.ui.theme.LocalColorScheme
 import kotlinx.coroutines.launch
 
 @Composable
@@ -39,21 +44,19 @@ fun MainActivityScreen(
 
     val drawerState = rememberSizeAwareDrawerState(isExpandedScreen)
 
-    ModalNavigationDrawer(
+    val openDrawer = { coroutineScope.launch { drawerState.open() } }
+    val closeDrawer = { coroutineScope.launch { drawerState.close() } }
+
+    NavigationGraph(
+        navController = navController,
+        navigationActions = navigationActions,
+
+        currentRoute = currentRoute,
+
         drawerState = drawerState,
-        drawerContent = {
-            AppDrawer(
-                currentRoute = currentRoute,
-                navigateToReminder = navigationActions.navigateToReminder,
-                navigateToTrash = navigationActions.navigateToTrash,
-                closeDrawer = { coroutineScope.launch { drawerState.close() } }
-            )
-        },
-    ) {
-        Row {
-            NavigationGraph(navController = navController)
-        }
-    }
+        openDrawer = openDrawer,
+        closeDrawer = closeDrawer,
+    )
 }
 
 /**
@@ -61,7 +64,7 @@ fun MainActivityScreen(
  */
 @Composable
 private fun rememberSizeAwareDrawerState(isExpandedScreen: Boolean): DrawerState {
-    val drawerState = rememberDrawerState(DrawerValue.Open)
+    val drawerState = rememberDrawerState(DrawerValue.Closed)
 
     return if (!isExpandedScreen) {
         // If we want to allow showing the drawer, we use a real, remembered drawer

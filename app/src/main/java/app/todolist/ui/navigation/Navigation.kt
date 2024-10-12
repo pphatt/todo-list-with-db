@@ -9,6 +9,7 @@ import androidx.navigation.NavHostController
 object Tabs {
     const val REMINDER_ROUTE = "Reminders"
     const val TRASH_ROUTE = "Trash"
+    const val DETAILS_ROUTE = "Details"
 }
 
 /**
@@ -26,6 +27,15 @@ class NavigationActions(navHostController: NavHostController) {
     }
     val navigateToTrash: () -> Unit = {
         navHostController.navigate(Tabs.TRASH_ROUTE) {
+            popUpTo(navHostController.graph.findStartDestination().id) {
+                saveState = true
+            }
+            launchSingleTop = true
+            restoreState = true
+        }
+    }
+    val navigateToDetails: () -> Unit = {
+        navHostController.navigate(Tabs.DETAILS_ROUTE) {
             popUpTo(navHostController.graph.findStartDestination().id) {
                 saveState = true
             }

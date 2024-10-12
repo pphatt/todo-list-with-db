@@ -92,35 +92,45 @@ private val DarkColors = darkColorScheme(
 )
 
 data class CustomColorScheme(
+    val primaryBackgroundColor: Color,
+
     val backgroundColor: Color,
     val foregroundColor: Color,
     val iconColor: Color,
+
+    val addIconColor: Color,
 
     val activeBackgroundColor: Color,
     val activeForegroundColor: Color
 )
 
 private val customColorSchemeLight = CustomColorScheme(
+    primaryBackgroundColor = primaryBackgroundColorLight,
     backgroundColor = backgroundColorLight,
     foregroundColor = foregroundColorLight,
     iconColor = iconColorLight,
+    addIconColor = addIconColorLight,
     activeBackgroundColor = activeBackgroundColorLight,
     activeForegroundColor = activeForegroundColorLight
 )
 
 private val customColorSchemeDark = CustomColorScheme(
+    primaryBackgroundColor = primaryBackgroundColorDark,
     backgroundColor = backgroundColorDark,
     foregroundColor = foregroundColorDark,
     iconColor = iconColorDark,
+    addIconColor = addIconColorDark,
     activeBackgroundColor = activeBackgroundColorDark,
     activeForegroundColor = activeForegroundColorDark
 )
 
 val LocalColorScheme = staticCompositionLocalOf {
     CustomColorScheme(
+        primaryBackgroundColor = Color.Unspecified,
         backgroundColor = Color.Unspecified,
         foregroundColor = Color.Unspecified,
         iconColor = Color.Unspecified,
+        addIconColor = Color.Unspecified,
         activeBackgroundColor = Color.Unspecified,
         activeForegroundColor = Color.Unspecified
     )

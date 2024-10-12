@@ -38,9 +38,12 @@ val surfaceContainerHighLight = Color(0xFFEBE7E6)
 val surfaceContainerHighestLight = Color(0xFFE5E2E1)
 
 // Color schema
+val primaryBackgroundColorLight = Color(0xFFedf1f4)
 val backgroundColorLight = Color(0xFFFFFFFF)
 val foregroundColorLight = Color(0xFF676767)
 val iconColorLight = Color(0xFFa1a1a1)
+
+val addIconColorLight = Color(0xFF63beec)
 
 val activeBackgroundColorLight = Color(0xFFf2f2f2)
 val activeForegroundColorLight = Color(0xFF000000)
@@ -82,9 +85,13 @@ val surfaceContainerHighDark = Color(0xFF2B2A2A)
 val surfaceContainerHighestDark = Color(0xFF363434)
 
 // Color schema
+val primaryBackgroundColorDark = Color(0xFFedf1f4)
+
 val backgroundColorDark = Color(0xFF000000)
 val foregroundColorDark = Color(0xFF676767)
 val iconColorDark = Color(0xFFa1a1a1)
+
+val addIconColorDark = Color(0xFF63beec)
 
 val activeBackgroundColorDark = Color(0xFFf2f2f2)
 val activeForegroundColorDark = Color(0xFF000000)
