@@ -6,5 +6,5 @@ import app.todolist.ui.navigation.NavigationActions
 
 @Composable
 fun DetailsRoute(navigationActions: NavigationActions) {
-    DetailsScreen(navigationActions)
+    DetailsScreen(navigationActions = navigationActions)
 }

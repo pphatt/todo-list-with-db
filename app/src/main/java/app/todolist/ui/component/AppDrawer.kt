@@ -1,5 +1,6 @@
 package app.todolist.ui.component
 
+import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
@@ -10,6 +11,7 @@ import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.LibraryAddCheck
+import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.ModalDrawerSheet
@@ -41,9 +43,23 @@ fun AppDrawer(
         Spacer(modifier = Modifier.padding(top = 20.dp))
         Text(
             "Personal Reminder",
-            modifier = Modifier.padding(start = 15.dp, top = 15.dp, end = 15.dp, bottom = 15.dp),
+            modifier = Modifier.padding(start = 15.dp + 6.dp, top = 15.dp, end = 15.dp, bottom = 15.dp),
             color = LocalColorScheme.current.foregroundColor,
             style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
+        )
+        HorizontalDivider(
+            modifier = Modifier
+                .padding(
+                    start = NavigationDrawerItemDefaults.ItemPadding.calculateStartPadding(
+                        LayoutDirection.Ltr
+                    ) + 8.dp,
+                    top = NavigationDrawerItemDefaults.ItemPadding.calculateTopPadding(),
+                    end = NavigationDrawerItemDefaults.ItemPadding.calculateEndPadding(
+                        LayoutDirection.Rtl
+                    ) + 8.dp,
+                    bottom = 10.dp,
+                ),
+            color = LocalColorScheme.current.activeForegroundColor
         )
         NavigationDrawerItem(
             modifier = Modifier.padding(
@@ -63,7 +79,7 @@ fun AppDrawer(
             icon = { Icon(Icons.Rounded.LibraryAddCheck, null) },
             selected = currentRoute == Tabs.REMINDER_ROUTE,
             onClick = { navigateToReminder(); closeDrawer() },
-            shape = RoundedCornerShape(5),
+            shape = RoundedCornerShape(15),
             colors = NavigationDrawerItemDefaults.colors(
                 unselectedTextColor = LocalColorScheme.current.foregroundColor,
                 unselectedIconColor = LocalColorScheme.current.foregroundColor,
@@ -90,7 +106,7 @@ fun AppDrawer(
             icon = { Icon(Icons.Rounded.Delete, null) },
             selected = currentRoute == Tabs.TRASH_ROUTE,
             onClick = { navigateToTrash(); closeDrawer() },
-            shape = RoundedCornerShape(5),
+            shape = RoundedCornerShape(15),
             colors = NavigationDrawerItemDefaults.colors(
                 unselectedTextColor = LocalColorScheme.current.foregroundColor,
                 unselectedIconColor = LocalColorScheme.current.foregroundColor,

@@ -27,6 +27,7 @@ import androidx.navigation.NavController
 import app.todolist.ui.theme.LocalColorScheme
 import kotlinx.coroutines.Job
 import androidx.compose.ui.draw.clip
+import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -48,6 +49,7 @@ fun ReminderScreen(
                     .padding(top = 10.dp, start = 16.dp, end = 16.dp)
                     .height(48.dp)
                     .clip(CircleShape)
+                    .shadow(elevation = 4.dp)
                     .background(Color(0xFFfcfcfc)),
                 horizontalArrangement = Arrangement.Center,
                 verticalAlignment = Alignment.CenterVertically
