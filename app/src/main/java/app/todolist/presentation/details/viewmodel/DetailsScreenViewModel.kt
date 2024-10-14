@@ -5,9 +5,6 @@ import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
-import java.text.SimpleDateFormat
-import java.util.Date
-import java.util.Locale
 import javax.inject.Inject
 
 @HiltViewModel
@@ -24,7 +21,7 @@ class DetailsScreenViewModel @Inject constructor() : ViewModel() {
         when (action) {
             is ViewAction.SetContent -> setContent(action.value)
 
-            is ViewAction.SetDatetime -> setDatetime(action.value)
+            is ViewAction.SetShowDateTime -> setShowDateTime(action.value)
         }
     }
 
@@ -32,13 +29,7 @@ class DetailsScreenViewModel @Inject constructor() : ViewModel() {
         state = state.copy(content = value)
     }
 
-    private fun setDatetime(value: Date) {
-        state = state.copy(date = value)
-    }
-
-    private fun convertMillisToDate(millis: Long): String {
-        val formatter = SimpleDateFormat("MM/dd/yyyy", Locale.getDefault())
-
-        return formatter.format(Date(millis))
+    private fun setShowDateTime(value: Boolean) {
+        state = state.copy(showDate = value)
     }
 }

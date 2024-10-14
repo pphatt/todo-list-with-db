@@ -60,7 +60,7 @@ fun ReminderTextInput(
                     style = MaterialTheme.typography.titleLarge.copy(color = Color.LightGray)
                 )
             },
-            maxLines = Int.MAX_VALUE,
+            maxLines = 8,
             value = content,
             onValueChange = {
                 if (it.length > 256) {

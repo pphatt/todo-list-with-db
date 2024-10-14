@@ -5,5 +5,5 @@ import java.util.Date
 sealed interface ViewAction {
     data class SetContent(val value: String) : ViewAction
 
-    data class SetDatetime(val value: Date) : ViewAction
+    data class SetShowDateTime(val value: Boolean) : ViewAction
 }

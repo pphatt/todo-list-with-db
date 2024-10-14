@@ -45,6 +45,11 @@ val iconColorLight = Color(0xFFa1a1a1)
 
 val addIconColorLight = Color(0xFF63beec)
 
+val thumbColorLight = Color(0xFFfafafa)
+
+val trackColorLight = Color(0xFF63b6e2)
+val unCheckTrackColorLight = Color(0xFF989898)
+
 val activeBackgroundColorLight = Color(0xFFf2f2f2)
 val activeForegroundColorLight = Color(0xFF000000)
 
@@ -92,6 +97,11 @@ val foregroundColorDark = Color(0xFF676767)
 val iconColorDark = Color(0xFFa1a1a1)
 
 val addIconColorDark = Color(0xFF63beec)
+
+val thumbColorDark = Color(0xFFfafafa)
+
+val trackColorDark = Color(0xFF63b6e2)
+val unCheckTrackColorDark = Color(0xFF989898)
 
 val activeBackgroundColorDark = Color(0xFFf2f2f2)
 val activeForegroundColorDark = Color(0xFF000000)

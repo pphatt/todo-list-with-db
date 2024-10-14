@@ -3,13 +3,13 @@ package app.todolist.presentation.details.viewmodel
 data class UIState(
     val content: String,
 
-    val date: Date
+    val showDate: Boolean
 ) {
     companion object {
         val default = UIState(
             content = "",
 
-            date = currentDate(),
+            showDate = false
         )
     }
 }

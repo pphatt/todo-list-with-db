@@ -100,6 +100,11 @@ data class CustomColorScheme(
 
     val addIconColor: Color,
 
+    val thumbColor: Color,
+
+    val trackColor: Color,
+    val unCheckTrackColor: Color,
+
     val activeBackgroundColor: Color,
     val activeForegroundColor: Color
 )
@@ -109,7 +114,10 @@ private val customColorSchemeLight = CustomColorScheme(
     backgroundColor = backgroundColorLight,
     foregroundColor = foregroundColorLight,
     iconColor = iconColorLight,
+    thumbColor = thumbColorLight,
     addIconColor = addIconColorLight,
+    trackColor = trackColorLight,
+    unCheckTrackColor = unCheckTrackColorLight,
     activeBackgroundColor = activeBackgroundColorLight,
     activeForegroundColor = activeForegroundColorLight
 )
@@ -119,7 +127,10 @@ private val customColorSchemeDark = CustomColorScheme(
     backgroundColor = backgroundColorDark,
     foregroundColor = foregroundColorDark,
     iconColor = iconColorDark,
+    thumbColor = thumbColorDark,
     addIconColor = addIconColorDark,
+    trackColor = trackColorDark,
+    unCheckTrackColor = unCheckTrackColorDark,
     activeBackgroundColor = activeBackgroundColorDark,
     activeForegroundColor = activeForegroundColorDark
 )
@@ -130,7 +141,10 @@ val LocalColorScheme = staticCompositionLocalOf {
         backgroundColor = Color.Unspecified,
         foregroundColor = Color.Unspecified,
         iconColor = Color.Unspecified,
+        thumbColor = Color.Unspecified,
         addIconColor = Color.Unspecified,
+        trackColor = Color.Unspecified,
+        unCheckTrackColor = Color.Unspecified,
         activeBackgroundColor = Color.Unspecified,
         activeForegroundColor = Color.Unspecified
     )

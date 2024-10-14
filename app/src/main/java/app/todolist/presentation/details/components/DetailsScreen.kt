@@ -5,28 +5,28 @@ import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
-import androidx.compose.foundation.layout.fillMaxWidth
-import androidx.compose.foundation.layout.wrapContentHeight
+import androidx.compose.foundation.layout.imePadding
+import androidx.compose.foundation.layout.navigationBarsPadding
+import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
-import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.foundation.verticalScroll
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
+import androidx.compose.material3.rememberDatePickerState
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
-import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.draw.clip
 import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import app.todolist.presentation.details.viewmodel.DetailsScreenViewModel
 import app.todolist.presentation.details.viewmodel.ViewAction
 import app.todolist.ui.navigation.NavigationActions
 import app.todolist.ui.theme.LocalColorScheme
+import app.todolist.utils.PresentOrFutureSelectableDates
+import app.todolist.utils.getCurrentDateTime
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -36,6 +36,13 @@ fun DetailsScreen(
 ) {
     val state = viewModel.uiState.collectAsState().value
 
+    // cannot move it to viewmodel
+    val datePickerState =
+        rememberDatePickerState(
+            initialSelectedDateMillis = getCurrentDateTime().time,
+            selectableDates = PresentOrFutureSelectableDates
+        )
+
     val focusRequester = remember { FocusRequester() }
 
     val scrollState = rememberScrollState()
@@ -44,11 +51,21 @@ fun DetailsScreen(
         modifier = Modifier.background(color = LocalColorScheme.current.primaryBackgroundColor)
     ) {
         Scaffold(
+            modifier = Modifier
+                .navigationBarsPadding()
+                .imePadding(),
             containerColor = LocalColorScheme.current.primaryBackgroundColor,
-            bottomBar = { BottomAppBarDefaults(navigationActions = navigationActions) }
+            bottomBar = {
+                BottomAppBarDefaults(
+                    content = state.content,
+                    navigationActions = navigationActions
+                )
+            }
         ) {
             Column(
                 modifier = Modifier
+                    .padding(bottom = 40.dp)
+                    .navigationBarsPadding()
                     .fillMaxSize()
                     .verticalScroll(state = scrollState),
                 verticalArrangement = Arrangement.spacedBy(20.dp)
@@ -59,17 +76,11 @@ fun DetailsScreen(
                     focusRequester = focusRequester,
                 )
 
-                Column(
-                    modifier = Modifier
-                        .wrapContentHeight(
-                            align = Alignment.CenterVertically, unbounded = true
-                        )
-                        .fillMaxWidth()
-                        .clip(RoundedCornerShape(50.dp))
-                        .background(Color(0xFFfcfcfc)), verticalArrangement = Arrangement.Center
-                ) {
-                    DatePickerDocked()
-                }
+                DatePickerDocked(
+                    date = datePickerState,
+                    showDatePicker = state.showDate,
+                    onToggleShowDatePicker = { viewModel.execute(ViewAction.SetShowDateTime(!state.showDate)) }
+                )
             }
         }
     }

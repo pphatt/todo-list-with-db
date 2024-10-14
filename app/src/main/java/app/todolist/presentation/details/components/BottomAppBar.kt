@@ -1,6 +1,5 @@
 package app.todolist.presentation.details.components
 
-import androidx.compose.foundation.combinedClickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
@@ -10,12 +9,12 @@ import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.imePadding
-import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
 import androidx.compose.material3.Surface
 import androidx.compose.material3.Text
+import androidx.compose.material3.TextButton
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
@@ -40,7 +39,9 @@ fun KeyboardAware(
 
 @Composable
 fun BottomAppBarDefaults(
-    modifier: Modifier = Modifier, navigationActions: NavigationActions
+    modifier: Modifier = Modifier,
+    navigationActions: NavigationActions,
+    content: String,
 ) {
     KeyboardAware {
         Surface(
@@ -49,9 +50,7 @@ fun BottomAppBarDefaults(
             Row(
                 modifier = modifier
                     .fillMaxWidth()
-                    .padding(start = 20.dp, bottom = 5.dp, end = 20.dp)
-                    .navigationBarsPadding()
-                    ,
+                    .padding(start = 20.dp, end = 20.dp),
                 horizontalArrangement = Arrangement.SpaceBetween
             ) {
                 Button(
@@ -61,7 +60,7 @@ fun BottomAppBarDefaults(
 
                 Button(
                     title = "Save",
-                    enabled = false,
+                    enabled = content.isNotEmpty(),
                     onClick = { navigationActions.navigateToReminder() },
                 )
             }
@@ -77,14 +76,13 @@ private fun RowScope.Button(
     enabled: Boolean = true,
     content: (@Composable () -> Unit)? = null,
 ) {
-    Box(
+    TextButton(
         modifier = Modifier
             .weight(1f)
             .clip(RoundedCornerShape(50))
-            .combinedClickable(
-                onClick = onClick,
-            )
-            .height(40.dp)
+            .height(40.dp),
+        onClick = onClick,
+        enabled = enabled,
     ) {
         Column(
             modifier = Modifier
