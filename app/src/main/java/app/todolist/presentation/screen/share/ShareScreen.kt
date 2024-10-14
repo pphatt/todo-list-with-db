@@ -1,4 +1,4 @@
-package app.todolist.presentation.share
+package app.todolist.presentation.screen.share
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background

@@ -1,4 +1,4 @@
-package app.todolist.presentation.details.components
+package app.todolist.presentation.screen.details.components
 
 import android.content.Context
 import android.widget.Toast
@@ -24,7 +24,7 @@ import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
-import app.todolist.presentation.details.viewmodel.ViewAction
+import app.todolist.presentation.screen.details.viewmodel.ViewAction
 
 @Composable
 fun ReminderTextInput(

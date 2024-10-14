@@ -1,9 +1,10 @@
-package app.todolist.presentation.reminder.components
+package app.todolist.presentation.screen.reminder.components
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
+import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
@@ -11,6 +12,8 @@ import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
+import androidx.compose.foundation.lazy.LazyColumn
+import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
@@ -29,14 +32,17 @@ import kotlinx.coroutines.Job
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import app.todolist.domain.reminder.entity.Reminder
+import app.todolist.ui.main.LocalRemindersList
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun ReminderScreen(
     navController: NavController,
-
     openDrawer: () -> Job
 ) {
+    val reminders = LocalRemindersList.current
+
     Scaffold(
         containerColor = LocalColorScheme.current.primaryBackgroundColor,
         modifier = Modifier.fillMaxSize(),
@@ -65,6 +71,19 @@ fun ReminderScreen(
                 }
                 Text("Search your notes", modifier = Modifier.weight(0.8f))
             }
+
+            LazyColumn {
+                items(items = reminders, itemContent = { reminder ->
+                    ReminderItem(content = reminder.content)
+                })
+            }
         }
     }
+}
+
+@Composable
+fun ReminderItem(
+    content: String
+) {
+    Text(text = content)
 }

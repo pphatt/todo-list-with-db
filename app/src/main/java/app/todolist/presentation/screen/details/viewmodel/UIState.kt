@@ -1,4 +1,4 @@
-package app.todolist.presentation.details.viewmodel
+package app.todolist.presentation.screen.details.viewmodel
 
 data class UIState(
     val content: String,

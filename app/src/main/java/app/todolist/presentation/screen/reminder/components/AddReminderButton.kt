@@ -1,4 +1,4 @@
-package app.todolist.presentation.reminder.components
+package app.todolist.presentation.screen.reminder.components
 
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons

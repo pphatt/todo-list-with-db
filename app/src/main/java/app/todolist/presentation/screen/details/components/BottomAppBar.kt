@@ -1,4 +1,4 @@
-package app.todolist.presentation.details.components
+package app.todolist.presentation.screen.details.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -42,6 +42,7 @@ fun BottomAppBarDefaults(
     modifier: Modifier = Modifier,
     navigationActions: NavigationActions,
     content: String,
+    onSaveReminder: () -> Unit
 ) {
     KeyboardAware {
         Surface(
@@ -60,8 +61,8 @@ fun BottomAppBarDefaults(
 
                 Button(
                     title = "Save",
-                    enabled = content.isNotEmpty(),
-                    onClick = { navigationActions.navigateToReminder() },
+                    enabled = content.trim().isNotEmpty(),
+                    onClick = onSaveReminder,
                 )
             }
         }

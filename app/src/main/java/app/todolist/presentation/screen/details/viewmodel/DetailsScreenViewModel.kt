@@ -1,6 +1,8 @@
-package app.todolist.presentation.details.viewmodel
+package app.todolist.presentation.screen.details.viewmodel
 
 import androidx.lifecycle.ViewModel
+import app.todolist.domain.reminder.entity.Reminder
+import app.todolist.presentation.request.CreateReminderDto
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -22,6 +24,8 @@ class DetailsScreenViewModel @Inject constructor() : ViewModel() {
             is ViewAction.SetContent -> setContent(action.value)
 
             is ViewAction.SetShowDateTime -> setShowDateTime(action.value)
+
+            ViewAction.ClearState -> clearState()
         }
     }
 
@@ -31,5 +35,16 @@ class DetailsScreenViewModel @Inject constructor() : ViewModel() {
 
     private fun setShowDateTime(value: Boolean) {
         state = state.copy(showDate = value)
+    }
+
+    private fun clearState() {
+        state = state.copy(
+            content = UIState.default.content,
+            showDate = UIState.default.showDate,
+        )
+    }
+
+    fun createReminder(list: MutableList<Reminder>, body: CreateReminderDto) {
+        list.add(Reminder(content = body.content, dueDate = body.dueDate))
     }
 }

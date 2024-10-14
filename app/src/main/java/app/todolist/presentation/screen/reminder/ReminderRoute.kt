@@ -1,8 +1,9 @@
-package app.todolist.presentation.reminder
+package app.todolist.presentation.screen.reminder
 
 import androidx.compose.runtime.Composable
 import androidx.navigation.NavController
-import app.todolist.presentation.reminder.components.ReminderScreen
+import app.todolist.domain.reminder.entity.Reminder
+import app.todolist.presentation.screen.reminder.components.ReminderScreen
 import kotlinx.coroutines.Job
 
 @Composable

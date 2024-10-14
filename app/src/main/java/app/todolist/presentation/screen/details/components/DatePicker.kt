@@ -1,4 +1,4 @@
-package app.todolist.presentation.details.components
+package app.todolist.presentation.screen.details.components
 
 import androidx.compose.animation.AnimatedVisibility
 import androidx.compose.animation.animateContentSize

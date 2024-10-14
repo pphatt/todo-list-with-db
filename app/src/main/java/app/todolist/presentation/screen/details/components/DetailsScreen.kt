@@ -1,6 +1,7 @@
-package app.todolist.presentation.details.components
+package app.todolist.presentation.screen.details.components
 
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -19,10 +20,15 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
+import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import app.todolist.presentation.details.viewmodel.DetailsScreenViewModel
-import app.todolist.presentation.details.viewmodel.ViewAction
+import app.todolist.domain.reminder.entity.Reminder
+import app.todolist.presentation.request.CreateReminderDto
+import app.todolist.presentation.screen.details.viewmodel.DetailsScreenViewModel
+import app.todolist.presentation.screen.details.viewmodel.ViewAction
+import app.todolist.ui.main.LocalRemindersList
 import app.todolist.ui.navigation.NavigationActions
 import app.todolist.ui.theme.LocalColorScheme
 import app.todolist.utils.PresentOrFutureSelectableDates
@@ -36,6 +42,8 @@ fun DetailsScreen(
 ) {
     val state = viewModel.uiState.collectAsState().value
 
+    val reminders = LocalRemindersList.current
+
     // cannot move it to viewmodel
     val datePickerState =
         rememberDatePickerState(
@@ -44,8 +52,11 @@ fun DetailsScreen(
         )
 
     val focusRequester = remember { FocusRequester() }
+    val focusManager = LocalFocusManager.current
 
     val scrollState = rememberScrollState()
+
+    val context = LocalContext.current
 
     Surface(
         modifier = Modifier.background(color = LocalColorScheme.current.primaryBackgroundColor)
@@ -58,7 +69,28 @@ fun DetailsScreen(
             bottomBar = {
                 BottomAppBarDefaults(
                     content = state.content,
-                    navigationActions = navigationActions
+                    navigationActions = navigationActions,
+                    onSaveReminder = {
+                        focusManager.clearFocus()
+
+                        viewModel.createReminder(
+                            reminders,
+                            CreateReminderDto(
+                                content = state.content.trim(),
+                                dueDate = datePickerState.selectedDateMillis
+                            )
+                        )
+
+                        navigationActions.navigateToReminder()
+
+                        viewModel.execute(ViewAction.ClearState)
+
+                        Toast.makeText(
+                            context,
+                            "Save reminders successfully",
+                            Toast.LENGTH_LONG
+                        ).show()
+                    }
                 )
             }
         ) {

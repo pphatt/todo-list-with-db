@@ -1,4 +1,4 @@
-package app.todolist.presentation.trash.components
+package app.todolist.presentation.screen.trash.components
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.layout.Box

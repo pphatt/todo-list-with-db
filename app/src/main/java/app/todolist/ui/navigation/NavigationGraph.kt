@@ -7,12 +7,10 @@ import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
-import app.todolist.presentation.details.DetailsRoute
-import app.todolist.presentation.reminder.ReminderRoute
-import app.todolist.presentation.reminder.components.ReminderScreen
-import app.todolist.presentation.share.ShareScreen
-import app.todolist.presentation.trash.TrashRoute
-import kotlinx.coroutines.CoroutineScope
+import app.todolist.presentation.screen.details.DetailsRoute
+import app.todolist.presentation.screen.reminder.ReminderRoute
+import app.todolist.presentation.screen.share.ShareScreen
+import app.todolist.presentation.screen.trash.TrashRoute
 import kotlinx.coroutines.Job
 
 @Composable
@@ -59,7 +57,9 @@ fun NavigationGraph(
             )
         }
         composable(route = Tabs.DETAILS_ROUTE) {
-            DetailsRoute(navigationActions)
+            DetailsRoute(
+                navigationActions = navigationActions
+            )
         }
     }
 }
