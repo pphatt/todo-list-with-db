@@ -26,6 +26,7 @@ import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import app.todolist.domain.reminder.entity.Reminder
+import app.todolist.infrastructure.repositories.ReminderRepositoryImpl
 import app.todolist.presentation.request.CreateReminderDto
 import app.todolist.presentation.screen.details.viewmodel.DetailsScreenViewModel
 import app.todolist.presentation.screen.details.viewmodel.ViewAction
@@ -42,8 +43,6 @@ fun DetailsScreen(
     navigationActions: NavigationActions
 ) {
     val state = viewModel.uiState.collectAsState().value
-
-    val reminders = LocalRemindersList.current
 
     // cannot move it to viewmodel
     val datePickerState =
@@ -77,7 +76,6 @@ fun DetailsScreen(
                         focusManager.clearFocus()
 
                         viewModel.createReminder(
-                            reminders,
                             CreateReminderDto(
                                 content = state.content.trim(),
                                 dueDate = if (state.showDate) datePickerState.selectedDateMillis else null

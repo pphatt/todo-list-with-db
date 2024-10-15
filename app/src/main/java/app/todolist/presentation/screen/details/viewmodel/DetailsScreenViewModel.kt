@@ -1,16 +1,23 @@
 package app.todolist.presentation.screen.details.viewmodel
 
 import androidx.lifecycle.ViewModel
+import androidx.lifecycle.viewModelScope
 import app.todolist.domain.reminder.entity.Reminder
+import app.todolist.domain.reminder.repository.ReminderRepository
+import app.todolist.infrastructure.repositories.ReminderRepositoryImpl
 import app.todolist.presentation.request.CreateReminderDto
 import dagger.hilt.android.lifecycle.HiltViewModel
+import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
+import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class DetailsScreenViewModel @Inject constructor() : ViewModel() {
+class DetailsScreenViewModel @Inject constructor(
+    private val reminderRepositoryImpl: ReminderRepositoryImpl
+) : ViewModel() {
     private val _uiState = MutableStateFlow(UIState.default)
     val uiState = _uiState.asStateFlow()
     private var state: UIState
@@ -44,7 +51,9 @@ class DetailsScreenViewModel @Inject constructor() : ViewModel() {
         )
     }
 
-    fun createReminder(list: MutableList<Reminder>, body: CreateReminderDto) {
-        list.add(Reminder(content = body.content, dueDate = body.dueDate))
+    fun createReminder(body: CreateReminderDto) {
+        viewModelScope.launch {
+            reminderRepositoryImpl.createReminder(body)
+        }
     }
 }

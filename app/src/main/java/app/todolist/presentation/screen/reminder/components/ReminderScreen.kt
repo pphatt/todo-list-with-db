@@ -27,6 +27,9 @@ import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.collectAsState
+import androidx.compose.runtime.remember
+import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -39,18 +42,24 @@ import androidx.compose.ui.input.pointer.motionEventSpy
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
+import androidx.hilt.navigation.compose.hiltViewModel
+import app.todolist.infrastructure.repositories.ReminderRepositoryImpl
 import app.todolist.presentation.screen.details.components.convertMillisToDate
+import app.todolist.presentation.screen.reminder.viewmodel.ReminderScreenViewModel
 import app.todolist.ui.main.LocalRemindersList
 import app.todolist.utils.isSameDay
+import kotlinx.coroutines.flow.count
+import kotlinx.coroutines.flow.filter
 import java.util.Calendar
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun ReminderScreen(
+    viewModel: ReminderScreenViewModel = hiltViewModel(),
     navController: NavController,
     openDrawer: () -> Job
 ) {
-    val reminders = LocalRemindersList.current
+    val state = viewModel.uiState.collectAsState().value
 
     val context = LocalContext.current
 
@@ -98,21 +107,21 @@ fun ReminderScreen(
                 val currentTimeMillis = System.currentTimeMillis()
                 val currentCalendar = Calendar.getInstance()
 
-                val remindersFilteredByPastDate = reminders.filter { reminder ->
+                val remindersFilteredByPastDate = state.list.filter { reminder ->
                     reminder.dueDate != null && reminder.dueDate < currentTimeMillis && isSameDay(
                         reminder.dueDate,
                         currentCalendar.timeInMillis
                     ).not()
                 }
 
-                val remindersFilteredByCurrentDate = reminders.filter { reminder ->
+                val remindersFilteredByCurrentDate = state.list.filter { reminder ->
                     reminder.dueDate != null && isSameDay(
                         reminder.dueDate,
                         currentCalendar.timeInMillis
                     )
                 }
 
-                val remindersFilteredByFutureDate = reminders.filter { reminder ->
+                val remindersFilteredByFutureDate = state.list.filter { reminder ->
                     reminder.dueDate != null && reminder.dueDate > currentTimeMillis && isSameDay(
                         reminder.dueDate,
                         currentCalendar.timeInMillis
@@ -120,7 +129,7 @@ fun ReminderScreen(
                 }
 
                 val remindersFilteredByNoDate =
-                    reminders.filter { reminder -> reminder.dueDate == null }
+                    state.list.filter { reminder -> reminder.dueDate == null }
 
                 LazyColumn(
                     modifier = Modifier
@@ -185,10 +194,10 @@ fun ReminderScreen(
                     }
                 }
 
-                if (reminders.isNotEmpty()) {
+                if (state.list.isNotEmpty()) {
                     val currentTime = System.currentTimeMillis()
 
-                    val reminderTimeMillis = reminders.last().timestamp.time
+                    val reminderTimeMillis = state.list.last().timestamp.time
 
                     if (reminderTimeMillis >= currentTime - 100) {
                         Toast.makeText(
