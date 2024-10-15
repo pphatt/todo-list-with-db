@@ -23,6 +23,7 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.focus.focusRequester
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import app.todolist.presentation.screen.details.viewmodel.ViewAction
 
@@ -49,18 +50,21 @@ fun ReminderTextInput(
             colors = OutlinedTextFieldDefaults.colors(
                 unfocusedBorderColor = Color.Transparent,
                 focusedBorderColor = Color.Transparent,
+                cursorColor = Color(0xFF83cae8)
             ),
             modifier = Modifier
                 .wrapContentHeight()
                 .focusRequester(focusRequester),
-            textStyle = MaterialTheme.typography.titleLarge,
+            textStyle = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.W700),
             placeholder = {
                 Text(
                     text = "Reminder goes here",
-                    style = MaterialTheme.typography.titleLarge.copy(color = Color.LightGray)
+                    style = MaterialTheme.typography.titleLarge.copy(
+                        color = Color(0xFFaeaeae),
+                        fontWeight = FontWeight.W500
+                    )
                 )
             },
-            maxLines = 8,
             value = content,
             onValueChange = {
                 if (it.length > 256) {

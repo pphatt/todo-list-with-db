@@ -77,7 +77,7 @@ fun DetailsScreen(
                             reminders,
                             CreateReminderDto(
                                 content = state.content.trim(),
-                                dueDate = datePickerState.selectedDateMillis
+                                dueDate = if (state.showDate) datePickerState.selectedDateMillis else null
                             )
                         )
 

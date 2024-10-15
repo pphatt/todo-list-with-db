@@ -39,7 +39,6 @@ fun ShareScreen(
             modifier = Modifier
                 .background(color = LocalColorScheme.current.primaryBackgroundColor)
                 .systemBarsPadding()
-                .padding(start = 5.dp)
         ) {
             content()
         }

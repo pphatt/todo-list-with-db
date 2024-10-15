@@ -15,8 +15,12 @@ import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
+import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
+import androidx.compose.material3.Card
+import androidx.compose.material3.CardColors
+import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
@@ -32,7 +36,11 @@ import kotlinx.coroutines.Job
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.text.font.Font
+import androidx.compose.ui.text.font.FontWeight
+import androidx.compose.ui.unit.sp
 import app.todolist.domain.reminder.entity.Reminder
+import app.todolist.presentation.screen.details.components.convertMillisToDate
 import app.todolist.ui.main.LocalRemindersList
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
@@ -49,33 +57,46 @@ fun ReminderScreen(
         floatingActionButton = { AddReminderButton(navController) }
     ) { paddingValues ->
         Box(modifier = Modifier.padding(paddingValues)) {
-            Row(
-                modifier = Modifier
-                    .fillMaxWidth()
-                    .padding(top = 10.dp, start = 16.dp, end = 16.dp)
-                    .height(48.dp)
-                    .clip(CircleShape)
-                    .shadow(elevation = 4.dp)
-                    .background(Color(0xFFfcfcfc)),
-                horizontalArrangement = Arrangement.Center,
-                verticalAlignment = Alignment.CenterVertically
-            ) {
-                Spacer(modifier = Modifier.width(5.dp))
-                IconButton(
-                    onClick = { openDrawer() }) {
-                    Icon(
-                        imageVector = Icons.Default.Menu,
-                        tint = MaterialTheme.colorScheme.outline,
-                        contentDescription = "",
+            Column {
+                Row(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .padding(start = 5.dp, top = 25.dp, end = 5.dp, bottom = 15.dp)
+                        .height(48.dp)
+                        .background(Color.Transparent),
+                    horizontalArrangement = Arrangement.Center,
+                    verticalAlignment = Alignment.CenterVertically
+                ) {
+                    Spacer(modifier = Modifier.width(5.dp))
+
+                    IconButton(
+                        onClick = { openDrawer() }) {
+                        Icon(
+                            imageVector = Icons.Default.Menu,
+                            tint = MaterialTheme.colorScheme.outline,
+                            contentDescription = "",
+                        )
+                    }
+
+                    Text(
+                        text = "All Reminders",
+                        modifier = Modifier.weight(0.8f),
+                        fontSize = 18.sp,
+                        fontWeight = FontWeight.Bold
                     )
                 }
-                Text("Search your notes", modifier = Modifier.weight(0.8f))
-            }
 
-            LazyColumn {
-                items(items = reminders, itemContent = { reminder ->
-                    ReminderItem(content = reminder.content)
-                })
+                LazyColumn(
+                    modifier = Modifier.fillMaxWidth(),
+                    verticalArrangement = Arrangement.spacedBy(20.dp)
+                ) {
+                    items(
+                        items = reminders,
+                        contentType = { "reminder_compact_list" })
+                    { reminder ->
+                        ReminderItem(content = reminder.content, dueDate = reminder.dueDate)
+                    }
+                }
             }
         }
     }
@@ -83,7 +104,41 @@ fun ReminderScreen(
 
 @Composable
 fun ReminderItem(
-    content: String
+    content: String,
+    dueDate: Long?
 ) {
-    Text(text = content)
+    Card(
+        colors = CardDefaults.cardColors(
+            containerColor = Color(0xFFfcfcfc)
+        ),
+        shape = RoundedCornerShape(15.dp)
+    ) {
+        Row(
+            modifier = Modifier
+                .padding(start = 30.dp, top = 10.dp, end = 20.dp, bottom = 10.dp)
+                .fillMaxWidth(),
+            horizontalArrangement = Arrangement.SpaceBetween,
+            verticalAlignment = Alignment.CenterVertically,
+        ) {
+            Column(
+                horizontalAlignment = Alignment.Start,
+                verticalArrangement = Arrangement.Center
+            ) {
+                Text(
+                    text = content,
+                    fontSize = 16.sp,
+                    fontWeight = FontWeight.W600
+                )
+
+                if (dueDate != null) {
+                    Text(
+                        text = convertMillisToDate(dueDate),
+                        color = Color(0xFFed842f),
+                        fontSize = 13.sp,
+                        fontWeight = FontWeight.W500
+                    )
+                }
+            }
+        }
+    }
 }
