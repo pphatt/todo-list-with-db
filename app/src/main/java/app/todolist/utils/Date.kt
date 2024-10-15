@@ -35,3 +35,14 @@ object PresentOrFutureSelectableDates : SelectableDates {
         return year >= calender.get(android.icu.util.Calendar.YEAR)
     }
 }
+
+fun isSameDay(dueDate: Long, currentTime: Long): Boolean {
+    val reminderCalendar = Calendar.getInstance().apply {
+        timeInMillis = dueDate
+    }
+    val currentCalendar = Calendar.getInstance().apply {
+        timeInMillis = currentTime
+    }
+    return reminderCalendar.get(Calendar.YEAR) == currentCalendar.get(Calendar.YEAR) &&
+            reminderCalendar.get(Calendar.DAY_OF_YEAR) == currentCalendar.get(Calendar.DAY_OF_YEAR)
+}

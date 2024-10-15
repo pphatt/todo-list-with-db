@@ -13,11 +13,14 @@ import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.staticCompositionLocalOf
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
+import app.todolist.domain.reminder.data.ReminderInitialData
 import app.todolist.domain.reminder.entity.Reminder
 import app.todolist.ui.navigation.NavigationActions
 import app.todolist.ui.navigation.NavigationGraph
 import app.todolist.ui.navigation.Tabs
 import kotlinx.coroutines.launch
+import java.sql.Timestamp
+import java.util.UUID
 
 @Composable
 fun MainActivityScreen(
@@ -43,7 +46,11 @@ fun MainActivityScreen(
     val openDrawer = { coroutineScope.launch { drawerState.open() } }
     val closeDrawer = { coroutineScope.launch { drawerState.close() } }
 
-    val reminders = remember { mutableStateListOf<Reminder>() }
+    val reminders = remember {
+        mutableStateListOf<Reminder>(
+            *ReminderInitialData.default.toTypedArray()
+        )
+    }
 
     CompositionLocalProvider(
         LocalRemindersList provides reminders

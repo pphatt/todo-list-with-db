@@ -16,12 +16,10 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.lazy.items
-import androidx.compose.foundation.shape.CircleShape
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
 import androidx.compose.material3.Card
-import androidx.compose.material3.CardColors
 import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
@@ -31,20 +29,20 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
 import androidx.navigation.NavController
 import app.todolist.ui.theme.LocalColorScheme
 import kotlinx.coroutines.Job
-import androidx.compose.ui.draw.clip
-import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.input.pointer.motionEventSpy
 import androidx.compose.ui.platform.LocalContext
-import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
-import app.todolist.domain.reminder.entity.Reminder
 import app.todolist.presentation.screen.details.components.convertMillisToDate
 import app.todolist.ui.main.LocalRemindersList
+import app.todolist.utils.isSameDay
+import java.util.Calendar
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -58,11 +56,17 @@ fun ReminderScreen(
 
     Scaffold(
         containerColor = LocalColorScheme.current.primaryBackgroundColor,
-        modifier = Modifier.fillMaxSize().imePadding(),
+        modifier = Modifier
+            .fillMaxSize()
+            .imePadding(),
         floatingActionButton = { AddReminderButton(navController) }
     ) { paddingValues ->
         Box(modifier = Modifier.padding(paddingValues)) {
-            Column {
+            Column(
+                modifier = Modifier.padding(
+                    bottom = 10.dp
+                )
+            ) {
                 Row(
                     modifier = Modifier
                         .fillMaxWidth()
@@ -91,32 +95,131 @@ fun ReminderScreen(
                     )
                 }
 
+                val currentTimeMillis = System.currentTimeMillis()
+                val currentCalendar = Calendar.getInstance()
+
+                val remindersFilteredByPastDate = reminders.filter { reminder ->
+                    reminder.dueDate != null && reminder.dueDate < currentTimeMillis && isSameDay(
+                        reminder.dueDate,
+                        currentCalendar.timeInMillis
+                    ).not()
+                }
+
+                val remindersFilteredByCurrentDate = reminders.filter { reminder ->
+                    reminder.dueDate != null && isSameDay(
+                        reminder.dueDate,
+                        currentCalendar.timeInMillis
+                    )
+                }
+
+                val remindersFilteredByFutureDate = reminders.filter { reminder ->
+                    reminder.dueDate != null && reminder.dueDate > currentTimeMillis && isSameDay(
+                        reminder.dueDate,
+                        currentCalendar.timeInMillis
+                    ).not()
+                }
+
+                val remindersFilteredByNoDate =
+                    reminders.filter { reminder -> reminder.dueDate == null }
+
                 LazyColumn(
-                    modifier = Modifier.fillMaxWidth(),
-                    verticalArrangement = Arrangement.spacedBy(20.dp)
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(15.dp)),
+                    verticalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
-                    items(
-                        items = reminders,
-                        contentType = { "reminder_compact_list" })
-                    { reminder ->
-                        if (reminder.id == reminders.last().id) {
-                            val currentTime = System.currentTimeMillis()
-
-                            val reminderTimeMillis = reminder.timestamp.time
-
-                            if (reminderTimeMillis >= currentTime - 100) {
-                                Toast.makeText(
-                                    context,
-                                    "Save reminders successfully",
-                                    Toast.LENGTH_SHORT
-                                ).show()
+                    if (remindersFilteredByPastDate.isNotEmpty()) {
+                        item {
+                            ReminderItemLayout(title = "Past date") {
+                                remindersFilteredByPastDate.forEach { reminder ->
+                                    ReminderItem(
+                                        content = reminder.content,
+                                        dueDate = reminder.dueDate
+                                    )
+                                }
                             }
                         }
+                    }
 
-                        ReminderItem(content = reminder.content, dueDate = reminder.dueDate)
+                    if (remindersFilteredByCurrentDate.isNotEmpty()) {
+                        item {
+                            ReminderItemLayout(title = "Current date") {
+                                remindersFilteredByCurrentDate.forEach { reminder ->
+                                    ReminderItem(
+                                        content = reminder.content,
+                                        dueDate = reminder.dueDate
+                                    )
+                                }
+                            }
+                        }
+                    }
+
+                    if (remindersFilteredByFutureDate.isNotEmpty()) {
+                        item {
+                            ReminderItemLayout(title = "Future date") {
+                                remindersFilteredByFutureDate.forEach { reminder ->
+                                    ReminderItem(
+                                        content = reminder.content,
+                                        dueDate = reminder.dueDate
+                                    )
+                                }
+                            }
+                        }
+                    }
+
+                    if (remindersFilteredByNoDate.isNotEmpty()) {
+                        item {
+                            ReminderItemLayout(title = "No date") {
+                                remindersFilteredByNoDate.forEach { reminder ->
+                                    ReminderItem(
+                                        content = reminder.content,
+                                        dueDate = reminder.dueDate
+                                    )
+                                }
+                            }
+                        }
+                    }
+
+                    item {
+                        Spacer(modifier = Modifier.height(15.dp))
+                    }
+                }
+
+                if (reminders.isNotEmpty()) {
+                    val currentTime = System.currentTimeMillis()
+
+                    val reminderTimeMillis = reminders.last().timestamp.time
+
+                    if (reminderTimeMillis >= currentTime - 100) {
+                        Toast.makeText(
+                            context,
+                            "Save reminders successfully",
+                            Toast.LENGTH_SHORT
+                        ).show()
                     }
                 }
             }
+        }
+    }
+}
+
+@Composable
+fun ReminderItemLayout(title: String, content: @Composable () -> Unit) {
+    Column(
+        verticalArrangement = Arrangement.spacedBy(5.dp)
+    ) {
+        Text(
+            modifier = Modifier
+                .fillMaxWidth()
+                .padding(start = 25.dp),
+            text = title,
+            color = Color(0xFF9a9ea1)
+        )
+
+        Column(
+            verticalArrangement = Arrangement.spacedBy(15.dp)
+        ) {
+            content.invoke()
         }
     }
 }
