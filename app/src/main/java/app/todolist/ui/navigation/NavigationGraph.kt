@@ -6,11 +6,13 @@ import androidx.compose.animation.fadeIn
 import androidx.compose.animation.fadeOut
 import androidx.compose.material3.DrawerState
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.navigation.NavHostController
 import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
+import app.todolist.domain.reminder.entity.Reminder
 import app.todolist.presentation.screen.details.DetailsRoute
 import app.todolist.presentation.screen.reminder.ReminderRoute
 import app.todolist.presentation.screen.share.ShareScreen
@@ -26,6 +28,8 @@ fun NavigationGraph(
 
     drawerState: DrawerState,
     currentRoute: String,
+
+    newTemporalRemindersList: SnapshotStateList<Reminder>,
 
     openDrawer: () -> Job,
     closeDrawer: () -> Job
@@ -46,7 +50,8 @@ fun NavigationGraph(
                 content = {
                     ReminderRoute(
                         navController = navController,
-                        openDrawer = openDrawer
+                        openDrawer = openDrawer,
+                        newTemporalRemindersList = newTemporalRemindersList
                     )
                 }
             )
@@ -82,7 +87,8 @@ fun NavigationGraph(
             }
         ) {
             DetailsRoute(
-                navigationActions = navigationActions
+                navigateToReminder = { navigationActions.navigateToReminder() },
+                newTemporalRemindersList = newTemporalRemindersList
             )
         }
     }

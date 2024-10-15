@@ -17,11 +17,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import app.todolist.domain.reminder.entity.Reminder
 import app.todolist.presentation.request.CreateReminderDto
 import app.todolist.presentation.screen.details.viewmodel.DetailsScreenViewModel
 import app.todolist.presentation.screen.details.viewmodel.ViewAction
@@ -34,7 +36,8 @@ import app.todolist.utils.getCurrentDateTime
 @Composable
 fun DetailsScreen(
     viewModel: DetailsScreenViewModel = hiltViewModel(),
-    navigationActions: NavigationActions
+    navigateToReminder: () -> Unit,
+    newTemporalRemindersList: SnapshotStateList<Reminder>
 ) {
     val state = viewModel.uiState.collectAsState().value
 
@@ -63,20 +66,32 @@ fun DetailsScreen(
                     content = state.content,
                     onExitReminder = {
                         focusManager.clearFocus()
-                        navigationActions.navigateToReminder()
+
                         viewModel.execute(ViewAction.ClearState)
+
+                        navigateToReminder()
                     },
                     onSaveReminder = {
                         focusManager.clearFocus()
 
+                        // TODO: change this back dto when using db
+                        val reminder = Reminder(
+                            content = state.content.trim(),
+                            dueDate = if (state.showDate) datePickerState.selectedDateMillis else null
+                        )
+
                         viewModel.createReminder(
                             CreateReminderDto(
+                                id = reminder.id,
                                 content = state.content.trim(),
-                                dueDate = if (state.showDate) datePickerState.selectedDateMillis else null
+                                dueDate = if (state.showDate) datePickerState.selectedDateMillis else null,
+                                timestamp = reminder.timestamp
                             )
                         )
 
-                        navigationActions.navigateToReminder()
+                        newTemporalRemindersList.add(reminder)
+
+                        navigateToReminder()
 
                         viewModel.execute(ViewAction.ClearState)
                     }

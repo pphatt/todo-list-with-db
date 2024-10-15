@@ -27,9 +27,12 @@ class ReminderRepositoryImpl @Inject constructor() : ReminderRepository {
     }
 
     override suspend fun createReminder(body: CreateReminderDto) {
+        // TODO: change this back dto when using db
         val newReminder = Reminder(
+            id = body.id,
             content = body.content,
-            dueDate = body.dueDate
+            dueDate = body.dueDate,
+            timestamp = body.timestamp
         )
 
         remindersList.value.add(newReminder)

@@ -32,6 +32,7 @@ import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.setValue
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
@@ -44,6 +45,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import app.todolist.domain.reminder.entity.Reminder
 import app.todolist.presentation.screen.details.components.convertMillisToDate
 import app.todolist.presentation.screen.reminder.viewmodel.ReminderScreenViewModel
 import app.todolist.utils.isSameDay
@@ -55,11 +57,15 @@ import java.util.Calendar
 fun ReminderScreen(
     viewModel: ReminderScreenViewModel = hiltViewModel(),
     navController: NavController,
-    openDrawer: () -> Job
+    openDrawer: () -> Job,
+    newTemporalRemindersList: SnapshotStateList<Reminder>?
 ) {
     val state = viewModel.uiState.collectAsState().value
 
     val context = LocalContext.current
+
+    println(newTemporalRemindersList)
+    println(state.list.last())
 
     Scaffold(
         containerColor = LocalColorScheme.current.primaryBackgroundColor,
@@ -142,7 +148,8 @@ fun ReminderScreen(
                                     ReminderItem(
                                         content = reminder.content,
                                         dueDate = reminder.dueDate,
-                                        timestamp = reminder.timestamp
+                                        timestamp = reminder.timestamp,
+                                        isNew = newTemporalRemindersList?.find { r -> r.id == reminder.id } != null
                                     )
                                 }
                             }
@@ -156,7 +163,8 @@ fun ReminderScreen(
                                     ReminderItem(
                                         content = reminder.content,
                                         dueDate = reminder.dueDate,
-                                        timestamp = reminder.timestamp
+                                        timestamp = reminder.timestamp,
+                                        isNew = newTemporalRemindersList?.find { r -> r.id == reminder.id } != null
                                     )
                                 }
                             }
@@ -170,7 +178,8 @@ fun ReminderScreen(
                                     ReminderItem(
                                         content = reminder.content,
                                         dueDate = reminder.dueDate,
-                                        timestamp = reminder.timestamp
+                                        timestamp = reminder.timestamp,
+                                        isNew = newTemporalRemindersList?.find { r -> r.id == reminder.id } != null
                                     )
                                 }
                             }
@@ -184,7 +193,8 @@ fun ReminderScreen(
                                     ReminderItem(
                                         content = reminder.content,
                                         dueDate = reminder.dueDate,
-                                        timestamp = reminder.timestamp
+                                        timestamp = reminder.timestamp,
+                                        isNew = newTemporalRemindersList?.find { r -> r.id == reminder.id } != null
                                     )
                                 }
                             }
@@ -239,7 +249,8 @@ fun ReminderItemLayout(title: String, content: @Composable () -> Unit) {
 fun ReminderItem(
     content: String,
     dueDate: Long?,
-    timestamp: Timestamp
+    timestamp: Timestamp,
+    isNew: Boolean
 ) {
     Card(
         colors = CardDefaults.cardColors(
@@ -262,9 +273,7 @@ fun ReminderItem(
                     verticalAlignment = Alignment.CenterVertically,
                     horizontalArrangement = Arrangement.spacedBy(5.dp),
                 ) {
-                    val currentTime = System.currentTimeMillis()
-
-                    if ((timestamp.time >= currentTime - 5000)) {
+                    if (isNew) {
                         Text(
                             text = "M",
                             color = Color(0xFFed842f),

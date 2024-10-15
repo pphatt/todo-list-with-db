@@ -6,11 +6,16 @@ import androidx.compose.material3.rememberDrawerState
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.CompositionLocalProvider
+import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
 import androidx.compose.runtime.remember
 import androidx.compose.runtime.rememberCoroutineScope
 import androidx.compose.runtime.staticCompositionLocalOf
+import androidx.lifecycle.Lifecycle
+import androidx.lifecycle.LifecycleEventObserver
+import androidx.lifecycle.LifecycleOwner
+import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
 import app.todolist.domain.reminder.data.ReminderInitialData
@@ -24,6 +29,7 @@ import java.util.UUID
 
 @Composable
 fun MainActivityScreen(
+    lifecycleOwner: LifecycleOwner = LocalLifecycleOwner.current,
     widthSizeClass: WindowWidthSizeClass,
 ) {
     val navController = rememberNavController()
@@ -46,6 +52,8 @@ fun MainActivityScreen(
     val openDrawer = { coroutineScope.launch { drawerState.open() } }
     val closeDrawer = { coroutineScope.launch { drawerState.close() } }
 
+    val newTemporalRemindersList = remember { mutableStateListOf<Reminder>() }
+
     NavigationGraph(
         navController = navController,
         navigationActions = navigationActions,
@@ -55,7 +63,26 @@ fun MainActivityScreen(
         drawerState = drawerState,
         openDrawer = openDrawer,
         closeDrawer = closeDrawer,
+
+        newTemporalRemindersList = newTemporalRemindersList
     )
+
+    DisposableEffect(lifecycleOwner) {
+        val observer = LifecycleEventObserver { _, event ->
+            if (event == Lifecycle.Event.ON_PAUSE) {
+                // App is in the background or losing focus, clear the temporary list
+                newTemporalRemindersList.clear()
+            }
+        }
+
+        // Add the lifecycle observer
+        lifecycleOwner.lifecycle.addObserver(observer)
+
+        // Remove the observer when the composable is disposed
+        onDispose {
+            lifecycleOwner.lifecycle.removeObserver(observer)
+        }
+    }
 }
 
 /**
