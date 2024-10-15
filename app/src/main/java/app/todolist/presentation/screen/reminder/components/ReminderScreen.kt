@@ -1,6 +1,7 @@
 package app.todolist.presentation.screen.reminder.components
 
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
@@ -10,6 +11,7 @@ import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
+import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyColumn
@@ -36,6 +38,7 @@ import kotlinx.coroutines.Job
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.draw.shadow
 import androidx.compose.ui.graphics.Color
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.Font
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
@@ -51,9 +54,11 @@ fun ReminderScreen(
 ) {
     val reminders = LocalRemindersList.current
 
+    val context = LocalContext.current
+
     Scaffold(
         containerColor = LocalColorScheme.current.primaryBackgroundColor,
-        modifier = Modifier.fillMaxSize(),
+        modifier = Modifier.fillMaxSize().imePadding(),
         floatingActionButton = { AddReminderButton(navController) }
     ) { paddingValues ->
         Box(modifier = Modifier.padding(paddingValues)) {
@@ -94,6 +99,20 @@ fun ReminderScreen(
                         items = reminders,
                         contentType = { "reminder_compact_list" })
                     { reminder ->
+                        if (reminder.id == reminders.last().id) {
+                            val currentTime = System.currentTimeMillis()
+
+                            val reminderTimeMillis = reminder.timestamp.time
+
+                            if (reminderTimeMillis >= currentTime - 100) {
+                                Toast.makeText(
+                                    context,
+                                    "Save reminders successfully",
+                                    Toast.LENGTH_SHORT
+                                ).show()
+                            }
+                        }
+
                         ReminderItem(content = reminder.content, dueDate = reminder.dueDate)
                     }
                 }

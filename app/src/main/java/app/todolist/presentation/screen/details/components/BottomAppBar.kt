@@ -40,8 +40,8 @@ fun KeyboardAware(
 @Composable
 fun BottomAppBarDefaults(
     modifier: Modifier = Modifier,
-    navigationActions: NavigationActions,
     content: String,
+    onExitReminder: () -> Unit,
     onSaveReminder: () -> Unit
 ) {
     KeyboardAware {
@@ -56,7 +56,7 @@ fun BottomAppBarDefaults(
             ) {
                 Button(
                     title = "Exit",
-                    onClick = { navigationActions.navigateToReminder() },
+                    onClick = onExitReminder,
                 )
 
                 Button(

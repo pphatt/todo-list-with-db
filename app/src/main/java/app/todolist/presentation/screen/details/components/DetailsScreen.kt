@@ -1,6 +1,7 @@
 package app.todolist.presentation.screen.details.components
 
 import android.annotation.SuppressLint
+import android.view.Gravity
 import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
@@ -56,8 +57,6 @@ fun DetailsScreen(
 
     val scrollState = rememberScrollState()
 
-    val context = LocalContext.current
-
     Surface(
         modifier = Modifier.background(color = LocalColorScheme.current.primaryBackgroundColor)
     ) {
@@ -69,7 +68,11 @@ fun DetailsScreen(
             bottomBar = {
                 BottomAppBarDefaults(
                     content = state.content,
-                    navigationActions = navigationActions,
+                    onExitReminder = {
+                        focusManager.clearFocus()
+                        navigationActions.navigateToReminder()
+                        viewModel.execute(ViewAction.ClearState)
+                    },
                     onSaveReminder = {
                         focusManager.clearFocus()
 
@@ -84,12 +87,6 @@ fun DetailsScreen(
                         navigationActions.navigateToReminder()
 
                         viewModel.execute(ViewAction.ClearState)
-
-                        Toast.makeText(
-                            context,
-                            "Save reminders successfully",
-                            Toast.LENGTH_LONG
-                        ).show()
                     }
                 )
             }
