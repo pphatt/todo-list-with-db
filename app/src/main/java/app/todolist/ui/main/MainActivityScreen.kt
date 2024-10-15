@@ -46,26 +46,16 @@ fun MainActivityScreen(
     val openDrawer = { coroutineScope.launch { drawerState.open() } }
     val closeDrawer = { coroutineScope.launch { drawerState.close() } }
 
-    val reminders = remember {
-        mutableStateListOf<Reminder>(
-            *ReminderInitialData.default.toTypedArray()
-        )
-    }
+    NavigationGraph(
+        navController = navController,
+        navigationActions = navigationActions,
 
-    CompositionLocalProvider(
-        LocalRemindersList provides reminders
-    ) {
-        NavigationGraph(
-            navController = navController,
-            navigationActions = navigationActions,
+        currentRoute = currentRoute,
 
-            currentRoute = currentRoute,
-
-            drawerState = drawerState,
-            openDrawer = openDrawer,
-            closeDrawer = closeDrawer,
-        )
-    }
+        drawerState = drawerState,
+        openDrawer = openDrawer,
+        closeDrawer = closeDrawer,
+    )
 }
 
 /**

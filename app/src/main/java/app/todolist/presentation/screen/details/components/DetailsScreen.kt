@@ -1,8 +1,6 @@
 package app.todolist.presentation.screen.details.components
 
 import android.annotation.SuppressLint
-import android.view.Gravity
-import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -21,16 +19,12 @@ import androidx.compose.runtime.collectAsState
 import androidx.compose.runtime.remember
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.focus.FocusRequester
-import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import app.todolist.domain.reminder.entity.Reminder
-import app.todolist.infrastructure.repositories.ReminderRepositoryImpl
 import app.todolist.presentation.request.CreateReminderDto
 import app.todolist.presentation.screen.details.viewmodel.DetailsScreenViewModel
 import app.todolist.presentation.screen.details.viewmodel.ViewAction
-import app.todolist.ui.main.LocalRemindersList
 import app.todolist.ui.navigation.NavigationActions
 import app.todolist.ui.theme.LocalColorScheme
 import app.todolist.utils.PresentOrFutureSelectableDates
