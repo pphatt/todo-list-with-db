@@ -15,6 +15,12 @@ fun getCurrentDateTime(): Date {
     return Calendar.getInstance().time
 }
 
+fun convertMillisToDate(millis: Long): String {
+    val formatter = SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+
+    return formatter.format(Date(millis))
+}
+
 object PresentOrFutureSelectableDates : SelectableDates {
     private val calender = android.icu.util.Calendar.getInstance()
 

@@ -18,26 +18,18 @@ import androidx.compose.foundation.lazy.LazyColumn
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.filled.Menu
-import androidx.compose.material3.Card
-import androidx.compose.material3.CardDefaults
 import androidx.compose.material3.Icon
 import androidx.compose.material3.IconButton
 import androidx.compose.material3.MaterialTheme
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
-import androidx.compose.runtime.getValue
-import androidx.compose.runtime.mutableStateOf
-import androidx.compose.runtime.remember
-import androidx.compose.runtime.setValue
 import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
 import androidx.compose.ui.unit.dp
-import androidx.navigation.NavController
 import app.todolist.ui.theme.LocalColorScheme
 import kotlinx.coroutines.Job
 import androidx.compose.ui.graphics.Color
@@ -46,33 +38,31 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import app.todolist.domain.reminder.entity.Reminder
-import app.todolist.presentation.screen.details.components.convertMillisToDate
 import app.todolist.presentation.screen.reminder.viewmodel.ReminderScreenViewModel
 import app.todolist.utils.isSameDay
-import java.sql.Timestamp
 import java.util.Calendar
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun ReminderScreen(
     viewModel: ReminderScreenViewModel = hiltViewModel(),
-    navController: NavController,
     openDrawer: () -> Job,
-    newTemporalRemindersList: SnapshotStateList<Reminder>?
+    navigateToDetails: () -> Unit,
+    temporalReminders: SnapshotStateList<Reminder>?,
+    onReminderClick: (Reminder) -> Unit
 ) {
     val state = viewModel.uiState.collectAsState().value
 
     val context = LocalContext.current
-
-    println(newTemporalRemindersList)
-    println(state.list.last())
 
     Scaffold(
         containerColor = LocalColorScheme.current.primaryBackgroundColor,
         modifier = Modifier
             .fillMaxSize()
             .imePadding(),
-        floatingActionButton = { AddReminderButton(navController) }
+        floatingActionButton = {
+            AddReminderButton(navigateToDetails = navigateToDetails)
+        }
     ) { paddingValues ->
         Box(modifier = Modifier.padding(paddingValues)) {
             Column(
@@ -143,61 +133,45 @@ fun ReminderScreen(
                 ) {
                     if (remindersFilteredByPastDate.isNotEmpty()) {
                         item {
-                            ReminderItemLayout(title = "Past date") {
-                                remindersFilteredByPastDate.forEach { reminder ->
-                                    ReminderItem(
-                                        content = reminder.content,
-                                        dueDate = reminder.dueDate,
-                                        timestamp = reminder.timestamp,
-                                        isNew = newTemporalRemindersList?.find { r -> r.id == reminder.id } != null
-                                    )
-                                }
-                            }
+                            ReminderList(
+                                title = "Past date",
+                                reminders = remindersFilteredByPastDate,
+                                temporalReminders = temporalReminders,
+                                onReminderClick = onReminderClick
+                            )
                         }
                     }
 
                     if (remindersFilteredByCurrentDate.isNotEmpty()) {
                         item {
-                            ReminderItemLayout(title = "Current date") {
-                                remindersFilteredByCurrentDate.forEach { reminder ->
-                                    ReminderItem(
-                                        content = reminder.content,
-                                        dueDate = reminder.dueDate,
-                                        timestamp = reminder.timestamp,
-                                        isNew = newTemporalRemindersList?.find { r -> r.id == reminder.id } != null
-                                    )
-                                }
-                            }
+                            ReminderList(
+                                title = "Current date",
+                                reminders = remindersFilteredByCurrentDate,
+                                temporalReminders = temporalReminders,
+                                onReminderClick = onReminderClick
+                            )
                         }
                     }
 
                     if (remindersFilteredByFutureDate.isNotEmpty()) {
                         item {
-                            ReminderItemLayout(title = "Future date") {
-                                remindersFilteredByFutureDate.forEach { reminder ->
-                                    ReminderItem(
-                                        content = reminder.content,
-                                        dueDate = reminder.dueDate,
-                                        timestamp = reminder.timestamp,
-                                        isNew = newTemporalRemindersList?.find { r -> r.id == reminder.id } != null
-                                    )
-                                }
-                            }
+                            ReminderList(
+                                title = "Future date",
+                                reminders = remindersFilteredByFutureDate,
+                                temporalReminders = temporalReminders,
+                                onReminderClick = onReminderClick
+                            )
                         }
                     }
 
                     if (remindersFilteredByNoDate.isNotEmpty()) {
                         item {
-                            ReminderItemLayout(title = "No date") {
-                                remindersFilteredByNoDate.forEach { reminder ->
-                                    ReminderItem(
-                                        content = reminder.content,
-                                        dueDate = reminder.dueDate,
-                                        timestamp = reminder.timestamp,
-                                        isNew = newTemporalRemindersList?.find { r -> r.id == reminder.id } != null
-                                    )
-                                }
-                            }
+                            ReminderList(
+                                title = "No date",
+                                reminders = remindersFilteredByNoDate,
+                                temporalReminders = temporalReminders,
+                                onReminderClick = onReminderClick
+                            )
                         }
                     }
 
@@ -218,84 +192,6 @@ fun ReminderScreen(
                             Toast.LENGTH_SHORT
                         ).show()
                     }
-                }
-            }
-        }
-    }
-}
-
-@Composable
-fun ReminderItemLayout(title: String, content: @Composable () -> Unit) {
-    Column(
-        verticalArrangement = Arrangement.spacedBy(5.dp)
-    ) {
-        Text(
-            modifier = Modifier
-                .fillMaxWidth()
-                .padding(start = 25.dp),
-            text = title,
-            color = Color(0xFF9a9ea1)
-        )
-
-        Column(
-            verticalArrangement = Arrangement.spacedBy(15.dp)
-        ) {
-            content.invoke()
-        }
-    }
-}
-
-@Composable
-fun ReminderItem(
-    content: String,
-    dueDate: Long?,
-    timestamp: Timestamp,
-    isNew: Boolean
-) {
-    Card(
-        colors = CardDefaults.cardColors(
-            containerColor = Color(0xFFfcfcfc)
-        ),
-        shape = RoundedCornerShape(15.dp)
-    ) {
-        Row(
-            modifier = Modifier
-                .padding(start = 30.dp, top = 10.dp, end = 20.dp, bottom = 10.dp)
-                .fillMaxWidth(),
-            horizontalArrangement = Arrangement.SpaceBetween,
-            verticalAlignment = Alignment.CenterVertically,
-        ) {
-            Column(
-                horizontalAlignment = Alignment.Start,
-                verticalArrangement = Arrangement.Center
-            ) {
-                Row(
-                    verticalAlignment = Alignment.CenterVertically,
-                    horizontalArrangement = Arrangement.spacedBy(5.dp),
-                ) {
-                    if (isNew) {
-                        Text(
-                            text = "M",
-                            color = Color(0xFFed842f),
-                            fontSize = 12.sp,
-                            fontWeight = FontWeight.W500,
-                        )
-                    }
-
-                    Text(
-                        text = content,
-                        fontSize = 16.sp,
-                        fontWeight = FontWeight.W600
-                    )
-                }
-
-                if (dueDate != null) {
-                    Text(
-                        text = convertMillisToDate(dueDate),
-                        color = Color(0xFFed842f),
-                        fontSize = 13.sp,
-                        fontWeight = FontWeight.W500
-                    )
                 }
             }
         }

@@ -10,6 +10,7 @@ object Tabs {
     const val REMINDER_ROUTE = "Reminders"
     const val TRASH_ROUTE = "Trash"
     const val DETAILS_ROUTE = "Details"
+    const val EDIT_ROUTE = "Edit"
 }
 
 /**
@@ -42,5 +43,8 @@ class NavigationActions(navHostController: NavHostController) {
             launchSingleTop = true
             restoreState = true
         }
+    }
+    val navigateToEdit: (reminderId: String) -> Unit = {
+        navHostController.navigate("${Tabs.EDIT_ROUTE}/${it}")
     }
 }

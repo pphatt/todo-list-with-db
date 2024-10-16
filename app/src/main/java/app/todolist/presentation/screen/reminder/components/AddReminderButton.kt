@@ -12,18 +12,9 @@ import app.todolist.ui.navigation.Tabs
 import app.todolist.ui.theme.LocalColorScheme
 
 @Composable
-fun AddReminderButton(navController: NavController) {
+fun AddReminderButton(navigateToDetails: () -> Unit) {
     FloatingActionButton(
-        onClick = {
-            navController.navigate(Tabs.DETAILS_ROUTE) {
-                popUpTo(navController.graph.findStartDestination().id) {
-                    saveState = true
-                }
-
-                launchSingleTop = true
-                restoreState = true
-            }
-        },
+        onClick = { navigateToDetails() },
         shape = RoundedCornerShape(50),
         containerColor = LocalColorScheme.current.backgroundColor,
         contentColor = LocalColorScheme.current.addIconColor,

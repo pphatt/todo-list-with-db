@@ -1,7 +1,5 @@
 package app.todolist.presentation.screen.details.viewmodel
 
-import java.util.Date
-
 sealed interface ViewAction {
     data class SetContent(val value: String) : ViewAction
 

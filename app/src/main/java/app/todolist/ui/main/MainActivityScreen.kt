@@ -5,7 +5,6 @@ import androidx.compose.material3.DrawerValue
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
-import androidx.compose.runtime.CompositionLocalProvider
 import androidx.compose.runtime.DisposableEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateListOf
@@ -18,14 +17,11 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import app.todolist.domain.reminder.data.ReminderInitialData
 import app.todolist.domain.reminder.entity.Reminder
 import app.todolist.ui.navigation.NavigationActions
 import app.todolist.ui.navigation.NavigationGraph
 import app.todolist.ui.navigation.Tabs
 import kotlinx.coroutines.launch
-import java.sql.Timestamp
-import java.util.UUID
 
 @Composable
 fun MainActivityScreen(
@@ -38,10 +34,6 @@ fun MainActivityScreen(
     }
 
     val coroutineScope = rememberCoroutineScope()
-
-    val navBackStackEntry by navController.currentBackStackEntryAsState()
-    val currentRoute =
-        navBackStackEntry?.destination?.route ?: Tabs.REMINDER_ROUTE
 
     // comment out for some internal design not finished
     // val isExpandedScreen = widthSizeClass == WindowWidthSizeClass.Expanded
@@ -58,13 +50,13 @@ fun MainActivityScreen(
         navController = navController,
         navigationActions = navigationActions,
 
-        currentRoute = currentRoute,
+        currentRoute = Tabs.REMINDER_ROUTE,
 
         drawerState = drawerState,
         openDrawer = openDrawer,
         closeDrawer = closeDrawer,
 
-        newTemporalRemindersList = newTemporalRemindersList
+        temporalRemindersList = newTemporalRemindersList
     )
 
     DisposableEffect(lifecycleOwner) {

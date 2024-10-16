@@ -27,7 +27,6 @@ import app.todolist.domain.reminder.entity.Reminder
 import app.todolist.presentation.request.CreateReminderDto
 import app.todolist.presentation.screen.details.viewmodel.DetailsScreenViewModel
 import app.todolist.presentation.screen.details.viewmodel.ViewAction
-import app.todolist.ui.navigation.NavigationActions
 import app.todolist.ui.theme.LocalColorScheme
 import app.todolist.utils.PresentOrFutureSelectableDates
 import app.todolist.utils.getCurrentDateTime
@@ -62,7 +61,7 @@ fun DetailsScreen(
                 .imePadding(),
             containerColor = LocalColorScheme.current.primaryBackgroundColor,
             bottomBar = {
-                BottomAppBarDefaults(
+                AppBottomBar(
                     content = state.content,
                     onExitReminder = {
                         focusManager.clearFocus()

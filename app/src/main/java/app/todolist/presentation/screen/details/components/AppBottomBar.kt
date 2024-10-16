@@ -1,14 +1,12 @@
 package app.todolist.presentation.screen.details.components
 
 import androidx.compose.foundation.layout.Arrangement
-import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.RowScope
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
 import androidx.compose.foundation.layout.height
-import androidx.compose.foundation.layout.imePadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material3.Icon
@@ -25,20 +23,11 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import app.todolist.ui.navigation.NavigationActions
 import app.todolist.ui.theme.LocalColorScheme
+import app.todolist.utils.KeyboardAware
 
 @Composable
-fun KeyboardAware(
-    content: @Composable () -> Unit
-) {
-    Box(modifier = Modifier.imePadding()) {
-        content()
-    }
-}
-
-@Composable
-fun BottomAppBarDefaults(
+fun AppBottomBar(
     modifier: Modifier = Modifier,
     content: String,
     onExitReminder: () -> Unit,
