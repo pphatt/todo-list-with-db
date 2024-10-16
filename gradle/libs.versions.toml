@@ -39,8 +39,6 @@ google-hilt-android-testing = { module = "com.google.dagger:hilt-android-testing
 
 junit = { group = "junit", name = "junit", version = "4.13.2" }
 
-joda = { module = "net.danlew:android.joda", version = "2.13.0" }
-
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }

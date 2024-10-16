@@ -1,7 +1,6 @@
 package app.todolist.utils
 
 import androidx.compose.material3.SelectableDates
-import org.joda.time.DateTime
 import java.text.SimpleDateFormat
 import java.util.Calendar
 import java.util.Date
@@ -13,7 +12,7 @@ fun Date.toString(format: String, locale: Locale = Locale.getDefault()): String 
 }
 
 fun getCurrentDateTime(): Long {
-    return DateTime.now().millis
+    return Calendar.getInstance().timeInMillis
 }
 
 fun convertMillisToDate(millis: Long): String {
