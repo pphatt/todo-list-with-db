@@ -6,12 +6,14 @@ import app.todolist.domain.reminder.entity.Reminder
 import app.todolist.domain.reminder.repository.ReminderRepository
 import app.todolist.infrastructure.repositories.ReminderRepositoryImpl
 import app.todolist.presentation.request.CreateReminderDto
+import app.todolist.presentation.request.EditReminderDto
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
+import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
@@ -51,9 +53,30 @@ class DetailsScreenViewModel @Inject constructor(
         )
     }
 
+    fun getReminderById(id: String) {
+        viewModelScope.launch {
+            val reminder = reminderRepositoryImpl.getReminderById(UUID.fromString(id))
+
+            if (reminder != null) {
+                state = state.copy(
+                    content = reminder.content,
+                    dueDate = reminder.dueDate,
+                    showDate = reminder.dueDate != null
+                )
+            }
+        }
+    }
+
     fun createReminder(body: CreateReminderDto) {
         viewModelScope.launch {
             reminderRepositoryImpl.createReminder(body)
+        }
+    }
+
+    fun editReminder(body: EditReminderDto) {
+        println("body: $body")
+        viewModelScope.launch {
+            reminderRepositoryImpl.editReminder(body)
         }
     }
 }

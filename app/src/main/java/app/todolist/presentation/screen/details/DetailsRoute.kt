@@ -8,10 +8,12 @@ import app.todolist.ui.navigation.NavigationActions
 
 @Composable
 fun DetailsRoute(
+    reminderId: String? = null,
     navigateToReminder: () -> Unit,
     newTemporalRemindersList: SnapshotStateList<Reminder>
 ) {
     DetailsScreen(
+        reminderId = reminderId,
         navigateToReminder = navigateToReminder,
         newTemporalRemindersList = newTemporalRemindersList
     )

@@ -15,7 +15,8 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun AppBottomBar(
     modifier: Modifier = Modifier,
-    onDeleteReminder: () -> Unit
+    onDeleteReminder: () -> Unit,
+    onEditReminder: () -> Unit
 ) {
     NavigationBar(
         modifier = modifier,
@@ -27,7 +28,7 @@ fun AppBottomBar(
                 Icon(Icons.Rounded.Edit, null)
             },
             selected = false,
-            onClick = {}
+            onClick = onEditReminder
         )
         NavigationBarItem(
             label = { Text("Delete", fontSize = 15.sp) },

@@ -4,6 +4,7 @@ import app.todolist.domain.reminder.data.ReminderInitialData
 import app.todolist.domain.reminder.entity.Reminder
 import app.todolist.domain.reminder.repository.ReminderRepository
 import app.todolist.presentation.request.CreateReminderDto
+import app.todolist.presentation.request.EditReminderDto
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import java.sql.Timestamp
@@ -39,12 +40,34 @@ class ReminderRepositoryImpl @Inject constructor() : ReminderRepository {
         remindersList.value.add(newReminder)
     }
 
+    override suspend fun editReminder(body: EditReminderDto) {
+        val reminderIndex = remindersList.value.indexOfFirst { it.id == body.id }
+
+        println(remindersList.value)
+        println(reminderIndex)
+
+        if (reminderIndex != -1) {
+            val updatedReminder = Reminder(
+                id = body.id,
+                content = body.content,
+                dueDate = body.dueDate,
+                createdAt = body.createdAt
+            )
+
+            println("updatedReminder: $updatedReminder")
+
+            val updatedList = remindersList.value.toMutableList()
+            updatedList[reminderIndex] = updatedReminder
+
+            remindersList.value = updatedList
+        }
+    }
+
     override suspend fun deleteReminder(reminder: Reminder) {
         val updatedReminders = remindersList.value.toMutableList().apply {
             val index = indexOfFirst { it.id == reminder.id }
 
             if (index != -1) {
-                // Update the reminder's isDeleted property
                 val updatedReminder =
                     reminder.copy(deletedAt = Timestamp(System.currentTimeMillis()))
                 set(index, updatedReminder)

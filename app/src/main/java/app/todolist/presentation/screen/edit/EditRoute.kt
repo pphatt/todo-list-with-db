@@ -7,10 +7,12 @@ import app.todolist.presentation.screen.edit.components.EditScreen
 @Composable
 fun EditRoute(
     reminderId: String?,
-    navigateToReminder: () -> Unit
+    navigateToReminder: () -> Unit,
+    navigateToEditDetails: (reminderId: String?) -> Unit
 ) {
     EditScreen(
         reminderId = reminderId,
-        navigateToReminder = navigateToReminder
+        navigateToReminder = navigateToReminder,
+        navigateToEditDetails = navigateToEditDetails
     )
 }

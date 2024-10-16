@@ -10,6 +10,7 @@ import androidx.compose.foundation.layout.navigationBarsPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.rememberScrollState
 import androidx.compose.foundation.verticalScroll
+import androidx.compose.material3.DatePickerState
 import androidx.compose.material3.Scaffold
 import androidx.compose.material3.Surface
 import androidx.compose.material3.rememberDatePickerState
@@ -25,15 +26,18 @@ import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import app.todolist.domain.reminder.entity.Reminder
 import app.todolist.presentation.request.CreateReminderDto
+import app.todolist.presentation.request.EditReminderDto
 import app.todolist.presentation.screen.details.viewmodel.DetailsScreenViewModel
 import app.todolist.presentation.screen.details.viewmodel.ViewAction
 import app.todolist.ui.theme.LocalColorScheme
 import app.todolist.utils.PresentOrFutureSelectableDates
 import app.todolist.utils.getCurrentDateTime
+import java.util.UUID
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun DetailsScreen(
+    reminderId: String? = null,
     viewModel: DetailsScreenViewModel = hiltViewModel(),
     navigateToReminder: () -> Unit,
     newTemporalRemindersList: SnapshotStateList<Reminder>
@@ -41,16 +45,31 @@ fun DetailsScreen(
     val state = viewModel.uiState.collectAsState().value
 
     // cannot move it to viewmodel
-    val datePickerState =
-        rememberDatePickerState(
+    // TODO: fix this (this can cause memory leak)
+    var datePickerState: DatePickerState? = null
+
+    if (reminderId == null) {
+        datePickerState = rememberDatePickerState(
             initialSelectedDateMillis = getCurrentDateTime().time,
             selectableDates = PresentOrFutureSelectableDates
         )
+    } else if (state.dueDate != null) {
+        datePickerState = rememberDatePickerState(
+            initialSelectedDateMillis = state.dueDate,
+            selectableDates = PresentOrFutureSelectableDates
+        )
+    }
 
     val focusRequester = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current
 
     val scrollState = rememberScrollState()
+
+    LaunchedEffect(reminderId) {
+        if (reminderId != null) {
+            viewModel.getReminderById(reminderId)
+        }
+    }
 
     Surface(
         modifier = Modifier.background(color = LocalColorScheme.current.primaryBackgroundColor)
@@ -76,19 +95,30 @@ fun DetailsScreen(
                         // TODO: change this back dto when using db
                         val reminder = Reminder(
                             content = state.content.trim(),
-                            dueDate = if (state.showDate) datePickerState.selectedDateMillis else null
+                            dueDate = if (state.showDate) datePickerState?.selectedDateMillis else null
                         )
 
-                        viewModel.createReminder(
-                            CreateReminderDto(
-                                id = reminder.id,
-                                content = state.content.trim(),
-                                dueDate = if (state.showDate) datePickerState.selectedDateMillis else null,
-                                createdAt = reminder.createdAt
+                        if (reminderId == null) {
+                            viewModel.createReminder(
+                                CreateReminderDto(
+                                    id = reminder.id,
+                                    content = state.content.trim(),
+                                    dueDate = if (state.showDate) datePickerState?.selectedDateMillis else null,
+                                    createdAt = reminder.createdAt
+                                )
                             )
-                        )
 
-                        newTemporalRemindersList.add(reminder)
+                            newTemporalRemindersList.add(reminder)
+                        } else {
+                            viewModel.editReminder(
+                                EditReminderDto(
+                                    id = UUID.fromString(reminderId),
+                                    content = state.content.trim(),
+                                    dueDate = if (state.showDate) datePickerState?.selectedDateMillis else null,
+                                    createdAt = reminder.createdAt
+                                )
+                            )
+                        }
 
                         navigateToReminder()
 
@@ -111,11 +141,13 @@ fun DetailsScreen(
                     focusRequester = focusRequester,
                 )
 
-                DatePickerDocked(
-                    date = datePickerState,
-                    showDatePicker = state.showDate,
-                    onToggleShowDatePicker = { viewModel.execute(ViewAction.SetShowDateTime(!state.showDate)) }
-                )
+                if (datePickerState != null) {
+                    DatePickerDocked(
+                        date = datePickerState,
+                        showDatePicker = state.showDate,
+                        onToggleShowDatePicker = { viewModel.execute(ViewAction.SetShowDateTime(!state.showDate)) }
+                    )
+                }
             }
         }
     }

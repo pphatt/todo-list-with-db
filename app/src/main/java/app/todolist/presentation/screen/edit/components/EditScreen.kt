@@ -31,7 +31,8 @@ import java.util.UUID
 fun EditScreen(
     viewModel: EditScreenViewModel = hiltViewModel(),
     reminderId: String?,
-    navigateToReminder: () -> Unit
+    navigateToReminder: () -> Unit,
+    navigateToEditDetails: (reminderId: String?) -> Unit
 ) {
     val state = viewModel.uiState.collectAsState().value
 
@@ -55,6 +56,7 @@ fun EditScreen(
             containerColor = LocalColorScheme.current.primaryBackgroundColor,
             bottomBar = {
                 AppBottomBar(
+                    onEditReminder = { navigateToEditDetails(reminderId) },
                     onDeleteReminder = {
                         viewModel.execute(ViewAction.DeleteReminder)
 
