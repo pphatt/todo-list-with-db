@@ -6,5 +6,7 @@ import java.util.UUID
 sealed interface ViewAction {
     data class SetReminder(val id: UUID) : ViewAction
 
-    data object DeleteReminder : ViewAction
+    data object MoveReminderToTrash : ViewAction
+
+    data class DeleteReminder(val reminderId: String) : ViewAction
 }

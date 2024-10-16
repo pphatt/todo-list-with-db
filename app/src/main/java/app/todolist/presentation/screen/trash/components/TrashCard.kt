@@ -22,12 +22,12 @@ import app.todolist.domain.reminder.entity.Reminder
 @Composable
 fun TrashCard(
     reminder: Reminder,
-    onReminderClick: (Reminder) -> Unit
+    onReminderClick: (String) -> Unit
 ) {
     Card(
         modifier = Modifier
             .clickable {
-//                onReminderClick(reminder)
+                onReminderClick(reminder.id.toString())
             },
         colors = CardDefaults.cardColors(
             containerColor = Color(0xFFfcfcfc)

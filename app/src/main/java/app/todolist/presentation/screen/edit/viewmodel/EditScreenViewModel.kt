@@ -1,5 +1,6 @@
 package app.todolist.presentation.screen.edit.viewmodel
 
+import android.view.View
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.todolist.domain.reminder.entity.Reminder
@@ -30,7 +31,9 @@ class EditScreenViewModel @Inject constructor(
                 id = action.id
             )
 
-            is ViewAction.DeleteReminder -> deleteReminder()
+            is ViewAction.MoveReminderToTrash -> moveReminderToTrash()
+
+            is ViewAction.DeleteReminder -> deleteReminder(action.reminderId)
         }
     }
 
@@ -44,9 +47,15 @@ class EditScreenViewModel @Inject constructor(
         }
     }
 
-    private fun deleteReminder() {
+    private fun moveReminderToTrash() {
         viewModelScope.launch {
-            state.reminder?.let { reminderRepositoryImpl.deleteReminder(it) }
+            state.reminder?.let { reminderRepositoryImpl.moveReminderToTrash(it) }
+        }
+    }
+
+    private fun deleteReminder(reminderId: String) {
+        viewModelScope.launch {
+            reminderRepositoryImpl.deleteReminder(reminderId)
         }
     }
 }

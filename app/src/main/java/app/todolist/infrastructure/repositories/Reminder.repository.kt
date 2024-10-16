@@ -63,7 +63,7 @@ class ReminderRepositoryImpl @Inject constructor() : ReminderRepository {
         }
     }
 
-    override suspend fun deleteReminder(reminder: Reminder) {
+    override suspend fun moveReminderToTrash(reminder: Reminder) {
         val updatedReminders = remindersList.value.toMutableList().apply {
             val index = indexOfFirst { it.id == reminder.id }
 
@@ -75,5 +75,15 @@ class ReminderRepositoryImpl @Inject constructor() : ReminderRepository {
         }
 
         remindersList.value = updatedReminders
+    }
+
+    override suspend fun deleteReminder(id: String) {
+        val reminderToDelete = getReminderById(UUID.fromString(id))
+
+        reminderToDelete?.let { reminder ->
+            remindersList.value = remindersList.value.toMutableList().apply {
+                remove(reminder)
+            }
+        }
     }
 }

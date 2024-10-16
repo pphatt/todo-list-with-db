@@ -7,6 +7,10 @@ import kotlinx.coroutines.Job
 @Composable
 fun TrashRoute(
     openDrawer: () -> Job,
+    onEditReminderClick: (String) -> Unit
 ) {
-    TrashScreen(openDrawer = openDrawer)
+    TrashScreen(
+        openDrawer = openDrawer,
+        onEditReminderClick = onEditReminderClick
+    )
 }

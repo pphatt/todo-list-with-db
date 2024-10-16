@@ -11,5 +11,6 @@ interface ReminderRepository {
     suspend fun getReminderById(id: UUID): Reminder?
     suspend fun createReminder(body: CreateReminderDto)
     suspend fun editReminder(body: EditReminderDto)
-    suspend fun deleteReminder(reminder: Reminder)
+    suspend fun moveReminderToTrash(reminder: Reminder)
+    suspend fun deleteReminder(id: String)
 }

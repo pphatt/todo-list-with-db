@@ -31,7 +31,9 @@ import java.util.UUID
 fun EditScreen(
     viewModel: EditScreenViewModel = hiltViewModel(),
     reminderId: String?,
+    isCurrentTrashRoute: Boolean = false,
     navigateToReminder: () -> Unit,
+    navigateToTrash: () -> Unit,
     navigateToEditDetails: (reminderId: String?) -> Unit
 ) {
     val state = viewModel.uiState.collectAsState().value
@@ -55,10 +57,29 @@ fun EditScreen(
                 .imePadding(),
             containerColor = LocalColorScheme.current.primaryBackgroundColor,
             bottomBar = {
+                if (isCurrentTrashRoute) {
+                    TrashEditAppBottomBar(
+                        onRestoreReminder = {},
+                        onDeleteReminder = {
+                            viewModel.execute(ViewAction.DeleteReminder(reminderId!!))
+
+                            Toast.makeText(
+                                context,
+                                "Permanently delete reminder successfully",
+                                Toast.LENGTH_SHORT
+                            ).show()
+
+                            navigateToTrash()
+                        }
+                    )
+
+                    return@Scaffold
+                }
+
                 AppBottomBar(
                     onEditReminder = { navigateToEditDetails(reminderId) },
                     onDeleteReminder = {
-                        viewModel.execute(ViewAction.DeleteReminder)
+                        viewModel.execute(ViewAction.MoveReminderToTrash)
 
                         Toast.makeText(
                             context,

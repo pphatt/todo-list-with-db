@@ -40,7 +40,8 @@ import kotlinx.coroutines.Job
 @Composable
 fun TrashScreen(
     viewModel: TrashScreenViewModel = hiltViewModel(),
-    openDrawer: () -> Job
+    openDrawer: () -> Job,
+    onEditReminderClick: (String) -> Unit
 ) {
     val state = viewModel.uiState.collectAsState().value
 
@@ -109,7 +110,7 @@ fun TrashScreen(
                             TrashList(
                                 date = date,
                                 reminders = reminders,
-                                onReminderClick = {}
+                                onReminderClick = onEditReminderClick
                             )
                         }
                     }

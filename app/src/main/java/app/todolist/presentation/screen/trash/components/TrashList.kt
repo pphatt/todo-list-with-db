@@ -15,7 +15,7 @@ import app.todolist.domain.reminder.entity.Reminder
 fun TrashList(
     date: String,
     reminders: List<Reminder>,
-    onReminderClick: (Reminder) -> Unit
+    onReminderClick: (String) -> Unit
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(5.dp)
@@ -34,7 +34,7 @@ fun TrashList(
             reminders.forEach { reminder ->
                 TrashCard(
                     reminder = reminder,
-                    onReminderClick = {}
+                    onReminderClick = onReminderClick
                 )
             }
         }

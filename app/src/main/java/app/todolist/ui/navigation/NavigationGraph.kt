@@ -23,6 +23,7 @@ import app.todolist.presentation.screen.trash.TrashRoute
 import kotlinx.coroutines.Job
 
 const val REMINDER_ID = "reminderId"
+const val ROUTE = "route"
 
 @Composable
 fun NavigationGraph(
@@ -85,8 +86,43 @@ fun NavigationGraph(
                 content = {
                     TrashRoute(
                         openDrawer = openDrawer,
+                        onEditReminderClick = { reminderId ->
+                            navigationActions.navigateToEditTrash(reminderId)
+                        }
                     )
                 }
+            )
+        }
+        composable(
+            route = "${Tabs.TRASH_ROUTE}/{${REMINDER_ID}}",
+            arguments = listOf(
+                navArgument("reminderId") {
+                    type = NavType.StringType
+                }
+            ),
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Up,
+                    tween(300),
+                    initialOffset = { fullHeight -> fullHeight / 3 }
+                ) + fadeIn(animationSpec = tween(durationMillis = 300))
+            },
+            exitTransition = {
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Down,
+                    tween(300),
+                    targetOffset = { fullHeight -> fullHeight / 3 }
+                ) + fadeOut(animationSpec = tween(durationMillis = 200))
+            }
+        ) { backStackEntry ->
+            val reminderId = backStackEntry.arguments?.getString("reminderId")
+
+            EditRoute(
+                reminderId = reminderId,
+                isCurrentTrashRoute = true,
+                navigateToReminder = { navigationActions.navigateToReminder() },
+                navigateToTrash = { navigationActions.navigateToTrash() },
+                navigateToEditDetails = { navigationActions.navigateToEditDetails(reminderId) }
             )
         }
         composable(
@@ -134,7 +170,6 @@ fun NavigationGraph(
             }
         ) { backStackEntry ->
             val reminderId = backStackEntry.arguments?.getString("reminderId")
-            println(reminderId)
 
             DetailsRoute(
                 reminderId = reminderId,
@@ -169,6 +204,7 @@ fun NavigationGraph(
             EditRoute(
                 reminderId = reminderId,
                 navigateToReminder = { navigationActions.navigateToReminder() },
+                navigateToTrash = { navigationActions.navigateToTrash() },
                 navigateToEditDetails = { navigationActions.navigateToEditDetails(reminderId) }
             )
         }
