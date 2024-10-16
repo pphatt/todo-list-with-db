@@ -91,7 +91,7 @@ private fun RowScope.Button(
                 text = title,
                 overflow = TextOverflow.Visible,
                 maxLines = 1,
-                color = if (enabled) Color(0xFF272828) else Color(0xFFadb1b4),
+                color = if (enabled) LocalColorScheme.current.activeActionColor else LocalColorScheme.current.disabledActionColor,
                 fontSize = 16.sp,
                 fontWeight = FontWeight.Bold
             )

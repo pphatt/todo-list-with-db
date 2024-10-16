@@ -106,7 +106,17 @@ data class CustomColorScheme(
     val unCheckTrackColor: Color,
 
     val activeBackgroundColor: Color,
-    val activeForegroundColor: Color
+    val activeForegroundColor: Color,
+
+    val cardBackgroundColor: Color,
+    val primaryCardForegroundColor: Color,
+    val secondaryCardForegroundColor: Color,
+    val lightSecondaryCardForegroundColor: Color,
+
+    val cursorColor: Color,
+
+    val activeActionColor: Color,
+    val disabledActionColor: Color,
 )
 
 private val customColorSchemeLight = CustomColorScheme(
@@ -119,7 +129,14 @@ private val customColorSchemeLight = CustomColorScheme(
     trackColor = trackColorLight,
     unCheckTrackColor = unCheckTrackColorLight,
     activeBackgroundColor = activeBackgroundColorLight,
-    activeForegroundColor = activeForegroundColorLight
+    activeForegroundColor = activeForegroundColorLight,
+    cardBackgroundColor = cardBackgroundColorLight,
+    primaryCardForegroundColor = primaryCardForegroundColorLight,
+    secondaryCardForegroundColor = secondaryCardForegroundColorLight,
+    lightSecondaryCardForegroundColor = lightSecondaryCardForegroundColorLight,
+    cursorColor = cursorColorLight,
+    activeActionColor = activeActionColorLight,
+    disabledActionColor = disabledActionColorLight,
 )
 
 private val customColorSchemeDark = CustomColorScheme(
@@ -132,7 +149,14 @@ private val customColorSchemeDark = CustomColorScheme(
     trackColor = trackColorDark,
     unCheckTrackColor = unCheckTrackColorDark,
     activeBackgroundColor = activeBackgroundColorDark,
-    activeForegroundColor = activeForegroundColorDark
+    activeForegroundColor = activeForegroundColorDark,
+    cardBackgroundColor = cardBackgroundColorDark,
+    primaryCardForegroundColor = primaryCardForegroundColorDark,
+    secondaryCardForegroundColor = secondaryCardForegroundColorDark,
+    lightSecondaryCardForegroundColor = lightSecondaryCardForegroundColorDark,
+    cursorColor = cursorColorDark,
+    activeActionColor = activeActionColorDark,
+    disabledActionColor = disabledActionColorDark,
 )
 
 val LocalColorScheme = staticCompositionLocalOf {
@@ -146,7 +170,14 @@ val LocalColorScheme = staticCompositionLocalOf {
         trackColor = Color.Unspecified,
         unCheckTrackColor = Color.Unspecified,
         activeBackgroundColor = Color.Unspecified,
-        activeForegroundColor = Color.Unspecified
+        activeForegroundColor = Color.Unspecified,
+        cardBackgroundColor = Color.Unspecified,
+        primaryCardForegroundColor = Color.Unspecified,
+        secondaryCardForegroundColor = Color.Unspecified,
+        lightSecondaryCardForegroundColor = Color.Unspecified,
+        cursorColor = Color.Unspecified,
+        activeActionColor = Color.Unspecified,
+        disabledActionColor = Color.Unspecified,
     )
 }
 

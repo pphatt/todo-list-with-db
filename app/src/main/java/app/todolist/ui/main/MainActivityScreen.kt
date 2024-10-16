@@ -2,6 +2,7 @@ package app.todolist.ui.main
 
 import androidx.compose.material3.DrawerState
 import androidx.compose.material3.DrawerValue
+import androidx.compose.material3.Surface
 import androidx.compose.material3.rememberDrawerState
 import androidx.compose.material3.windowsizeclass.WindowWidthSizeClass
 import androidx.compose.runtime.Composable
@@ -21,6 +22,7 @@ import app.todolist.domain.reminder.entity.Reminder
 import app.todolist.ui.navigation.NavigationActions
 import app.todolist.ui.navigation.NavigationGraph
 import app.todolist.ui.navigation.Tabs
+import app.todolist.ui.theme.LocalColorScheme
 import kotlinx.coroutines.launch
 
 @Composable
@@ -50,18 +52,20 @@ fun MainActivityScreen(
 
     val newTemporalRemindersList = remember { mutableStateListOf<Reminder>() }
 
-    NavigationGraph(
-        navController = navController,
-        navigationActions = navigationActions,
+    Surface(color = LocalColorScheme.current.primaryBackgroundColor) {
+        NavigationGraph(
+            navController = navController,
+            navigationActions = navigationActions,
 
-        currentRoute = currentRoute,
+            currentRoute = currentRoute,
 
-        drawerState = drawerState,
-        openDrawer = openDrawer,
-        closeDrawer = closeDrawer,
+            drawerState = drawerState,
+            openDrawer = openDrawer,
+            closeDrawer = closeDrawer,
 
-        temporalRemindersList = newTemporalRemindersList
-    )
+            temporalRemindersList = newTemporalRemindersList
+        )
+    }
 
     DisposableEffect(lifecycleOwner) {
         val observer = LifecycleEventObserver { _, event ->

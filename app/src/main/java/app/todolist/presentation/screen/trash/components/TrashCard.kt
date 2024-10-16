@@ -18,6 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import app.todolist.domain.reminder.entity.Reminder
+import app.todolist.ui.theme.LocalColorScheme
 
 @Composable
 fun TrashCard(
@@ -30,7 +31,7 @@ fun TrashCard(
                 onReminderClick(reminder.id.toString())
             },
         colors = CardDefaults.cardColors(
-            containerColor = Color(0xFFfcfcfc)
+            containerColor = LocalColorScheme.current.cardBackgroundColor
         ),
         shape = RoundedCornerShape(15.dp),
     ) {

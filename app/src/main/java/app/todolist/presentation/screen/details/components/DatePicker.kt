@@ -52,7 +52,7 @@ fun DatePickerDocked(
                 align = Alignment.CenterVertically
             )
             .fillMaxWidth()
-            .background(Color(0xFFfcfcfc)),
+            .background(LocalColorScheme.current.cardBackgroundColor),
         verticalArrangement = Arrangement.Center,
     ) {
         Row(
@@ -139,7 +139,7 @@ fun DatePickerDocked(
                     title = null,
                     headline = null,
                     colors = DatePickerDefaults.colors(
-                        containerColor = Color(0xFFfcfcfc),
+                        containerColor = LocalColorScheme.current.cardBackgroundColor,
                         selectedDayContainerColor = LocalColorScheme.current.trackColor
                     ),
                     showModeToggle = false,

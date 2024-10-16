@@ -46,19 +46,18 @@ fun DetailsScreen(
 
     // cannot move it to viewmodel
     // TODO: fix this (this can cause memory leak)
-    var datePickerState: DatePickerState? = null
-
-    if (reminderId == null) {
-        datePickerState = rememberDatePickerState(
-            initialSelectedDateMillis = getCurrentDateTime().time,
-            selectableDates = PresentOrFutureSelectableDates
-        )
-    } else if (state.dueDate != null) {
-        datePickerState = rememberDatePickerState(
-            initialSelectedDateMillis = state.dueDate,
-            selectableDates = PresentOrFutureSelectableDates
-        )
-    }
+    val datePickerState: DatePickerState =
+        if (reminderId == null || state.dueDate == null) {
+            rememberDatePickerState(
+                initialSelectedDateMillis = getCurrentDateTime().time,
+                selectableDates = PresentOrFutureSelectableDates
+            )
+        } else {
+            rememberDatePickerState(
+                initialSelectedDateMillis = state.dueDate,
+                selectableDates = PresentOrFutureSelectableDates
+            )
+        }
 
     val focusRequester = remember { FocusRequester() }
     val focusManager = LocalFocusManager.current

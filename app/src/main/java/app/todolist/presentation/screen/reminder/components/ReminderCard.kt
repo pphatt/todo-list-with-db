@@ -18,6 +18,7 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import app.todolist.domain.reminder.entity.Reminder
+import app.todolist.ui.theme.LocalColorScheme
 import app.todolist.utils.convertMillisToDate
 import java.util.UUID
 
@@ -34,7 +35,7 @@ fun ReminderCard(
                 onReminderClick(reminder)
             },
         colors = CardDefaults.cardColors(
-            containerColor = Color(0xFFfcfcfc)
+            containerColor = LocalColorScheme.current.cardBackgroundColor
         ),
         shape = RoundedCornerShape(15.dp),
     ) {
@@ -56,7 +57,7 @@ fun ReminderCard(
                     if (isNew) {
                         Text(
                             text = "N",
-                            color = Color(0xFFed842f),
+                            color = LocalColorScheme.current.lightSecondaryCardForegroundColor,
                             fontSize = 12.sp,
                             fontWeight = FontWeight.Bold,
                         )
@@ -72,7 +73,7 @@ fun ReminderCard(
                 if (reminder.dueDate != null) {
                     Text(
                         text = convertMillisToDate(reminder.dueDate),
-                        color = Color(0xFFed842f),
+                        color = LocalColorScheme.current.secondaryCardForegroundColor,
                         fontSize = 13.sp,
                         fontWeight = FontWeight.W500
                     )

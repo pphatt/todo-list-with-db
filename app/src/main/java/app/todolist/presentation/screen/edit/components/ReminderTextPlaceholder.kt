@@ -24,6 +24,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
+import app.todolist.ui.theme.LocalColorScheme
 
 @Composable
 fun ReminderTextPlaceholder(
@@ -36,7 +37,7 @@ fun ReminderTextPlaceholder(
             .wrapContentHeight(align = Alignment.CenterVertically, unbounded = true)
             .fillMaxWidth()
             .clip(RoundedCornerShape(bottomStart = 50.dp, bottomEnd = 50.dp))
-            .background(Color(0xFFfcfcfc)),
+            .background(LocalColorScheme.current.cardBackgroundColor),
         verticalArrangement = Arrangement.Center
     ) {
         Spacer(modifier = Modifier.height(60.dp))
@@ -55,7 +56,7 @@ fun ReminderTextPlaceholder(
             colors = OutlinedTextFieldDefaults.colors(
                 unfocusedBorderColor = Color.Transparent,
                 focusedBorderColor = Color.Transparent,
-                cursorColor = Color(0xFF83cae8)
+                cursorColor = LocalColorScheme.current.cursorColor
             ),
             modifier = Modifier
                 .wrapContentHeight(),
@@ -64,7 +65,7 @@ fun ReminderTextPlaceholder(
                 Text(
                     text = "Reminder goes here",
                     style = MaterialTheme.typography.titleLarge.copy(
-                        color = Color(0xFFaeaeae),
+                        color = LocalColorScheme.current.primaryCardForegroundColor,
                         fontWeight = FontWeight.W500
                     )
                 )
