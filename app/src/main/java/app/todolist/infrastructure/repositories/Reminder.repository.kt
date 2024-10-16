@@ -86,4 +86,20 @@ class ReminderRepositoryImpl @Inject constructor() : ReminderRepository {
             }
         }
     }
+
+    override suspend fun restoreReminder(id: String) {
+        val updatedReminders = remindersList.value.toMutableList().apply {
+            val index = indexOfFirst { it.id == UUID.fromString(id) }
+
+            if (index != -1) {
+                val reminder = get(index)
+
+                val updatedReminder = reminder.copy(deletedAt = null)
+
+                set(index, updatedReminder)
+            }
+        }
+
+        remindersList.value = updatedReminders
+    }
 }

@@ -34,6 +34,8 @@ class EditScreenViewModel @Inject constructor(
             is ViewAction.MoveReminderToTrash -> moveReminderToTrash()
 
             is ViewAction.DeleteReminder -> deleteReminder(action.reminderId)
+
+            is ViewAction.RestoreReminder -> restoreReminder(action.reminderId)
         }
     }
 
@@ -56,6 +58,12 @@ class EditScreenViewModel @Inject constructor(
     private fun deleteReminder(reminderId: String) {
         viewModelScope.launch {
             reminderRepositoryImpl.deleteReminder(reminderId)
+        }
+    }
+
+    private fun restoreReminder(reminderId: String) {
+        viewModelScope.launch {
+            reminderRepositoryImpl.restoreReminder(reminderId)
         }
     }
 }

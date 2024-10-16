@@ -9,4 +9,6 @@ sealed interface ViewAction {
     data object MoveReminderToTrash : ViewAction
 
     data class DeleteReminder(val reminderId: String) : ViewAction
+
+    data class RestoreReminder(val reminderId: String) : ViewAction
 }

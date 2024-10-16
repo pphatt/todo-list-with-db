@@ -59,7 +59,17 @@ fun EditScreen(
             bottomBar = {
                 if (isCurrentTrashRoute) {
                     TrashEditAppBottomBar(
-                        onRestoreReminder = {},
+                        onRestoreReminder = {
+                            viewModel.execute(ViewAction.RestoreReminder(reminderId!!))
+
+                            Toast.makeText(
+                                context,
+                                "Restore reminder successfully",
+                                Toast.LENGTH_SHORT
+                            ).show()
+
+                            navigateToTrash()
+                        },
                         onDeleteReminder = {
                             viewModel.execute(ViewAction.DeleteReminder(reminderId!!))
 
