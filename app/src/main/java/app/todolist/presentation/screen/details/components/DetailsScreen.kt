@@ -49,7 +49,7 @@ fun DetailsScreen(
     val datePickerState: DatePickerState =
         if (reminderId == null || state.dueDate == null) {
             rememberDatePickerState(
-                initialSelectedDateMillis = getCurrentDateTime().time,
+                initialSelectedDateMillis = getCurrentDateTime(),
                 selectableDates = PresentOrFutureSelectableDates
             )
         } else {
@@ -94,7 +94,7 @@ fun DetailsScreen(
                         // TODO: change this back dto when using db
                         val reminder = Reminder(
                             content = state.content.trim(),
-                            dueDate = if (state.showDate) datePickerState?.selectedDateMillis else null
+                            dueDate = if (state.showDate) datePickerState.selectedDateMillis else null
                         )
 
                         if (reminderId == null) {
@@ -102,7 +102,7 @@ fun DetailsScreen(
                                 CreateReminderDto(
                                     id = reminder.id,
                                     content = state.content.trim(),
-                                    dueDate = if (state.showDate) datePickerState?.selectedDateMillis else null,
+                                    dueDate = if (state.showDate) datePickerState.selectedDateMillis else null,
                                     createdAt = reminder.createdAt
                                 )
                             )
@@ -113,7 +113,7 @@ fun DetailsScreen(
                                 EditReminderDto(
                                     id = UUID.fromString(reminderId),
                                     content = state.content.trim(),
-                                    dueDate = if (state.showDate) datePickerState?.selectedDateMillis else null,
+                                    dueDate = if (state.showDate) datePickerState.selectedDateMillis else null,
                                     createdAt = reminder.createdAt
                                 )
                             )
@@ -140,13 +140,11 @@ fun DetailsScreen(
                     focusRequester = focusRequester,
                 )
 
-                if (datePickerState != null) {
-                    DatePickerDocked(
-                        date = datePickerState,
-                        showDatePicker = state.showDate,
-                        onToggleShowDatePicker = { viewModel.execute(ViewAction.SetShowDateTime(!state.showDate)) }
-                    )
-                }
+                DatePickerDocked(
+                    date = datePickerState,
+                    showDatePicker = state.showDate,
+                    onToggleShowDatePicker = { viewModel.execute(ViewAction.SetShowDateTime(!state.showDate)) }
+                )
             }
         }
     }

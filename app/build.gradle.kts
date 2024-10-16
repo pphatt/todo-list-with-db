@@ -114,6 +114,8 @@ dependencies {
 
     implementation(libs.bundles.okhttp)
 
+    implementation(libs.joda)
+
     // Dagger - Hilt
     ksp(libs.androidx.hilt.compiler)
     ksp(libs.google.hilt.android.compiler)
