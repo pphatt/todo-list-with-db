@@ -8,5 +8,5 @@ data class CreateReminderDto(
     val id: UUID,
     val content: String,
     val dueDate: Long?,
-    val timestamp: Timestamp
+    val createdAt: Timestamp
 )

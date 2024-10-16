@@ -22,6 +22,7 @@ class NavigationActions(navHostController: NavHostController) {
             popUpTo(navHostController.graph.findStartDestination().id) {
                 saveState = true
             }
+
             launchSingleTop = true
             restoreState = true
         }
@@ -31,6 +32,7 @@ class NavigationActions(navHostController: NavHostController) {
             popUpTo(navHostController.graph.findStartDestination().id) {
                 saveState = true
             }
+
             launchSingleTop = true
             restoreState = true
         }
@@ -40,6 +42,7 @@ class NavigationActions(navHostController: NavHostController) {
             popUpTo(navHostController.graph.findStartDestination().id) {
                 saveState = true
             }
+
             launchSingleTop = true
             restoreState = true
         }

@@ -15,14 +15,12 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import app.todolist.domain.reminder.entity.Reminder
-import app.todolist.infrastructure.repositories.ReminderRepositoryImpl
 import app.todolist.presentation.screen.details.DetailsRoute
 import app.todolist.presentation.screen.edit.EditRoute
 import app.todolist.presentation.screen.reminder.ReminderRoute
 import app.todolist.presentation.screen.share.ShareScreen
 import app.todolist.presentation.screen.trash.TrashRoute
 import kotlinx.coroutines.Job
-import kotlin.reflect.typeOf
 
 const val REMINDER_ID = "reminderId"
 
@@ -47,7 +45,10 @@ fun NavigationGraph(
         modifier = modifier
     ) {
         composable(
-            route = Tabs.REMINDER_ROUTE
+            route = Tabs.REMINDER_ROUTE,
+            enterTransition = {
+                fadeIn(animationSpec = tween(durationMillis = 0))
+            },
         ) {
             ShareScreen(
                 navigationActions = navigationActions,
@@ -68,7 +69,13 @@ fun NavigationGraph(
             )
         }
         composable(
-            route = Tabs.TRASH_ROUTE
+            route = Tabs.TRASH_ROUTE,
+            enterTransition = {
+                fadeIn(animationSpec = tween(durationMillis = 0))
+            },
+            exitTransition = {
+                fadeOut(animationSpec = tween(durationMillis = 0))
+            }
         ) {
             ShareScreen(
                 navigationActions = navigationActions,
@@ -76,7 +83,9 @@ fun NavigationGraph(
                 currentRoute = currentRoute,
                 closeDrawer = closeDrawer,
                 content = {
-                    TrashRoute()
+                    TrashRoute(
+                        openDrawer = openDrawer,
+                    )
                 }
             )
         }

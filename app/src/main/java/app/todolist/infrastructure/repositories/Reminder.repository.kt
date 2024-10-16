@@ -6,6 +6,7 @@ import app.todolist.domain.reminder.repository.ReminderRepository
 import app.todolist.presentation.request.CreateReminderDto
 import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
+import java.sql.Timestamp
 import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
@@ -32,7 +33,7 @@ class ReminderRepositoryImpl @Inject constructor() : ReminderRepository {
             id = body.id,
             content = body.content,
             dueDate = body.dueDate,
-            timestamp = body.timestamp
+            createdAt = body.createdAt
         )
 
         remindersList.value.add(newReminder)
@@ -44,7 +45,8 @@ class ReminderRepositoryImpl @Inject constructor() : ReminderRepository {
 
             if (index != -1) {
                 // Update the reminder's isDeleted property
-                val updatedReminder = reminder.copy(isDeleted = true)
+                val updatedReminder =
+                    reminder.copy(deletedAt = Timestamp(System.currentTimeMillis()))
                 set(index, updatedReminder)
             }
         }

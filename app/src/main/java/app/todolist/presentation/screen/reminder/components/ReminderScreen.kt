@@ -101,7 +101,7 @@ fun ReminderScreen(
                 val currentTimeMillis = System.currentTimeMillis()
                 val currentCalendar = Calendar.getInstance()
 
-                val nonDeletedList = state.list.filter { reminder -> !reminder.isDeleted }
+                val nonDeletedList = state.list.filter { reminder -> reminder.deletedAt == null }
 
                 val remindersFilteredByPastDate = nonDeletedList.filter { reminder ->
                     reminder.dueDate != null && reminder.dueDate < currentTimeMillis && isSameDay(
@@ -185,7 +185,7 @@ fun ReminderScreen(
                 if (state.list.isNotEmpty()) {
                     val currentTime = System.currentTimeMillis()
 
-                    val reminderTimeMillis = state.list.last().timestamp.time
+                    val reminderTimeMillis = state.list.last().createdAt.time
 
                     if (reminderTimeMillis >= currentTime - 100) {
                         Toast.makeText(

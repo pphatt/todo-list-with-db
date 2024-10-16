@@ -7,8 +7,8 @@ data class Reminder(
     val id: UUID = UUID.randomUUID(),
     val content: String,
     val dueDate: Long? = null,
-    val timestamp: Timestamp = Timestamp(System.currentTimeMillis()),
-    val isDeleted: Boolean = false
+    val createdAt: Timestamp = Timestamp(System.currentTimeMillis()),
+    val deletedAt: Timestamp? = null
 )
 
 class InvalidNoteException(message: String) : Exception(message)
