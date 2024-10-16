@@ -47,9 +47,6 @@ fun NavigationGraph(
     ) {
         composable(
             route = Tabs.REMINDER_ROUTE,
-            enterTransition = {
-                fadeIn(animationSpec = tween(durationMillis = 0))
-            },
         ) {
             ShareScreen(
                 navigationActions = navigationActions,
@@ -71,12 +68,6 @@ fun NavigationGraph(
         }
         composable(
             route = Tabs.TRASH_ROUTE,
-            enterTransition = {
-                fadeIn(animationSpec = tween(durationMillis = 0))
-            },
-            exitTransition = {
-                fadeOut(animationSpec = tween(durationMillis = 0))
-            }
         ) {
             ShareScreen(
                 navigationActions = navigationActions,

@@ -110,7 +110,12 @@ fun EditScreen(
                     .verticalScroll(state = scrollState),
                 verticalArrangement = Arrangement.spacedBy(20.dp)
             ) {
-                ReminderTextPlaceholder(content = state.reminder?.content ?: "")
+                ReminderTextPlaceholder(
+                    content = state.reminder?.content ?: "",
+                    onNavigateBack = {
+                        if (isCurrentTrashRoute) navigateToTrash() else navigateToReminder()
+                    }
+                )
 
                 DatePlaceholder(date = date)
             }
