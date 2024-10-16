@@ -35,6 +35,10 @@ fun MainActivityScreen(
 
     val coroutineScope = rememberCoroutineScope()
 
+    val navBackStackEntry by navController.currentBackStackEntryAsState()
+    val currentRoute =
+        navBackStackEntry?.destination?.route ?: Tabs.REMINDER_ROUTE
+
     // comment out for some internal design not finished
     // val isExpandedScreen = widthSizeClass == WindowWidthSizeClass.Expanded
     val isExpandedScreen = false
@@ -50,7 +54,7 @@ fun MainActivityScreen(
         navController = navController,
         navigationActions = navigationActions,
 
-        currentRoute = Tabs.REMINDER_ROUTE,
+        currentRoute = currentRoute,
 
         drawerState = drawerState,
         openDrawer = openDrawer,

@@ -125,7 +125,11 @@ fun NavigationGraph(
             }
         ) { backStackEntry ->
             val reminderId = backStackEntry.arguments?.getString("reminderId")
-            EditRoute(reminderId = reminderId)
+
+            EditRoute(
+                reminderId = reminderId,
+                navigateToReminder = { navigationActions.navigateToReminder() }
+            )
         }
     }
 }

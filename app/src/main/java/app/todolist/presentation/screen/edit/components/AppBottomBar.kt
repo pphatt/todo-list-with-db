@@ -14,7 +14,8 @@ import androidx.compose.ui.unit.sp
 
 @Composable
 fun AppBottomBar(
-    modifier: Modifier = Modifier
+    modifier: Modifier = Modifier,
+    onDeleteReminder: () -> Unit
 ) {
     NavigationBar(
         modifier = modifier,
@@ -34,7 +35,7 @@ fun AppBottomBar(
                 Icon(Icons.Rounded.Delete, null)
             },
             selected = false,
-            onClick = { }
+            onClick = onDeleteReminder
         )
     }
 }

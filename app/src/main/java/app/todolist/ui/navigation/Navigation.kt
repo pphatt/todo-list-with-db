@@ -45,6 +45,12 @@ class NavigationActions(navHostController: NavHostController) {
         }
     }
     val navigateToEdit: (reminderId: String) -> Unit = {
-        navHostController.navigate("${Tabs.EDIT_ROUTE}/${it}")
+        navHostController.navigate("${Tabs.EDIT_ROUTE}/${it}") {
+            popUpTo(navHostController.graph.findStartDestination().id) {
+                saveState = true
+            }
+
+            launchSingleTop = true
+        }
     }
 }

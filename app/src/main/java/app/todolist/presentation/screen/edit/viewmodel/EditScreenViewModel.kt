@@ -26,16 +26,12 @@ class EditScreenViewModel @Inject constructor(
 
     fun execute(action: ViewAction) {
         when (action) {
-            is ViewAction.SetId -> setId(action.value)
-
             is ViewAction.SetReminder -> getReminderById(
                 id = action.id
             )
-        }
-    }
 
-    private fun setId(id: UUID) {
-        state = state.copy(id = id)
+            is ViewAction.DeleteReminder -> deleteReminder()
+        }
     }
 
     private fun getReminderById(id: UUID) {
@@ -45,6 +41,12 @@ class EditScreenViewModel @Inject constructor(
 
                 state = state.copy(reminder = reminder)
             }
+        }
+    }
+
+    private fun deleteReminder() {
+        viewModelScope.launch {
+            state.reminder?.let { reminderRepositoryImpl.deleteReminder(it) }
         }
     }
 }

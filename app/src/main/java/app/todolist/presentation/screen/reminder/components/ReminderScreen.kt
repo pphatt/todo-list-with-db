@@ -101,21 +101,23 @@ fun ReminderScreen(
                 val currentTimeMillis = System.currentTimeMillis()
                 val currentCalendar = Calendar.getInstance()
 
-                val remindersFilteredByPastDate = state.list.filter { reminder ->
+                val nonDeletedList = state.list.filter { reminder -> !reminder.isDeleted }
+
+                val remindersFilteredByPastDate = nonDeletedList.filter { reminder ->
                     reminder.dueDate != null && reminder.dueDate < currentTimeMillis && isSameDay(
                         reminder.dueDate,
                         currentCalendar.timeInMillis
                     ).not()
                 }
 
-                val remindersFilteredByCurrentDate = state.list.filter { reminder ->
+                val remindersFilteredByCurrentDate = nonDeletedList.filter { reminder ->
                     reminder.dueDate != null && isSameDay(
                         reminder.dueDate,
                         currentCalendar.timeInMillis
                     )
                 }
 
-                val remindersFilteredByFutureDate = state.list.filter { reminder ->
+                val remindersFilteredByFutureDate = nonDeletedList.filter { reminder ->
                     reminder.dueDate != null && reminder.dueDate > currentTimeMillis && isSameDay(
                         reminder.dueDate,
                         currentCalendar.timeInMillis
@@ -123,7 +125,7 @@ fun ReminderScreen(
                 }
 
                 val remindersFilteredByNoDate =
-                    state.list.filter { reminder -> reminder.dueDate == null }
+                    nonDeletedList.filter { reminder -> reminder.dueDate == null }
 
                 LazyColumn(
                     modifier = Modifier

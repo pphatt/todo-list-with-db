@@ -39,8 +39,16 @@ class ReminderRepositoryImpl @Inject constructor() : ReminderRepository {
     }
 
     override suspend fun deleteReminder(reminder: Reminder) {
-        remindersList.value = remindersList.value.toMutableList().apply {
-            remove(reminder)
+        val updatedReminders = remindersList.value.toMutableList().apply {
+            val index = indexOfFirst { it.id == reminder.id }
+
+            if (index != -1) {
+                // Update the reminder's isDeleted property
+                val updatedReminder = reminder.copy(isDeleted = true)
+                set(index, updatedReminder)
+            }
         }
+
+        remindersList.value = updatedReminders
     }
 }

@@ -1,6 +1,7 @@
 package app.todolist.presentation.screen.edit.components
 
 import android.annotation.SuppressLint
+import android.widget.Toast
 import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -16,6 +17,7 @@ import androidx.compose.runtime.Composable
 import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.collectAsState
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import app.todolist.presentation.screen.edit.viewmodel.EditScreenViewModel
@@ -28,11 +30,14 @@ import java.util.UUID
 @Composable
 fun EditScreen(
     viewModel: EditScreenViewModel = hiltViewModel(),
-    reminderId: String?
+    reminderId: String?,
+    navigateToReminder: () -> Unit
 ) {
     val state = viewModel.uiState.collectAsState().value
 
     val scrollState = rememberScrollState()
+
+    val context = LocalContext.current
 
     LaunchedEffect(reminderId) {
         viewModel.execute(ViewAction.SetReminder(UUID.fromString(reminderId)))
@@ -48,7 +53,21 @@ fun EditScreen(
                 .navigationBarsPadding()
                 .imePadding(),
             containerColor = LocalColorScheme.current.primaryBackgroundColor,
-            bottomBar = { AppBottomBar() }
+            bottomBar = {
+                AppBottomBar(
+                    onDeleteReminder = {
+                        viewModel.execute(ViewAction.DeleteReminder)
+
+                        Toast.makeText(
+                            context,
+                            "Delete reminder successfully",
+                            Toast.LENGTH_SHORT
+                        ).show()
+
+                        navigateToReminder()
+                    }
+                )
+            }
         ) {
             Column(
                 modifier = Modifier
