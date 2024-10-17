@@ -1,16 +1,16 @@
 package app.todolist.presentation.screen.edit.viewmodel
 
-import app.todolist.domain.reminder.entity.Reminder
+import app.todolist.domain.todo.entity.Todo
 import java.util.UUID
 
 data class UIState(
     val id: UUID?,
-    val reminder: Reminder?,
+    val todo: Todo?,
 ) {
     companion object {
         val default = UIState(
             id = null,
-            reminder = null
+            todo = null
         )
     }
 }

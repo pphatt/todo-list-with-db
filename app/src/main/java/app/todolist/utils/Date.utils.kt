@@ -43,12 +43,12 @@ object PresentOrFutureSelectableDates : SelectableDates {
 }
 
 fun isSameDay(dueDate: Long, currentTime: Long): Boolean {
-    val reminderCalendar = Calendar.getInstance().apply {
+    val todoCalendar = Calendar.getInstance().apply {
         timeInMillis = dueDate
     }
     val currentCalendar = Calendar.getInstance().apply {
         timeInMillis = currentTime
     }
-    return reminderCalendar.get(Calendar.YEAR) == currentCalendar.get(Calendar.YEAR) &&
-            reminderCalendar.get(Calendar.DAY_OF_YEAR) == currentCalendar.get(Calendar.DAY_OF_YEAR)
+    return todoCalendar.get(Calendar.YEAR) == currentCalendar.get(Calendar.YEAR) &&
+            todoCalendar.get(Calendar.DAY_OF_YEAR) == currentCalendar.get(Calendar.DAY_OF_YEAR)
 }

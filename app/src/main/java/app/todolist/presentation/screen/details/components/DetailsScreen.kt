@@ -24,9 +24,9 @@ import androidx.compose.ui.focus.FocusRequester
 import androidx.compose.ui.platform.LocalFocusManager
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
-import app.todolist.domain.reminder.entity.Reminder
-import app.todolist.presentation.request.CreateReminderDto
-import app.todolist.presentation.request.EditReminderDto
+import app.todolist.domain.todo.entity.Todo
+import app.todolist.presentation.request.CreateTodoDto
+import app.todolist.presentation.request.EditTodoDto
 import app.todolist.presentation.screen.details.viewmodel.DetailsScreenViewModel
 import app.todolist.presentation.screen.details.viewmodel.ViewAction
 import app.todolist.ui.theme.LocalColorScheme
@@ -37,17 +37,17 @@ import java.util.UUID
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
 fun DetailsScreen(
-    reminderId: String? = null,
+    todoId: String? = null,
     viewModel: DetailsScreenViewModel = hiltViewModel(),
-    navigateToReminder: () -> Unit,
-    newTemporalRemindersList: SnapshotStateList<Reminder>
+    navigateToTodo: () -> Unit,
+    newTemporalTodoList: SnapshotStateList<Todo>
 ) {
     val state = viewModel.uiState.collectAsState().value
 
     // cannot move it to viewmodel
     // TODO: fix this (this can cause memory leak)
     val datePickerState: DatePickerState =
-        if (reminderId == null || state.dueDate == null) {
+        if (todoId == null || state.dueDate == null) {
             rememberDatePickerState(
                 initialSelectedDateMillis = getCurrentDateTime(),
                 selectableDates = PresentOrFutureSelectableDates
@@ -64,9 +64,9 @@ fun DetailsScreen(
 
     val scrollState = rememberScrollState()
 
-    LaunchedEffect(reminderId) {
-        if (reminderId != null) {
-            viewModel.getReminderById(reminderId)
+    LaunchedEffect(todoId) {
+        if (todoId != null) {
+            viewModel.getTodoById(todoId)
         }
     }
 
@@ -81,45 +81,45 @@ fun DetailsScreen(
             bottomBar = {
                 AppBottomBar(
                     content = state.content,
-                    onExitReminder = {
+                    onExitTodo = {
                         focusManager.clearFocus()
 
                         viewModel.execute(ViewAction.ClearState)
 
-                        navigateToReminder()
+                        navigateToTodo()
                     },
-                    onSaveReminder = {
+                    onSaveTodo = {
                         focusManager.clearFocus()
 
                         // TODO: change this back dto when using db
-                        val reminder = Reminder(
+                        val todo = Todo(
                             content = state.content.trim(),
                             dueDate = if (state.showDate) datePickerState.selectedDateMillis else null
                         )
 
-                        if (reminderId == null) {
-                            viewModel.createReminder(
-                                CreateReminderDto(
-                                    id = reminder.id,
+                        if (todoId == null) {
+                            viewModel.createTodo(
+                                CreateTodoDto(
+                                    id = todo.id,
                                     content = state.content.trim(),
                                     dueDate = if (state.showDate) datePickerState.selectedDateMillis else null,
-                                    createdAt = reminder.createdAt
+                                    createdAt = todo.createdAt
                                 )
                             )
 
-                            newTemporalRemindersList.add(reminder)
+                            newTemporalTodoList.add(todo)
                         } else {
-                            viewModel.editReminder(
-                                EditReminderDto(
-                                    id = UUID.fromString(reminderId),
+                            viewModel.editTodo(
+                                EditTodoDto(
+                                    id = UUID.fromString(todoId),
                                     content = state.content.trim(),
                                     dueDate = if (state.showDate) datePickerState.selectedDateMillis else null,
-                                    createdAt = reminder.createdAt
+                                    createdAt = todo.createdAt
                                 )
                             )
                         }
 
-                        navigateToReminder()
+                        navigateToTodo()
 
                         viewModel.execute(ViewAction.ClearState)
                     }
@@ -134,7 +134,7 @@ fun DetailsScreen(
                     .verticalScroll(state = scrollState),
                 verticalArrangement = Arrangement.spacedBy(20.dp)
             ) {
-                ReminderTextInput(
+                TodoTextInput(
                     content = state.content,
                     onChange = { viewModel.execute(ViewAction.SetContent(it)) },
                     focusRequester = focusRequester,

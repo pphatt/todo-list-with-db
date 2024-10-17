@@ -1,4 +1,4 @@
-package app.todolist.presentation.screen.reminder.components
+package app.todolist.presentation.screen.todo.components
 
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
@@ -13,26 +13,23 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import app.todolist.domain.reminder.entity.Reminder
+import app.todolist.domain.todo.entity.Todo
 import app.todolist.ui.theme.LocalColorScheme
 import app.todolist.utils.convertMillisToDate
-import java.util.UUID
 
 @Composable
-fun ReminderCard(
-    reminder: Reminder,
+fun TodoCard(
+    todo: Todo,
     isNew: Boolean,
-    onReminderClick: (Reminder) -> Unit
+    onTodoClick: (Todo) -> Unit
 ) {
     Card(
         modifier = Modifier
             .clickable {
-                println("reminder $reminder")
-                onReminderClick(reminder)
+                onTodoClick(todo)
             },
         colors = CardDefaults.cardColors(
             containerColor = LocalColorScheme.current.cardBackgroundColor
@@ -64,15 +61,15 @@ fun ReminderCard(
                     }
 
                     Text(
-                        text = reminder.content,
+                        text = todo.content,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.W600
                     )
                 }
 
-                if (reminder.dueDate != null) {
+                if (todo.dueDate != null) {
                     Text(
-                        text = convertMillisToDate(reminder.dueDate),
+                        text = convertMillisToDate(todo.dueDate),
                         color = LocalColorScheme.current.secondaryCardForegroundColor,
                         fontSize = 13.sp,
                         fontWeight = FontWeight.W500

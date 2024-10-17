@@ -41,7 +41,7 @@ import kotlinx.coroutines.Job
 fun TrashScreen(
     viewModel: TrashScreenViewModel = hiltViewModel(),
     openDrawer: () -> Job,
-    onEditReminderClick: (String) -> Unit
+    onEditTodoClick: (String) -> Unit
 ) {
     val state = viewModel.uiState.collectAsState().value
 
@@ -91,10 +91,10 @@ fun TrashScreen(
                         end = 25.dp,
                         bottom = 20.dp
                     ),
-                    text = "Reminders are automatically moved to trash when deleted. Deleting a reminder from trash will permanently remove it."
+                    text = "Todo are automatically moved to trash when deleted. Deleting a todo from trash will permanently remove it."
                 )
 
-                val groupedReminders = state.list
+                val groupedTodoList = state.list
                     .filter { it.deletedAt != null }
                     .sortedBy { it.deletedAt }
                     .groupBy { convertMillisToDate(it.deletedAt!!.time) }
@@ -105,12 +105,12 @@ fun TrashScreen(
                         .clip(RoundedCornerShape(15.dp)),
                     verticalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
-                    groupedReminders.forEach { (date, reminders) ->
+                    groupedTodoList.forEach { (date, todoList) ->
                         item {
                             TrashList(
                                 date = date,
-                                reminders = reminders,
-                                onReminderClick = onEditReminderClick
+                                todos = todoList,
+                                onTodoClick = onEditTodoClick
                             )
                         }
                     }

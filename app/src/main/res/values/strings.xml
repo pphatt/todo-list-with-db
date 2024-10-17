@@ -2,7 +2,7 @@
     <string name="app_name">Todo List</string>
 
     <!-- Reminder Screen -->
-    <string name="reminder_title">All</string>
+    <string name="todo_title">All</string>
 
     <!-- Trash Screen -->
     <string name="trash_title">Trash</string>

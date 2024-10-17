@@ -18,7 +18,7 @@ import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.compose.LocalLifecycleOwner
 import androidx.navigation.compose.currentBackStackEntryAsState
 import androidx.navigation.compose.rememberNavController
-import app.todolist.domain.reminder.entity.Reminder
+import app.todolist.domain.todo.entity.Todo
 import app.todolist.ui.navigation.NavigationActions
 import app.todolist.ui.navigation.NavigationGraph
 import app.todolist.ui.navigation.Tabs
@@ -39,7 +39,7 @@ fun MainActivityScreen(
 
     val navBackStackEntry by navController.currentBackStackEntryAsState()
     val currentRoute =
-        navBackStackEntry?.destination?.route ?: Tabs.REMINDER_ROUTE
+        navBackStackEntry?.destination?.route ?: Tabs.TODO_ROUTE
 
     // comment out for some internal design not finished
     // val isExpandedScreen = widthSizeClass == WindowWidthSizeClass.Expanded
@@ -50,7 +50,7 @@ fun MainActivityScreen(
     val openDrawer = { coroutineScope.launch { drawerState.open() } }
     val closeDrawer = { coroutineScope.launch { drawerState.close() } }
 
-    val newTemporalRemindersList = remember { mutableStateListOf<Reminder>() }
+    val newTemporalTodoList = remember { mutableStateListOf<Todo>() }
 
     Surface(color = LocalColorScheme.current.primaryBackgroundColor) {
         NavigationGraph(
@@ -63,7 +63,7 @@ fun MainActivityScreen(
             openDrawer = openDrawer,
             closeDrawer = closeDrawer,
 
-            temporalRemindersList = newTemporalRemindersList
+            temporalTodoList = newTemporalTodoList
         )
     }
 
@@ -71,7 +71,7 @@ fun MainActivityScreen(
         val observer = LifecycleEventObserver { _, event ->
             if (event == Lifecycle.Event.ON_PAUSE) {
                 // App is in the background or losing focus, clear the temporary list
-                newTemporalRemindersList.clear()
+                newTemporalTodoList.clear()
             }
         }
 
@@ -102,8 +102,4 @@ private fun rememberSizeAwareDrawerState(isExpandedScreen: Boolean): DrawerState
         // don't want to keep track of any changes and always keep it closed
         DrawerState(DrawerValue.Closed)
     }
-}
-
-val LocalRemindersList = staticCompositionLocalOf<MutableList<Reminder>> {
-    error("No reminders list provided")
 }

@@ -1,21 +1,20 @@
 package app.todolist.presentation.screen.edit
 
 import androidx.compose.runtime.Composable
-import app.todolist.domain.reminder.entity.Reminder
 import app.todolist.presentation.screen.edit.components.EditScreen
 
 @Composable
 fun EditRoute(
-    reminderId: String?,
+    todoId: String?,
     isCurrentTrashRoute: Boolean = false,
-    navigateToReminder: () -> Unit,
+    navigateToTodo: () -> Unit,
     navigateToTrash: () -> Unit,
-    navigateToEditDetails: (reminderId: String?) -> Unit
+    navigateToEditDetails: (todoId: String?) -> Unit
 ) {
     EditScreen(
-        reminderId = reminderId,
+        todoId = todoId,
         isCurrentTrashRoute = isCurrentTrashRoute,
-        navigateToReminder = navigateToReminder,
+        navigateToTodo = navigateToTodo,
         navigateToTrash = navigateToTrash,
         navigateToEditDetails = navigateToEditDetails
     )

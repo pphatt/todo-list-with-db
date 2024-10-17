@@ -1,4 +1,4 @@
-package app.todolist.presentation.screen.reminder.components
+package app.todolist.presentation.screen.todo.components
 
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
@@ -9,14 +9,14 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import app.todolist.domain.reminder.entity.Reminder
+import app.todolist.domain.todo.entity.Todo
 
 @Composable
-fun ReminderList(
+fun TodoList(
     title: String,
-    reminders: List<Reminder>,
-    temporalReminders: List<Reminder>?,
-    onReminderClick: (Reminder) -> Unit
+    todos: List<Todo>,
+    temporalTodos: List<Todo>?,
+    onTodoClick: (Todo) -> Unit
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(5.dp)
@@ -32,11 +32,11 @@ fun ReminderList(
         Column(
             verticalArrangement = Arrangement.spacedBy(15.dp)
         ) {
-            reminders.forEach { reminder ->
-                ReminderCard(
-                    reminder = reminder,
-                    isNew = temporalReminders?.find { r -> r.id == reminder.id } != null,
-                    onReminderClick = onReminderClick
+            todos.forEach { todo ->
+                TodoCard(
+                    todo = todo,
+                    isNew = temporalTodos?.find { r -> r.id == todo.id } != null,
+                    onTodoClick = onTodoClick
                 )
             }
         }

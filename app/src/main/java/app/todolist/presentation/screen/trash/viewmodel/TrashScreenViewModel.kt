@@ -2,7 +2,7 @@ package app.todolist.presentation.screen.trash.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import app.todolist.infrastructure.repositories.ReminderRepositoryImpl
+import app.todolist.infrastructure.repositories.TodoRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -12,7 +12,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class TrashScreenViewModel @Inject constructor(
-    private val reminderRepositoryImpl: ReminderRepositoryImpl
+    private val todoRepositoryImpl: TodoRepositoryImpl
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(UIState.default)
     val uiState = _uiState.asStateFlow()
@@ -24,9 +24,9 @@ class TrashScreenViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            reminderRepositoryImpl.getAllReminders().collect { reminders ->
+            todoRepositoryImpl.getAllTodo().collect { todoList ->
                 state =
-                    state.copy(list = reminders.filter { reminder -> reminder.deletedAt != null })
+                    state.copy(list = todoList.filter { todo -> todo.deletedAt != null })
             }
         }
     }

@@ -2,7 +2,6 @@ package app.todolist.presentation.screen.edit.components
 
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Delete
-import androidx.compose.material.icons.rounded.Edit
 import androidx.compose.material.icons.rounded.RestartAlt
 import androidx.compose.material3.Icon
 import androidx.compose.material3.NavigationBar
@@ -16,8 +15,8 @@ import androidx.compose.ui.unit.sp
 @Composable
 fun TrashEditAppBottomBar(
     modifier: Modifier = Modifier,
-    onRestoreReminder: () -> Unit,
-    onDeleteReminder: () -> Unit
+    onRestoreTodo: () -> Unit,
+    onDeleteTodo: () -> Unit
 ) {
     NavigationBar(
         modifier = modifier,
@@ -29,7 +28,7 @@ fun TrashEditAppBottomBar(
                 Icon(Icons.Rounded.RestartAlt, null)
             },
             selected = false,
-            onClick = onRestoreReminder
+            onClick = onRestoreTodo
         )
         NavigationBarItem(
             label = { Text("Delete", fontSize = 15.sp) },
@@ -37,7 +36,7 @@ fun TrashEditAppBottomBar(
                 Icon(Icons.Rounded.Delete, null)
             },
             selected = false,
-            onClick = onDeleteReminder
+            onClick = onDeleteTodo
         )
     }
 }

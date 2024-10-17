@@ -1,4 +1,4 @@
-package app.todolist.presentation.screen.reminder.components
+package app.todolist.presentation.screen.todo.components
 
 import android.annotation.SuppressLint
 import android.widget.Toast
@@ -37,19 +37,19 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import app.todolist.domain.reminder.entity.Reminder
-import app.todolist.presentation.screen.reminder.viewmodel.ReminderScreenViewModel
+import app.todolist.domain.todo.entity.Todo
+import app.todolist.presentation.screen.todo.viewmodel.TodoScreenViewModel
 import app.todolist.utils.isSameDay
 import java.util.Calendar
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
-fun ReminderScreen(
-    viewModel: ReminderScreenViewModel = hiltViewModel(),
+fun TodoScreen(
+    viewModel: TodoScreenViewModel = hiltViewModel(),
     openDrawer: () -> Job,
     navigateToDetails: () -> Unit,
-    temporalReminders: SnapshotStateList<Reminder>?,
-    onReminderClick: (Reminder) -> Unit
+    temporalTodos: SnapshotStateList<Todo>?,
+    onTodoClick: (Todo) -> Unit
 ) {
     val state = viewModel.uiState.collectAsState().value
 
@@ -61,7 +61,7 @@ fun ReminderScreen(
             .fillMaxSize()
             .imePadding(),
         floatingActionButton = {
-            AddReminderButton(navigateToDetails = navigateToDetails)
+            AddTodoButton(navigateToDetails = navigateToDetails)
         }
     ) { paddingValues ->
         Box(modifier = Modifier.padding(paddingValues)) {
@@ -91,7 +91,7 @@ fun ReminderScreen(
                     }
 
                     Text(
-                        text = "All Reminders",
+                        text = "All Todo",
                         modifier = Modifier.weight(0.8f),
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold
@@ -101,31 +101,31 @@ fun ReminderScreen(
                 val currentTimeMillis = System.currentTimeMillis()
                 val currentCalendar = Calendar.getInstance()
 
-                val nonDeletedList = state.list.filter { reminder -> reminder.deletedAt == null }
+                val nonDeletedList = state.list.filter { todo -> todo.deletedAt == null }
 
-                val remindersFilteredByPastDate = nonDeletedList.filter { reminder ->
-                    reminder.dueDate != null && reminder.dueDate < currentTimeMillis && isSameDay(
-                        reminder.dueDate,
+                val todoListFilteredByPastDate = nonDeletedList.filter { todo ->
+                    todo.dueDate != null && todo.dueDate < currentTimeMillis && isSameDay(
+                        todo.dueDate,
                         currentCalendar.timeInMillis
                     ).not()
                 }
 
-                val remindersFilteredByCurrentDate = nonDeletedList.filter { reminder ->
-                    reminder.dueDate != null && isSameDay(
-                        reminder.dueDate,
+                val todoListFilteredByCurrentDate = nonDeletedList.filter { todo ->
+                    todo.dueDate != null && isSameDay(
+                        todo.dueDate,
                         currentCalendar.timeInMillis
                     )
                 }
 
-                val remindersFilteredByFutureDate = nonDeletedList.filter { reminder ->
-                    reminder.dueDate != null && reminder.dueDate > currentTimeMillis && isSameDay(
-                        reminder.dueDate,
+                val todoListFilteredByFutureDate = nonDeletedList.filter { todo ->
+                    todo.dueDate != null && todo.dueDate > currentTimeMillis && isSameDay(
+                        todo.dueDate,
                         currentCalendar.timeInMillis
                     ).not()
                 }
 
-                val remindersFilteredByNoDate =
-                    nonDeletedList.filter { reminder -> reminder.dueDate == null }
+                val todoListFilteredByNoDate =
+                    nonDeletedList.filter { todo -> todo.dueDate == null }
 
                 LazyColumn(
                     modifier = Modifier
@@ -133,46 +133,46 @@ fun ReminderScreen(
                         .clip(RoundedCornerShape(15.dp)),
                     verticalArrangement = Arrangement.spacedBy(10.dp)
                 ) {
-                    if (remindersFilteredByPastDate.isNotEmpty()) {
+                    if (todoListFilteredByPastDate.isNotEmpty()) {
                         item {
-                            ReminderList(
+                            TodoList(
                                 title = "Past date",
-                                reminders = remindersFilteredByPastDate,
-                                temporalReminders = temporalReminders,
-                                onReminderClick = onReminderClick
+                                todos = todoListFilteredByPastDate,
+                                temporalTodos = temporalTodos,
+                                onTodoClick = onTodoClick
                             )
                         }
                     }
 
-                    if (remindersFilteredByCurrentDate.isNotEmpty()) {
+                    if (todoListFilteredByCurrentDate.isNotEmpty()) {
                         item {
-                            ReminderList(
+                            TodoList(
                                 title = "Current date",
-                                reminders = remindersFilteredByCurrentDate,
-                                temporalReminders = temporalReminders,
-                                onReminderClick = onReminderClick
+                                todos = todoListFilteredByCurrentDate,
+                                temporalTodos = temporalTodos,
+                                onTodoClick = onTodoClick
                             )
                         }
                     }
 
-                    if (remindersFilteredByFutureDate.isNotEmpty()) {
+                    if (todoListFilteredByFutureDate.isNotEmpty()) {
                         item {
-                            ReminderList(
+                            TodoList(
                                 title = "Future date",
-                                reminders = remindersFilteredByFutureDate,
-                                temporalReminders = temporalReminders,
-                                onReminderClick = onReminderClick
+                                todos = todoListFilteredByFutureDate,
+                                temporalTodos = temporalTodos,
+                                onTodoClick = onTodoClick
                             )
                         }
                     }
 
-                    if (remindersFilteredByNoDate.isNotEmpty()) {
+                    if (todoListFilteredByNoDate.isNotEmpty()) {
                         item {
-                            ReminderList(
+                            TodoList(
                                 title = "No date",
-                                reminders = remindersFilteredByNoDate,
-                                temporalReminders = temporalReminders,
-                                onReminderClick = onReminderClick
+                                todos = todoListFilteredByNoDate,
+                                temporalTodos = temporalTodos,
+                                onTodoClick = onTodoClick
                             )
                         }
                     }
@@ -185,12 +185,12 @@ fun ReminderScreen(
                 if (state.list.isNotEmpty()) {
                     val currentTime = System.currentTimeMillis()
 
-                    val reminderTimeMillis = state.list.last().createdAt.time
+                    val todoTimeMillis = state.list.last().createdAt.time
 
-                    if (reminderTimeMillis >= currentTime - 100) {
+                    if (todoTimeMillis >= currentTime - 100) {
                         Toast.makeText(
                             context,
-                            "Save reminders successfully",
+                            "Save todo successfully",
                             Toast.LENGTH_SHORT
                         ).show()
                     }

@@ -7,7 +7,7 @@ import androidx.navigation.NavHostController
  * Destinations used in the [AppNavigation].
  */
 object Tabs {
-    const val REMINDER_ROUTE = "Reminders"
+    const val TODO_ROUTE = "Todo"
     const val TRASH_ROUTE = "Trash"
     const val DETAILS_ROUTE = "Details"
     const val EDIT_ROUTE = "Edit"
@@ -17,8 +17,8 @@ object Tabs {
  * Models the navigation actions in the app.
  */
 class NavigationActions(navHostController: NavHostController) {
-    val navigateToReminder: () -> Unit = {
-        navHostController.navigate(Tabs.REMINDER_ROUTE) {
+    val navigateToTodo: () -> Unit = {
+        navHostController.navigate(Tabs.TODO_ROUTE) {
             popUpTo(navHostController.graph.findStartDestination().id) {
                 saveState = true
             }
@@ -37,7 +37,7 @@ class NavigationActions(navHostController: NavHostController) {
             restoreState = true
         }
     }
-    val navigateToEditTrash: (reminderId: String) -> Unit = {
+    val navigateToEditTrash: (todoId: String) -> Unit = {
         navHostController.navigate("${Tabs.TRASH_ROUTE}/${it}") {
             popUpTo(navHostController.graph.findStartDestination().id) {
                 saveState = true
@@ -55,7 +55,7 @@ class NavigationActions(navHostController: NavHostController) {
             launchSingleTop = true
         }
     }
-    val navigateToEditDetails: (reminderId: String?) -> Unit = {
+    val navigateToEditDetails: (todoId: String?) -> Unit = {
         navHostController.navigate("${Tabs.DETAILS_ROUTE}/${it}") {
             popUpTo(navHostController.graph.findStartDestination().id) {
                 saveState = true
@@ -64,7 +64,7 @@ class NavigationActions(navHostController: NavHostController) {
             launchSingleTop = true
         }
     }
-    val navigateToEdit: (reminderId: String) -> Unit = {
+    val navigateToEdit: (todoId: String) -> Unit = {
         navHostController.navigate("${Tabs.EDIT_ROUTE}/${it}") {
             popUpTo(navHostController.graph.findStartDestination().id) {
                 saveState = true

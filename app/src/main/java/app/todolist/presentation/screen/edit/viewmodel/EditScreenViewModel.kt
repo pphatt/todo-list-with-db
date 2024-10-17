@@ -1,10 +1,8 @@
 package app.todolist.presentation.screen.edit.viewmodel
 
-import android.view.View
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import app.todolist.domain.reminder.entity.Reminder
-import app.todolist.infrastructure.repositories.ReminderRepositoryImpl
+import app.todolist.infrastructure.repositories.TodoRepositoryImpl
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -15,7 +13,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class EditScreenViewModel @Inject constructor(
-    private val reminderRepositoryImpl: ReminderRepositoryImpl
+    private val todoRepositoryImpl: TodoRepositoryImpl
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(UIState.default)
     val uiState = _uiState.asStateFlow()
@@ -27,43 +25,43 @@ class EditScreenViewModel @Inject constructor(
 
     fun execute(action: ViewAction) {
         when (action) {
-            is ViewAction.SetReminder -> getReminderById(
+            is ViewAction.SetTodo -> getTodoById(
                 id = action.id
             )
 
-            is ViewAction.MoveReminderToTrash -> moveReminderToTrash()
+            is ViewAction.MoveTodoToTrash -> moveTodoToTrash()
 
-            is ViewAction.DeleteReminder -> deleteReminder(action.reminderId)
+            is ViewAction.DeleteTodo -> deleteTodo(action.todoId)
 
-            is ViewAction.RestoreReminder -> restoreReminder(action.reminderId)
+            is ViewAction.RestoreTodo -> restoreTodo(action.todoId)
         }
     }
 
-    private fun getReminderById(id: UUID) {
+    private fun getTodoById(id: UUID) {
         viewModelScope.launch {
-            reminderRepositoryImpl.getAllReminders().collect { reminders ->
-                val reminder = reminders.find { reminder -> reminder.id == id }
+            todoRepositoryImpl.getAllTodo().collect { todoList ->
+                val todo = todoList.find { todo -> todo.id == id }
 
-                state = state.copy(reminder = reminder)
+                state = state.copy(todo = todo)
             }
         }
     }
 
-    private fun moveReminderToTrash() {
+    private fun moveTodoToTrash() {
         viewModelScope.launch {
-            state.reminder?.let { reminderRepositoryImpl.moveReminderToTrash(it) }
+            state.todo?.let { todoRepositoryImpl.moveTodoToTrash(it) }
         }
     }
 
-    private fun deleteReminder(reminderId: String) {
+    private fun deleteTodo(todoId: String) {
         viewModelScope.launch {
-            reminderRepositoryImpl.deleteReminder(reminderId)
+            todoRepositoryImpl.deleteTodo(todoId)
         }
     }
 
-    private fun restoreReminder(reminderId: String) {
+    private fun restoreTodo(todoId: String) {
         viewModelScope.launch {
-            reminderRepositoryImpl.restoreReminder(reminderId)
+            todoRepositoryImpl.restoreTodo(todoId)
         }
     }
 }

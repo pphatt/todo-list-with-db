@@ -2,18 +2,18 @@ package app.todolist.presentation.screen.details
 
 import androidx.compose.runtime.Composable
 import androidx.compose.runtime.snapshots.SnapshotStateList
-import app.todolist.domain.reminder.entity.Reminder
+import app.todolist.domain.todo.entity.Todo
 import app.todolist.presentation.screen.details.components.DetailsScreen
 
 @Composable
 fun DetailsRoute(
-    reminderId: String? = null,
-    navigateToReminder: () -> Unit,
-    newTemporalRemindersList: SnapshotStateList<Reminder>
+    todoId: String? = null,
+    navigateToTodo: () -> Unit,
+    newTemporalTodoList: SnapshotStateList<Todo>
 ) {
     DetailsScreen(
-        reminderId = reminderId,
-        navigateToReminder = navigateToReminder,
-        newTemporalRemindersList = newTemporalRemindersList
+        todoId = todoId,
+        navigateToTodo = navigateToTodo,
+        newTemporalTodoList = newTemporalTodoList
     )
 }

@@ -1,14 +1,13 @@
 package app.todolist.presentation.screen.edit.viewmodel
 
-import app.todolist.domain.reminder.entity.Reminder
 import java.util.UUID
 
 sealed interface ViewAction {
-    data class SetReminder(val id: UUID) : ViewAction
+    data class SetTodo(val id: UUID) : ViewAction
 
-    data object MoveReminderToTrash : ViewAction
+    data object MoveTodoToTrash : ViewAction
 
-    data class DeleteReminder(val reminderId: String) : ViewAction
+    data class DeleteTodo(val todoId: String) : ViewAction
 
-    data class RestoreReminder(val reminderId: String) : ViewAction
+    data class RestoreTodo(val todoId: String) : ViewAction
 }

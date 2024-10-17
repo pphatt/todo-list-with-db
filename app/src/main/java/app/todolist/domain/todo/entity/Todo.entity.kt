@@ -1,9 +1,9 @@
-package app.todolist.domain.reminder.entity
+package app.todolist.domain.todo.entity
 
 import java.sql.Timestamp
 import java.util.UUID
 
-data class Reminder(
+data class Todo(
     val id: UUID = UUID.randomUUID(),
     val content: String,
     val dueDate: Long? = null,

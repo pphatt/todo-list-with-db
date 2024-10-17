@@ -1,12 +1,10 @@
 package app.todolist.ui.component
 
-import androidx.compose.foundation.background
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.calculateEndPadding
 import androidx.compose.foundation.layout.calculateStartPadding
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
-import androidx.compose.foundation.layout.systemBarsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
 import androidx.compose.material.icons.rounded.Delete
@@ -32,7 +30,7 @@ import app.todolist.ui.theme.LocalColorScheme
 fun AppDrawer(
     currentRoute: String,
     modifier: Modifier = Modifier,
-    navigateToReminder: () -> Unit,
+    navigateToTodo: () -> Unit,
     navigateToTrash: () -> Unit,
     closeDrawer: () -> Unit
 ) {
@@ -42,7 +40,7 @@ fun AppDrawer(
     ) {
         Spacer(modifier = Modifier.padding(top = 20.dp))
         Text(
-            "Personal Reminder",
+            "Personal Todo",
             modifier = Modifier.padding(start = 15.dp + 6.dp, top = 15.dp, end = 15.dp, bottom = 15.dp),
             color = LocalColorScheme.current.foregroundColor,
             style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
@@ -72,13 +70,13 @@ fun AppDrawer(
             ),
             label = {
                 Text(
-                    stringResource(id = R.string.reminder_title),
-                    fontWeight = if (currentRoute == Tabs.REMINDER_ROUTE) FontWeight.Bold else FontWeight.Normal
+                    stringResource(id = R.string.todo_title),
+                    fontWeight = if (currentRoute == Tabs.TODO_ROUTE) FontWeight.Bold else FontWeight.Normal
                 )
             },
             icon = { Icon(Icons.Rounded.LibraryAddCheck, null) },
-            selected = currentRoute == Tabs.REMINDER_ROUTE,
-            onClick = { navigateToReminder(); closeDrawer() },
+            selected = currentRoute == Tabs.TODO_ROUTE,
+            onClick = { navigateToTodo(); closeDrawer() },
             shape = RoundedCornerShape(15),
             colors = NavigationDrawerItemDefaults.colors(
                 unselectedTextColor = LocalColorScheme.current.foregroundColor,

@@ -13,22 +13,21 @@ import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
-import app.todolist.domain.reminder.entity.Reminder
+import app.todolist.domain.todo.entity.Todo
 import app.todolist.ui.theme.LocalColorScheme
 
 @Composable
 fun TrashCard(
-    reminder: Reminder,
-    onReminderClick: (String) -> Unit
+    todo: Todo,
+    onTodoClick: (String) -> Unit
 ) {
     Card(
         modifier = Modifier
             .clickable {
-                onReminderClick(reminder.id.toString())
+                onTodoClick(todo.id.toString())
             },
         colors = CardDefaults.cardColors(
             containerColor = LocalColorScheme.current.cardBackgroundColor
@@ -51,7 +50,7 @@ fun TrashCard(
                     horizontalArrangement = Arrangement.spacedBy(5.dp),
                 ) {
                     Text(
-                        text = reminder.content,
+                        text = todo.content,
                         fontSize = 16.sp,
                         fontWeight = FontWeight.W600
                     )

@@ -2,13 +2,10 @@ package app.todolist.presentation.screen.details.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import app.todolist.domain.reminder.entity.Reminder
-import app.todolist.domain.reminder.repository.ReminderRepository
-import app.todolist.infrastructure.repositories.ReminderRepositoryImpl
-import app.todolist.presentation.request.CreateReminderDto
-import app.todolist.presentation.request.EditReminderDto
+import app.todolist.infrastructure.repositories.TodoRepositoryImpl
+import app.todolist.presentation.request.CreateTodoDto
+import app.todolist.presentation.request.EditTodoDto
 import dagger.hilt.android.lifecycle.HiltViewModel
-import kotlinx.coroutines.flow.Flow
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
@@ -18,7 +15,7 @@ import javax.inject.Inject
 
 @HiltViewModel
 class DetailsScreenViewModel @Inject constructor(
-    private val reminderRepositoryImpl: ReminderRepositoryImpl
+    private val todoRepositoryImpl: TodoRepositoryImpl
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(UIState.default)
     val uiState = _uiState.asStateFlow()
@@ -53,30 +50,29 @@ class DetailsScreenViewModel @Inject constructor(
         )
     }
 
-    fun getReminderById(id: String) {
+    fun getTodoById(id: String) {
         viewModelScope.launch {
-            val reminder = reminderRepositoryImpl.getReminderById(UUID.fromString(id))
+            val todo = todoRepositoryImpl.getTodoById(UUID.fromString(id))
 
-            if (reminder != null) {
+            if (todo != null) {
                 state = state.copy(
-                    content = reminder.content,
-                    dueDate = reminder.dueDate,
-                    showDate = reminder.dueDate != null
+                    content = todo.content,
+                    dueDate = todo.dueDate,
+                    showDate = todo.dueDate != null
                 )
             }
         }
     }
 
-    fun createReminder(body: CreateReminderDto) {
+    fun createTodo(body: CreateTodoDto) {
         viewModelScope.launch {
-            reminderRepositoryImpl.createReminder(body)
+            todoRepositoryImpl.createTodo(body)
         }
     }
 
-    fun editReminder(body: EditReminderDto) {
-        println("body: $body")
+    fun editTodo(body: EditTodoDto) {
         viewModelScope.launch {
-            reminderRepositoryImpl.editReminder(body)
+            todoRepositoryImpl.editTodo(body)
         }
     }
 }

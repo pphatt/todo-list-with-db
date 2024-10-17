@@ -17,7 +17,6 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Alignment
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.draw.clip
-import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.vector.ImageVector
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.text.style.TextOverflow
@@ -30,8 +29,8 @@ import app.todolist.utils.KeyboardAware
 fun AppBottomBar(
     modifier: Modifier = Modifier,
     content: String,
-    onExitReminder: () -> Unit,
-    onSaveReminder: () -> Unit
+    onExitTodo: () -> Unit,
+    onSaveTodo: () -> Unit
 ) {
     KeyboardAware {
         Surface(
@@ -45,13 +44,13 @@ fun AppBottomBar(
             ) {
                 Button(
                     title = "Exit",
-                    onClick = onExitReminder,
+                    onClick = onExitTodo,
                 )
 
                 Button(
                     title = "Save",
                     enabled = content.trim().isNotEmpty(),
-                    onClick = onSaveReminder,
+                    onClick = onSaveTodo,
                 )
             }
         }

@@ -1,7 +1,7 @@
 package app.todolist.di
 
-import app.todolist.domain.reminder.repository.ReminderRepository
-import app.todolist.infrastructure.repositories.ReminderRepositoryImpl
+import app.todolist.domain.todo.repository.TodoRepository
+import app.todolist.infrastructure.repositories.TodoRepositoryImpl
 import dagger.Module
 import dagger.Provides
 import dagger.hilt.InstallIn
@@ -14,7 +14,7 @@ object AppModule {
 
     @Provides
     @Singleton
-    fun provideReminderRepository(): ReminderRepository {
-        return ReminderRepositoryImpl()
+    fun provideTodoRepository(): TodoRepository {
+        return TodoRepositoryImpl()
     }
 }

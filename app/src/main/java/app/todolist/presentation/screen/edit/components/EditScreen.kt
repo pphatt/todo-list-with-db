@@ -30,11 +30,11 @@ import java.util.UUID
 @Composable
 fun EditScreen(
     viewModel: EditScreenViewModel = hiltViewModel(),
-    reminderId: String?,
+    todoId: String?,
     isCurrentTrashRoute: Boolean = false,
-    navigateToReminder: () -> Unit,
+    navigateToTodo: () -> Unit,
     navigateToTrash: () -> Unit,
-    navigateToEditDetails: (reminderId: String?) -> Unit
+    navigateToEditDetails: (todoId: String?) -> Unit
 ) {
     val state = viewModel.uiState.collectAsState().value
 
@@ -42,11 +42,11 @@ fun EditScreen(
 
     val context = LocalContext.current
 
-    LaunchedEffect(reminderId) {
-        viewModel.execute(ViewAction.SetReminder(UUID.fromString(reminderId)))
+    LaunchedEffect(todoId) {
+        viewModel.execute(ViewAction.SetTodo(UUID.fromString(todoId)))
     }
 
-    val date = state.reminder?.dueDate?.let { convertMillisToDate(it) } ?: "No date was set"
+    val date = state.todo?.dueDate?.let { convertMillisToDate(it) } ?: "No date was set"
 
     Surface(
         modifier = Modifier.background(color = LocalColorScheme.current.primaryBackgroundColor)
@@ -59,23 +59,23 @@ fun EditScreen(
             bottomBar = {
                 if (isCurrentTrashRoute) {
                     TrashEditAppBottomBar(
-                        onRestoreReminder = {
-                            viewModel.execute(ViewAction.RestoreReminder(reminderId!!))
+                        onRestoreTodo = {
+                            viewModel.execute(ViewAction.RestoreTodo(todoId!!))
 
                             Toast.makeText(
                                 context,
-                                "Restore reminder successfully",
+                                "Restore todo successfully",
                                 Toast.LENGTH_SHORT
                             ).show()
 
                             navigateToTrash()
                         },
-                        onDeleteReminder = {
-                            viewModel.execute(ViewAction.DeleteReminder(reminderId!!))
+                        onDeleteTodo = {
+                            viewModel.execute(ViewAction.DeleteTodo(todoId!!))
 
                             Toast.makeText(
                                 context,
-                                "Permanently delete reminder successfully",
+                                "Permanently delete todo successfully",
                                 Toast.LENGTH_SHORT
                             ).show()
 
@@ -87,17 +87,17 @@ fun EditScreen(
                 }
 
                 AppBottomBar(
-                    onEditReminder = { navigateToEditDetails(reminderId) },
-                    onDeleteReminder = {
-                        viewModel.execute(ViewAction.MoveReminderToTrash)
+                    onEditTodo = { navigateToEditDetails(todoId) },
+                    onDeleteTodo = {
+                        viewModel.execute(ViewAction.MoveTodoToTrash)
 
                         Toast.makeText(
                             context,
-                            "Delete reminder successfully",
+                            "Delete todo successfully",
                             Toast.LENGTH_SHORT
                         ).show()
 
-                        navigateToReminder()
+                        navigateToTodo()
                     }
                 )
             }
@@ -110,10 +110,10 @@ fun EditScreen(
                     .verticalScroll(state = scrollState),
                 verticalArrangement = Arrangement.spacedBy(20.dp)
             ) {
-                ReminderTextPlaceholder(
-                    content = state.reminder?.content ?: "",
+                TodoTextPlaceholder(
+                    content = state.todo?.content ?: "",
                     onNavigateBack = {
-                        if (isCurrentTrashRoute) navigateToTrash() else navigateToReminder()
+                        if (isCurrentTrashRoute) navigateToTrash() else navigateToTodo()
                     }
                 )
 

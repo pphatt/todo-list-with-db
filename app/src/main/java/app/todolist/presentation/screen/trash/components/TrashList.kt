@@ -9,13 +9,13 @@ import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
-import app.todolist.domain.reminder.entity.Reminder
+import app.todolist.domain.todo.entity.Todo
 
 @Composable
 fun TrashList(
     date: String,
-    reminders: List<Reminder>,
-    onReminderClick: (String) -> Unit
+    todos: List<Todo>,
+    onTodoClick: (String) -> Unit
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(5.dp)
@@ -31,10 +31,10 @@ fun TrashList(
         Column(
             verticalArrangement = Arrangement.spacedBy(15.dp)
         ) {
-            reminders.forEach { reminder ->
+            todos.forEach { todo ->
                 TrashCard(
-                    reminder = reminder,
-                    onReminderClick = onReminderClick
+                    todo = todo,
+                    onTodoClick = onTodoClick
                 )
             }
         }

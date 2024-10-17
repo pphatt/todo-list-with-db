@@ -14,28 +14,27 @@ import androidx.navigation.compose.NavHost
 import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
-import app.todolist.domain.reminder.entity.Reminder
+import app.todolist.domain.todo.entity.Todo
 import app.todolist.presentation.screen.details.DetailsRoute
 import app.todolist.presentation.screen.edit.EditRoute
-import app.todolist.presentation.screen.reminder.ReminderRoute
+import app.todolist.presentation.screen.todo.TodoRoute
 import app.todolist.presentation.screen.share.ShareScreen
 import app.todolist.presentation.screen.trash.TrashRoute
 import kotlinx.coroutines.Job
 
-const val REMINDER_ID = "reminderId"
-const val ROUTE = "route"
+const val TODO_ID = "todoId"
 
 @Composable
 fun NavigationGraph(
     modifier: Modifier = Modifier,
     navController: NavHostController = rememberNavController(),
     navigationActions: NavigationActions,
-    startDestination: String = Tabs.REMINDER_ROUTE,
+    startDestination: String = Tabs.TODO_ROUTE,
 
     drawerState: DrawerState,
     currentRoute: String,
 
-    temporalRemindersList: SnapshotStateList<Reminder>,
+    temporalTodoList: SnapshotStateList<Todo>,
 
     openDrawer: () -> Job,
     closeDrawer: () -> Job
@@ -46,7 +45,7 @@ fun NavigationGraph(
         modifier = modifier
     ) {
         composable(
-            route = Tabs.REMINDER_ROUTE,
+            route = Tabs.TODO_ROUTE,
         ) {
             ShareScreen(
                 navigationActions = navigationActions,
@@ -54,13 +53,13 @@ fun NavigationGraph(
                 currentRoute = currentRoute,
                 closeDrawer = closeDrawer,
                 content = {
-                    ReminderRoute(
+                    TodoRoute(
                         navigateToDetails = navigationActions.navigateToDetails,
                         openDrawer = openDrawer,
-                        temporalRemindersList = temporalRemindersList,
-                        onReminderClick = { reminder ->
-                            val reminderId = reminder.id.toString()
-                            navigationActions.navigateToEdit(reminderId)
+                        temporalTodoList = temporalTodoList,
+                        onTodoClick = { todo ->
+                            val todoId = todo.id.toString()
+                            navigationActions.navigateToEdit(todoId)
                         }
                     )
                 }
@@ -77,17 +76,17 @@ fun NavigationGraph(
                 content = {
                     TrashRoute(
                         openDrawer = openDrawer,
-                        onEditReminderClick = { reminderId ->
-                            navigationActions.navigateToEditTrash(reminderId)
+                        onEditTodoClick = { todoId ->
+                            navigationActions.navigateToEditTrash(todoId)
                         }
                     )
                 }
             )
         }
         composable(
-            route = "${Tabs.TRASH_ROUTE}/{${REMINDER_ID}}",
+            route = "${Tabs.TRASH_ROUTE}/{${TODO_ID}}",
             arguments = listOf(
-                navArgument("reminderId") {
+                navArgument("todoId") {
                     type = NavType.StringType
                 }
             ),
@@ -106,14 +105,14 @@ fun NavigationGraph(
                 ) + fadeOut(animationSpec = tween(durationMillis = 200))
             }
         ) { backStackEntry ->
-            val reminderId = backStackEntry.arguments?.getString("reminderId")
+            val todoId = backStackEntry.arguments?.getString(TODO_ID)
 
             EditRoute(
-                reminderId = reminderId,
+                todoId = todoId,
                 isCurrentTrashRoute = true,
-                navigateToReminder = { navigationActions.navigateToReminder() },
+                navigateToTodo = { navigationActions.navigateToTodo() },
                 navigateToTrash = { navigationActions.navigateToTrash() },
-                navigateToEditDetails = { navigationActions.navigateToEditDetails(reminderId) }
+                navigateToEditDetails = { navigationActions.navigateToEditDetails(todoId) }
             )
         }
         composable(
@@ -134,14 +133,14 @@ fun NavigationGraph(
             }
         ) {
             DetailsRoute(
-                navigateToReminder = { navigationActions.navigateToReminder() },
-                newTemporalRemindersList = temporalRemindersList
+                navigateToTodo = { navigationActions.navigateToTodo() },
+                newTemporalTodoList = temporalTodoList
             )
         }
         composable(
-            route = "${Tabs.DETAILS_ROUTE}/{${REMINDER_ID}}",
+            route = "${Tabs.DETAILS_ROUTE}/{${TODO_ID}}",
             arguments = listOf(
-                navArgument("reminderId") {
+                navArgument(TODO_ID) {
                     type = NavType.StringType
                 }
             ),
@@ -160,18 +159,18 @@ fun NavigationGraph(
                 ) + fadeOut(animationSpec = tween(durationMillis = 200))
             }
         ) { backStackEntry ->
-            val reminderId = backStackEntry.arguments?.getString("reminderId")
+            val todoId = backStackEntry.arguments?.getString(TODO_ID)
 
             DetailsRoute(
-                reminderId = reminderId,
-                navigateToReminder = { navigationActions.navigateToReminder() },
-                newTemporalRemindersList = temporalRemindersList
+                todoId = todoId,
+                navigateToTodo = { navigationActions.navigateToTodo() },
+                newTemporalTodoList = temporalTodoList
             )
         }
         composable(
-            route = "${Tabs.EDIT_ROUTE}/{${REMINDER_ID}}",
+            route = "${Tabs.EDIT_ROUTE}/{${TODO_ID}}",
             arguments = listOf(
-                navArgument("reminderId") {
+                navArgument(TODO_ID) {
                     type = NavType.StringType
                 }
             ),
@@ -190,13 +189,13 @@ fun NavigationGraph(
                 ) + fadeOut(animationSpec = tween(durationMillis = 200))
             }
         ) { backStackEntry ->
-            val reminderId = backStackEntry.arguments?.getString("reminderId")
+            val todoId = backStackEntry.arguments?.getString(TODO_ID)
 
             EditRoute(
-                reminderId = reminderId,
-                navigateToReminder = { navigationActions.navigateToReminder() },
+                todoId = todoId,
+                navigateToTodo = { navigationActions.navigateToTodo() },
                 navigateToTrash = { navigationActions.navigateToTrash() },
-                navigateToEditDetails = { navigationActions.navigateToEditDetails(reminderId) }
+                navigateToEditDetails = { navigationActions.navigateToEditDetails(todoId) }
             )
         }
     }
