@@ -87,7 +87,7 @@ fun EditScreen(
                 }
 
                 AppBottomBar(
-                    onEditTodo = { navigateToEditDetails(todoId) },
+                    onNavigateToEditTodo = { navigateToEditDetails(todoId) },
                     onDeleteTodo = {
                         viewModel.execute(ViewAction.MoveTodoToTrash)
 
@@ -112,6 +112,8 @@ fun EditScreen(
             ) {
                 TodoTextPlaceholder(
                     content = state.todo?.content ?: "",
+                    isCurrentTrashRoute = isCurrentTrashRoute,
+                    onNavigateToEditTodo = { navigateToEditDetails(todoId) },
                     onNavigateBack = {
                         if (isCurrentTrashRoute) navigateToTrash() else navigateToTodo()
                     }

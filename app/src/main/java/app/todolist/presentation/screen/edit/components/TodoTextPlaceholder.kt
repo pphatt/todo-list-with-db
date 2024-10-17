@@ -1,6 +1,7 @@
 package app.todolist.presentation.screen.edit.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.Spacer
@@ -29,6 +30,8 @@ import app.todolist.ui.theme.LocalColorScheme
 @Composable
 fun TodoTextPlaceholder(
     content: String,
+    isCurrentTrashRoute: Boolean = false,
+    onNavigateToEditTodo: () -> Unit,
     onNavigateBack: () -> Unit
 ) {
     Column(
@@ -37,8 +40,13 @@ fun TodoTextPlaceholder(
             .wrapContentHeight(align = Alignment.CenterVertically, unbounded = true)
             .fillMaxWidth()
             .clip(RoundedCornerShape(bottomStart = 50.dp, bottomEnd = 50.dp))
-            .background(LocalColorScheme.current.cardBackgroundColor),
-        verticalArrangement = Arrangement.Center
+            .background(LocalColorScheme.current.cardBackgroundColor)
+            .clickable(
+                interactionSource = null,
+                indication = null,
+                onClick = { if (!isCurrentTrashRoute) onNavigateToEditTodo() }
+            ),
+        verticalArrangement = Arrangement.Center,
     ) {
         Spacer(modifier = Modifier.height(60.dp))
 
@@ -59,7 +67,12 @@ fun TodoTextPlaceholder(
                 cursorColor = LocalColorScheme.current.cursorColor
             ),
             modifier = Modifier
-                .wrapContentHeight(),
+                .wrapContentHeight()
+                .clickable(
+                    interactionSource = null,
+                    indication = null,
+                    onClick = { if (!isCurrentTrashRoute) onNavigateToEditTodo() }
+                ),
             textStyle = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.W700),
             placeholder = {
                 Text(
