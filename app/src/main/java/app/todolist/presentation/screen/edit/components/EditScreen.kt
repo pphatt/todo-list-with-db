@@ -21,6 +21,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import app.todolist.presentation.request.DeleteTodoDto
+import app.todolist.presentation.request.RestoreTodoDto
 import app.todolist.presentation.request.SoftDeleteTodoDto
 import app.todolist.presentation.screen.edit.viewmodel.EditScreenViewModel
 import app.todolist.presentation.screen.edit.viewmodel.ViewAction
@@ -65,7 +66,15 @@ fun EditScreen(
                 if (isCurrentTrashRoute) {
                     TrashEditAppBottomBar(
                         onRestoreTodo = {
-                            viewModel.execute(ViewAction.RestoreTodo(todoId!!))
+                            if (todoId == null) {
+                                return@TrashEditAppBottomBar
+                            }
+
+                            viewModel.execute(
+                                ViewAction.RestoreTodo(
+                                    RestoreTodoDto(todoId.toLong())
+                                )
+                            )
 
                             Toast.makeText(
                                 context,

@@ -6,6 +6,7 @@ import app.todolist.infrastructure.database.TodoDao
 import app.todolist.presentation.request.CreateTodoDto
 import app.todolist.presentation.request.DeleteTodoDto
 import app.todolist.presentation.request.EditTodoDto
+import app.todolist.presentation.request.RestoreTodoDto
 import app.todolist.presentation.request.SoftDeleteTodoDto
 import kotlinx.coroutines.flow.Flow
 import java.util.UUID
@@ -51,19 +52,7 @@ class TodoRepositoryImpl @Inject constructor(
         dao.deleteTodo(id = body.id)
     }
 
-    override suspend fun restoreTodo(id: String) {
-//        val updatedTodoList = todoList.value.toMutableList().apply {
-//            val index = indexOfFirst { it.id == UUID.fromString(id) }
-//
-//            if (index != -1) {
-//                val todo = get(index)
-//
-//                val updatedTodo = todo.copy(deletedAt = null)
-//
-//                set(index, updatedTodo)
-//            }
-//        }
-//
-//        todoList.value = updatedTodoList
+    override suspend fun restoreTodo(body: RestoreTodoDto) {
+        dao.restoreTodo(id = body.id)
     }
 }
