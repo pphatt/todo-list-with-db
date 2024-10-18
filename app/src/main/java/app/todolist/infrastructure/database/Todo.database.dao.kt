@@ -6,9 +6,8 @@ import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import app.todolist.domain.todo.entity.Todo
-import dagger.Provides
+import app.todolist.presentation.request.EditTodoDto
 import kotlinx.coroutines.flow.Flow
-import java.util.UUID
 import javax.inject.Singleton
 
 @Singleton
@@ -21,7 +20,10 @@ interface TodoDao {
     suspend fun getTodoById(id: Long): Todo?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    suspend fun insertTodo(todo: Todo) : Long
+    suspend fun insertTodo(todo: Todo): Long
+
+    @Query("UPDATE todo SET content = :content, dueDate= :dueDate WHERE id =:id")
+    suspend fun updateTodo(id: Long, content: String, dueDate: Long?)
 
     @Delete
     suspend fun deleteTodo(todo: Todo)

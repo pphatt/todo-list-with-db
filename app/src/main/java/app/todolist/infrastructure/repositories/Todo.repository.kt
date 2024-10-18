@@ -34,21 +34,7 @@ class TodoRepositoryImpl @Inject constructor(
     }
 
     override suspend fun editTodo(body: EditTodoDto) {
-//        val todoIndex = todoList.value.indexOfFirst { it.id == body.id }
-//
-//        if (todoIndex != -1) {
-//            val updatedTodo = Todo(
-//                id = body.id,
-//                content = body.content,
-//                dueDate = body.dueDate,
-//                createdAt = body.createdAt
-//            )
-//
-//            val updatedList = todoList.value.toMutableList()
-//            updatedList[todoIndex] = updatedTodo
-//
-//            todoList.value = updatedList
-//        }
+        dao.updateTodo(id = body.id, content = body.content, dueDate = body.dueDate)
     }
 
     override suspend fun moveTodoToTrash(todo: Todo) {

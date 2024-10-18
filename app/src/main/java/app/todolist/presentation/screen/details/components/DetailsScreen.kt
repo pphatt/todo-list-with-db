@@ -99,18 +99,15 @@ fun DetailsScreen(
                                     dueDate = if (state.showDate) datePickerState.selectedDateMillis else null,
                                 )
                             )
+                        } else {
+                            viewModel.editTodo(
+                                EditTodoDto(
+                                    id = todoId.toLong(),
+                                    content = state.content.trim(),
+                                    dueDate = if (state.showDate) datePickerState.selectedDateMillis else null,
+                                )
+                            )
                         }
-
-//                        else {
-//                            viewModel.editTodo(
-//                                EditTodoDto(
-//                                    id = UUID.fromString(todoId),
-//                                    content = state.content.trim(),
-//                                    dueDate = if (state.showDate) datePickerState.selectedDateMillis else null,
-//                                    createdAt = todo.createdAt
-//                                )
-//                            )
-//                        }
 
                         navigateToTodo()
 
