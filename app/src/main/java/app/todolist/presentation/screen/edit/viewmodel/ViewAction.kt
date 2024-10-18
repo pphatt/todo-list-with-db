@@ -1,9 +1,7 @@
 package app.todolist.presentation.screen.edit.viewmodel
 
-import java.util.UUID
-
 sealed interface ViewAction {
-    data class SetTodo(val id: UUID) : ViewAction
+    data class SetTodo(val id: Long) : ViewAction
 
     data object MoveTodoToTrash : ViewAction
 

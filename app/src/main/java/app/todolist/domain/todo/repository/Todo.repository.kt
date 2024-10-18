@@ -8,8 +8,8 @@ import java.util.UUID
 
 interface TodoRepository {
     suspend fun getAllTodo(): Flow<List<Todo>>
-    suspend fun getTodoById(id: UUID): Todo?
-    suspend fun createTodo(body: CreateTodoDto)
+    suspend fun getTodoById(id: Long): Todo?
+    suspend fun createTodo(body: CreateTodoDto) : Todo
     suspend fun editTodo(body: EditTodoDto)
     suspend fun moveTodoToTrash(todo: Todo)
     suspend fun deleteTodo(id: String)

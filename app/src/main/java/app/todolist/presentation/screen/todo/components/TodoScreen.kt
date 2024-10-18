@@ -185,7 +185,7 @@ fun TodoScreen(
                 if (state.list.isNotEmpty()) {
                     val currentTime = System.currentTimeMillis()
 
-                    val todoTimeMillis = state.list.last().createdAt.time
+                    val todoTimeMillis = state.list.last().createdAt
 
                     if (todoTimeMillis >= currentTime - 100) {
                         Toast.makeText(

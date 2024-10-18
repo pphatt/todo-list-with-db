@@ -66,7 +66,7 @@ fun DetailsScreen(
 
     LaunchedEffect(todoId) {
         if (todoId != null) {
-            viewModel.getTodoById(todoId)
+            viewModel.getTodoById(todoId.toLong())
         }
     }
 
@@ -91,33 +91,26 @@ fun DetailsScreen(
                     onSaveTodo = {
                         focusManager.clearFocus()
 
-                        // TODO: change this back dto when using db
-                        val todo = Todo(
-                            content = state.content.trim(),
-                            dueDate = if (state.showDate) datePickerState.selectedDateMillis else null
-                        )
-
                         if (todoId == null) {
                             viewModel.createTodo(
+                                newTemporalTodoList,
                                 CreateTodoDto(
-                                    id = todo.id,
                                     content = state.content.trim(),
                                     dueDate = if (state.showDate) datePickerState.selectedDateMillis else null,
-                                    createdAt = todo.createdAt
-                                )
-                            )
-
-                            newTemporalTodoList.add(todo)
-                        } else {
-                            viewModel.editTodo(
-                                EditTodoDto(
-                                    id = UUID.fromString(todoId),
-                                    content = state.content.trim(),
-                                    dueDate = if (state.showDate) datePickerState.selectedDateMillis else null,
-                                    createdAt = todo.createdAt
                                 )
                             )
                         }
+
+//                        else {
+//                            viewModel.editTodo(
+//                                EditTodoDto(
+//                                    id = UUID.fromString(todoId),
+//                                    content = state.content.trim(),
+//                                    dueDate = if (state.showDate) datePickerState.selectedDateMillis else null,
+//                                    createdAt = todo.createdAt
+//                                )
+//                            )
+//                        }
 
                         navigateToTodo()
 

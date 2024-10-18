@@ -37,11 +37,10 @@ class EditScreenViewModel @Inject constructor(
         }
     }
 
-    private fun getTodoById(id: UUID) {
+    private fun getTodoById(id: Long) {
         viewModelScope.launch {
             todoRepositoryImpl.getAllTodo().collect { todoList ->
                 val todo = todoList.find { todo -> todo.id == id }
-
                 state = state.copy(todo = todo)
             }
         }

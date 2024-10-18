@@ -43,7 +43,11 @@ fun EditScreen(
     val context = LocalContext.current
 
     LaunchedEffect(todoId) {
-        viewModel.execute(ViewAction.SetTodo(UUID.fromString(todoId)))
+        val id = todoId?.toLongOrNull()
+
+        if (id != null) {
+            viewModel.execute(ViewAction.SetTodo(id))
+        }
     }
 
     val date = state.todo?.dueDate?.let { convertMillisToDate(it) } ?: "No date was set"

@@ -123,6 +123,10 @@ dependencies {
     implementation(libs.google.hilt.android.compiler)
     implementation(libs.androidx.hilt.navigation.compose)
 
+    // Room
+    implementation(libs.bundles.room)
+    ksp(libs.room.complier)
+
     // Tests
     testImplementation(libs.bundles.test)
 

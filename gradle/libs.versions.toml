@@ -39,6 +39,10 @@ google-hilt-android-testing = { module = "com.google.dagger:hilt-android-testing
 
 junit = { group = "junit", name = "junit", version = "4.13.2" }
 
+room-runtime = "androidx.room:room-runtime:2.5.2"
+room-complier = "androidx.room:room-compiler:2.5.2"
+room-ktx = "androidx.room:room-ktx:2.5.2"
+
 [plugins]
 android-application = { id = "com.android.application", version.ref = "agp" }
 android-library = { id = "com.android.library", version.ref = "agp" }
@@ -50,3 +54,4 @@ google-devtools-ksp = { id = "com.google.devtools.ksp", version = "1.9.22-1.0.17
 okhttp = ["okhttp-core", "okhttp-logging", "okhttp-brotli", "okhttp-dnsoverhttps"]
 coil = ["coil-core", "coil-gif", "coil-compose", "coil-network-okhttp"]
 test = ["junit"]
+room = ["room-runtime", "room-ktx"]

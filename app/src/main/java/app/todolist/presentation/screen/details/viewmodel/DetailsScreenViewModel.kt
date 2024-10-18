@@ -1,7 +1,9 @@
 package app.todolist.presentation.screen.details.viewmodel
 
+import androidx.compose.runtime.snapshots.SnapshotStateList
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
+import app.todolist.domain.todo.entity.Todo
 import app.todolist.infrastructure.repositories.TodoRepositoryImpl
 import app.todolist.presentation.request.CreateTodoDto
 import app.todolist.presentation.request.EditTodoDto
@@ -10,7 +12,6 @@ import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
 import kotlinx.coroutines.flow.update
 import kotlinx.coroutines.launch
-import java.util.UUID
 import javax.inject.Inject
 
 @HiltViewModel
@@ -50,9 +51,9 @@ class DetailsScreenViewModel @Inject constructor(
         )
     }
 
-    fun getTodoById(id: String) {
+    fun getTodoById(id: Long) {
         viewModelScope.launch {
-            val todo = todoRepositoryImpl.getTodoById(UUID.fromString(id))
+            val todo = todoRepositoryImpl.getTodoById(id)
 
             if (todo != null) {
                 state = state.copy(
@@ -64,9 +65,15 @@ class DetailsScreenViewModel @Inject constructor(
         }
     }
 
-    fun createTodo(body: CreateTodoDto) {
+    fun createTodo(
+        // NOTE: newTemporalTodoList currently is not a great solution,
+        // but it solved it (show which one was the recently add when added).
+        newTemporalTodoList: SnapshotStateList<Todo>,
+        body: CreateTodoDto
+    ) {
         viewModelScope.launch {
-            todoRepositoryImpl.createTodo(body)
+            val todo = todoRepositoryImpl.createTodo(body)
+            newTemporalTodoList.add(todo)
         }
     }
 
