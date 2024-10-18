@@ -31,6 +31,6 @@ interface TodoDao {
     @Query("UPDATE todo SET deletedAt = :deletedAt WHERE id = :id")
     suspend fun softDeleteTodo(id: Long, deletedAt: Long?)
 
-    @Delete
-    suspend fun deleteTodo(todo: Todo)
+    @Query("DELETE FROM todo WHERE id = :id")
+    suspend fun deleteTodo(id: Long)
 }

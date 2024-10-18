@@ -4,6 +4,7 @@ import app.todolist.domain.todo.entity.Todo
 import app.todolist.domain.todo.repository.TodoRepository
 import app.todolist.infrastructure.database.TodoDao
 import app.todolist.presentation.request.CreateTodoDto
+import app.todolist.presentation.request.DeleteTodoDto
 import app.todolist.presentation.request.EditTodoDto
 import app.todolist.presentation.request.SoftDeleteTodoDto
 import kotlinx.coroutines.flow.Flow
@@ -27,7 +28,7 @@ class TodoRepositoryImpl @Inject constructor(
         return dao.getTodoById(id)
     }
 
-    override suspend fun createTodo(body: CreateTodoDto) : Todo {
+    override suspend fun createTodo(body: CreateTodoDto): Todo {
         val newTodo = Todo(
             content = body.content,
             dueDate = body.dueDate,
@@ -46,14 +47,8 @@ class TodoRepositoryImpl @Inject constructor(
         dao.softDeleteTodo(id = body.id, deletedAt = body.deletedAt)
     }
 
-    override suspend fun deleteTodo(id: String) {
-//        val todoToDelete = getTodoById(UUID.fromString(id))
-//
-//        todoToDelete?.let { todo ->
-//            todoList.value = todoList.value.toMutableList().apply {
-//                remove(todo)
-//            }
-//        }
+    override suspend fun deleteTodo(body: DeleteTodoDto) {
+        dao.deleteTodo(id = body.id)
     }
 
     override suspend fun restoreTodo(id: String) {

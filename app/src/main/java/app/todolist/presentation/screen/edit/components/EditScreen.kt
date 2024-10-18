@@ -20,6 +20,7 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import app.todolist.presentation.request.DeleteTodoDto
 import app.todolist.presentation.request.SoftDeleteTodoDto
 import app.todolist.presentation.screen.edit.viewmodel.EditScreenViewModel
 import app.todolist.presentation.screen.edit.viewmodel.ViewAction
@@ -75,7 +76,15 @@ fun EditScreen(
                             navigateToTrash()
                         },
                         onDeleteTodo = {
-                            viewModel.execute(ViewAction.DeleteTodo(todoId!!))
+                            if (todoId == null) {
+                                return@TrashEditAppBottomBar
+                            }
+
+                            viewModel.execute(
+                                ViewAction.DeleteTodo(
+                                    DeleteTodoDto(id = todoId.toLong())
+                                )
+                            )
 
                             Toast.makeText(
                                 context,
