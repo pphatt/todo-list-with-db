@@ -16,14 +16,20 @@ interface TodoDao {
     @Query("SELECT * FROM todo")
     fun getAllTodo(): Flow<List<Todo>>
 
+    @Query("SELECT * FROM todo where deletedAt is not null")
+    fun getAllTrashTodo(): Flow<List<Todo>>
+
     @Query("SELECT * FROM todo WHERE id = :id")
     suspend fun getTodoById(id: Long): Todo?
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTodo(todo: Todo): Long
 
-    @Query("UPDATE todo SET content = :content, dueDate= :dueDate WHERE id =:id")
+    @Query("UPDATE todo SET content = :content, dueDate= :dueDate WHERE id = :id")
     suspend fun updateTodo(id: Long, content: String, dueDate: Long?)
+
+    @Query("UPDATE todo SET deletedAt = :deletedAt WHERE id = :id")
+    suspend fun softDeleteTodo(id: Long, deletedAt: Long?)
 
     @Delete
     suspend fun deleteTodo(todo: Todo)

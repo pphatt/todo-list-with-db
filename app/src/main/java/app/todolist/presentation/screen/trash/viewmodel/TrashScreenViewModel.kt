@@ -24,9 +24,8 @@ class TrashScreenViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            todoRepositoryImpl.getAllTodo().collect { todoList ->
-                state =
-                    state.copy(list = todoList.filter { todo -> todo.deletedAt != null })
+            todoRepositoryImpl.getAllTrashTodo().collect { todoList ->
+                state = state.copy(list = todoList)
             }
         }
     }

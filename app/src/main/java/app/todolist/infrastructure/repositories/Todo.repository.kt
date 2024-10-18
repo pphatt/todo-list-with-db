@@ -5,6 +5,7 @@ import app.todolist.domain.todo.repository.TodoRepository
 import app.todolist.infrastructure.database.TodoDao
 import app.todolist.presentation.request.CreateTodoDto
 import app.todolist.presentation.request.EditTodoDto
+import app.todolist.presentation.request.SoftDeleteTodoDto
 import kotlinx.coroutines.flow.Flow
 import java.util.UUID
 import javax.inject.Inject
@@ -16,6 +17,10 @@ class TodoRepositoryImpl @Inject constructor(
 ) : TodoRepository {
     override suspend fun getAllTodo(): Flow<List<Todo>> {
         return dao.getAllTodo()
+    }
+
+    override suspend fun getAllTrashTodo(): Flow<List<Todo>> {
+        return dao.getAllTrashTodo()
     }
 
     override suspend fun getTodoById(id: Long): Todo? {
@@ -37,18 +42,8 @@ class TodoRepositoryImpl @Inject constructor(
         dao.updateTodo(id = body.id, content = body.content, dueDate = body.dueDate)
     }
 
-    override suspend fun moveTodoToTrash(todo: Todo) {
-//        val updatedTodoList = todoList.value.toMutableList().apply {
-//            val index = indexOfFirst { it.id == todo.id }
-//
-//            if (index != -1) {
-//                val updatedTodo =
-//                    todo.copy(deletedAt = Timestamp(System.currentTimeMillis()))
-//                set(index, updatedTodo)
-//            }
-//        }
-//
-//        todoList.value = updatedTodoList
+    override suspend fun softDeleteTodo(body: SoftDeleteTodoDto) {
+        dao.softDeleteTodo(id = body.id, deletedAt = body.deletedAt)
     }
 
     override suspend fun deleteTodo(id: String) {

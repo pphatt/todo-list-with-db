@@ -20,11 +20,11 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
+import app.todolist.presentation.request.SoftDeleteTodoDto
 import app.todolist.presentation.screen.edit.viewmodel.EditScreenViewModel
 import app.todolist.presentation.screen.edit.viewmodel.ViewAction
 import app.todolist.ui.theme.LocalColorScheme
 import app.todolist.utils.convertMillisToDate
-import java.util.UUID
 
 @SuppressLint("UnusedMaterial3ScaffoldPaddingParameter")
 @Composable
@@ -93,7 +93,11 @@ fun EditScreen(
                 AppBottomBar(
                     onNavigateToEditTodo = { navigateToEditDetails(todoId) },
                     onDeleteTodo = {
-                        viewModel.execute(ViewAction.MoveTodoToTrash)
+                        if (todoId == null) {
+                            return@AppBottomBar
+                        }
+
+                        viewModel.execute(ViewAction.SoftDeleteTodo(SoftDeleteTodoDto(id = todoId.toLong())))
 
                         Toast.makeText(
                             context,

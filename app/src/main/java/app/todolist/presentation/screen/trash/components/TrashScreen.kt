@@ -94,31 +94,30 @@ fun TrashScreen(
                     text = "Todo are automatically moved to trash when deleted. Deleting a todo from trash will permanently remove it."
                 )
 
-//                val groupedTodoList = state.list
-//                    .filter { it.deletedAt != null }
-//                    .sortedBy { it.deletedAt }
-//                    .groupBy { convertMillisToDate(it.deletedAt!!.time) }
-//
-//                LazyColumn(
-//                    modifier = Modifier
-//                        .fillMaxWidth()
-//                        .clip(RoundedCornerShape(15.dp)),
-//                    verticalArrangement = Arrangement.spacedBy(10.dp)
-//                ) {
-//                    groupedTodoList.forEach { (date, todoList) ->
-//                        item {
-//                            TrashList(
-//                                date = date,
-//                                todos = todoList,
-//                                onTodoClick = onEditTodoClick
-//                            )
-//                        }
-//                    }
-//
-//                    item {
-//                        Spacer(modifier = Modifier.height(15.dp))
-//                    }
-//                }
+                val groupedTodoList = state.list
+                    .sortedBy { it.deletedAt }
+                    .groupBy { convertMillisToDate(it.deletedAt!!) }
+
+                LazyColumn(
+                    modifier = Modifier
+                        .fillMaxWidth()
+                        .clip(RoundedCornerShape(15.dp)),
+                    verticalArrangement = Arrangement.spacedBy(10.dp)
+                ) {
+                    groupedTodoList.forEach { (date, todoList) ->
+                        item {
+                            TrashList(
+                                date = date,
+                                todos = todoList,
+                                onTodoClick = onEditTodoClick
+                            )
+                        }
+                    }
+
+                    item {
+                        Spacer(modifier = Modifier.height(15.dp))
+                    }
+                }
             }
         }
     }
