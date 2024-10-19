@@ -43,7 +43,6 @@ android {
 }
 
 dependencies {
-
     // Compose
     implementation(compose.activity)
     implementation(compose.bundles.foundation)

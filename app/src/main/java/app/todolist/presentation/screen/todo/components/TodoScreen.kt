@@ -39,6 +39,7 @@ import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
 import app.todolist.domain.todo.entity.Todo
 import app.todolist.presentation.screen.todo.viewmodel.TodoScreenViewModel
+import app.todolist.presentation.screen.todo.viewmodel.ViewAction
 import app.todolist.utils.isSameDay
 import java.util.Calendar
 
@@ -139,7 +140,8 @@ fun TodoScreen(
                                 title = "Past date",
                                 todos = todoListFilteredByPastDate,
                                 temporalTodos = temporalTodos,
-                                onTodoClick = onTodoClick
+                                onTodoClick = onTodoClick,
+                                onCheckTodo = { viewModel.execute(ViewAction.CheckTodo(it)) }
                             )
                         }
                     }
@@ -150,7 +152,8 @@ fun TodoScreen(
                                 title = "Current date",
                                 todos = todoListFilteredByCurrentDate,
                                 temporalTodos = temporalTodos,
-                                onTodoClick = onTodoClick
+                                onTodoClick = onTodoClick,
+                                onCheckTodo = { viewModel.execute(ViewAction.CheckTodo(it)) }
                             )
                         }
                     }
@@ -161,7 +164,8 @@ fun TodoScreen(
                                 title = "Future date",
                                 todos = todoListFilteredByFutureDate,
                                 temporalTodos = temporalTodos,
-                                onTodoClick = onTodoClick
+                                onTodoClick = onTodoClick,
+                                onCheckTodo = { viewModel.execute(ViewAction.CheckTodo(it)) }
                             )
                         }
                     }
@@ -172,7 +176,8 @@ fun TodoScreen(
                                 title = "No date",
                                 todos = todoListFilteredByNoDate,
                                 temporalTodos = temporalTodos,
-                                onTodoClick = onTodoClick
+                                onTodoClick = onTodoClick,
+                                onCheckTodo = { viewModel.execute(ViewAction.CheckTodo(it)) }
                             )
                         }
                     }

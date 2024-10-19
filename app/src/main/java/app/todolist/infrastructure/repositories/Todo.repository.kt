@@ -3,6 +3,7 @@ package app.todolist.infrastructure.repositories
 import app.todolist.domain.todo.entity.Todo
 import app.todolist.domain.todo.repository.TodoRepository
 import app.todolist.infrastructure.database.TodoDao
+import app.todolist.presentation.request.CheckTodoDto
 import app.todolist.presentation.request.CreateTodoDto
 import app.todolist.presentation.request.DeleteTodoDto
 import app.todolist.presentation.request.EditTodoDto
@@ -19,6 +20,14 @@ class TodoRepositoryImpl @Inject constructor(
 ) : TodoRepository {
     override suspend fun getAllTodo(): Flow<List<Todo>> {
         return dao.getAllTodo()
+    }
+
+    override suspend fun getAllUnfinishedTodo(): Flow<List<Todo>> {
+        return dao.getAllUnfinishedTodo()
+    }
+
+    override suspend fun getAllFinishedTodo(): Flow<List<Todo>> {
+        return dao.getAllFinishedTodo()
     }
 
     override suspend fun getAllTrashTodo(): Flow<List<Todo>> {
@@ -38,6 +47,10 @@ class TodoRepositoryImpl @Inject constructor(
         val id = dao.insertTodo(newTodo)
 
         return newTodo.copy(id = id)
+    }
+
+    override suspend fun checkTodo(body: CheckTodoDto) {
+        dao.checkTodo(id = body.id, status = !body.status)
     }
 
     override suspend fun editTodo(body: EditTodoDto) {

@@ -10,13 +10,15 @@ import androidx.compose.ui.Modifier
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.unit.dp
 import app.todolist.domain.todo.entity.Todo
+import app.todolist.presentation.request.CheckTodoDto
 
 @Composable
 fun TodoList(
     title: String,
     todos: List<Todo>,
     temporalTodos: List<Todo>?,
-    onTodoClick: (Todo) -> Unit
+    onTodoClick: (Todo) -> Unit,
+    onCheckTodo: (body: CheckTodoDto) -> Unit,
 ) {
     Column(
         verticalArrangement = Arrangement.spacedBy(5.dp)
@@ -36,7 +38,8 @@ fun TodoList(
                 TodoCard(
                     todo = todo,
                     isNew = temporalTodos?.find { r -> r.id == todo.id } != null,
-                    onTodoClick = onTodoClick
+                    onTodoClick = onTodoClick,
+                    onCheckTodo = onCheckTodo
                 )
             }
         }

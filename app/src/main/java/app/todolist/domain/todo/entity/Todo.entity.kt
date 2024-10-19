@@ -15,6 +15,9 @@ data class Todo(
     @ColumnInfo(name = "dueDate")
     val dueDate: Long? = null,
 
+    @ColumnInfo(name = "status")
+    val status: Boolean = false,
+
     @ColumnInfo(name = "createdAt")
     val createdAt: Long = System.currentTimeMillis(),
 
