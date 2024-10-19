@@ -17,6 +17,7 @@ import androidx.compose.material3.NavigationDrawerItemDefaults
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
 import androidx.compose.ui.Modifier
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.res.stringResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.LayoutDirection
@@ -31,6 +32,7 @@ fun AppDrawer(
     currentRoute: String,
     modifier: Modifier = Modifier,
     navigateToTodo: () -> Unit,
+    navigateToComplete: () -> Unit,
     navigateToTrash: () -> Unit,
     closeDrawer: () -> Unit
 ) {
@@ -41,7 +43,12 @@ fun AppDrawer(
         Spacer(modifier = Modifier.padding(top = 20.dp))
         Text(
             "Personal Todo",
-            modifier = Modifier.padding(start = 15.dp + 6.dp, top = 15.dp, end = 15.dp, bottom = 15.dp),
+            modifier = Modifier.padding(
+                start = 15.dp + 6.dp,
+                top = 15.dp,
+                end = 15.dp,
+                bottom = 15.dp
+            ),
             color = LocalColorScheme.current.foregroundColor,
             style = MaterialTheme.typography.titleLarge.copy(fontWeight = FontWeight.Bold)
         )
@@ -77,6 +84,37 @@ fun AppDrawer(
             icon = { Icon(Icons.Rounded.LibraryAddCheck, null) },
             selected = currentRoute == Tabs.TODO_ROUTE,
             onClick = { navigateToTodo(); closeDrawer() },
+            shape = RoundedCornerShape(15),
+            colors = NavigationDrawerItemDefaults.colors(
+                unselectedTextColor = LocalColorScheme.current.foregroundColor,
+                unselectedIconColor = LocalColorScheme.current.foregroundColor,
+                selectedTextColor = LocalColorScheme.current.activeForegroundColor,
+                selectedContainerColor = LocalColorScheme.current.activeBackgroundColor,
+                selectedIconColor = LocalColorScheme.current.activeForegroundColor,
+            )
+        )
+        NavigationDrawerItem(
+            modifier = Modifier.padding(
+                start = NavigationDrawerItemDefaults.ItemPadding.calculateStartPadding(
+                    LayoutDirection.Ltr
+                ),
+                top = NavigationDrawerItemDefaults.ItemPadding.calculateTopPadding(),
+                end = NavigationDrawerItemDefaults.ItemPadding.calculateEndPadding(LayoutDirection.Rtl),
+                bottom = NavigationDrawerItemDefaults.ItemPadding.calculateBottomPadding(),
+            ),
+            label = {
+                Text(
+                    stringResource(id = R.string.complete_title),
+                    fontWeight = if (currentRoute == Tabs.COMPLETE_ROUTE) FontWeight.Bold else FontWeight.Normal
+                )
+            },
+            icon = {
+                Icon(
+                    painterResource(id = R.drawable.anim_check), null
+                )
+            },
+            selected = currentRoute == Tabs.COMPLETE_ROUTE,
+            onClick = { navigateToComplete(); closeDrawer() },
             shape = RoundedCornerShape(15),
             colors = NavigationDrawerItemDefaults.colors(
                 unselectedTextColor = LocalColorScheme.current.foregroundColor,

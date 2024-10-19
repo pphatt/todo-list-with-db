@@ -15,6 +15,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import app.todolist.domain.todo.entity.Todo
+import app.todolist.presentation.screen.completed.CompletedRoute
 import app.todolist.presentation.screen.details.DetailsRoute
 import app.todolist.presentation.screen.edit.EditRoute
 import app.todolist.presentation.screen.todo.TodoRoute
@@ -59,34 +60,16 @@ fun NavigationGraph(
                         temporalTodoList = temporalTodoList,
                         onTodoClick = { todo ->
                             val todoId = todo.id.toString()
-                            navigationActions.navigateToEdit(todoId)
+                            navigationActions.navigateToEditTodo(todoId)
                         }
                     )
                 }
             )
         }
         composable(
-            route = Tabs.TRASH_ROUTE,
-        ) {
-            ShareScreen(
-                navigationActions = navigationActions,
-                drawerState = drawerState,
-                currentRoute = currentRoute,
-                closeDrawer = closeDrawer,
-                content = {
-                    TrashRoute(
-                        openDrawer = openDrawer,
-                        onEditTodoClick = { todoId ->
-                            navigationActions.navigateToEditTrash(todoId)
-                        }
-                    )
-                }
-            )
-        }
-        composable(
-            route = "${Tabs.TRASH_ROUTE}/{${TODO_ID}}",
+            route = "${Tabs.TODO_ROUTE}/{${TODO_ID}}",
             arguments = listOf(
-                navArgument("todoId") {
+                navArgument(TODO_ID) {
                     type = NavType.StringType
                 }
             ),
@@ -109,7 +92,6 @@ fun NavigationGraph(
 
             EditRoute(
                 todoId = todoId,
-                isCurrentTrashRoute = true,
                 navigateToTodo = { navigationActions.navigateToTodo() },
                 navigateToTrash = { navigationActions.navigateToTrash() },
                 navigateToEditDetails = { navigationActions.navigateToEditDetails(todoId) }
@@ -168,9 +150,27 @@ fun NavigationGraph(
             )
         }
         composable(
-            route = "${Tabs.EDIT_ROUTE}/{${TODO_ID}}",
+            route = Tabs.TRASH_ROUTE,
+        ) {
+            ShareScreen(
+                navigationActions = navigationActions,
+                drawerState = drawerState,
+                currentRoute = currentRoute,
+                closeDrawer = closeDrawer,
+                content = {
+                    TrashRoute(
+                        openDrawer = openDrawer,
+                        onEditTodoClick = { todoId ->
+                            navigationActions.navigateToEditTrash(todoId)
+                        }
+                    )
+                }
+            )
+        }
+        composable(
+            route = "${Tabs.TRASH_ROUTE}/{${TODO_ID}}",
             arguments = listOf(
-                navArgument(TODO_ID) {
+                navArgument("todoId") {
                     type = NavType.StringType
                 }
             ),
@@ -193,9 +193,28 @@ fun NavigationGraph(
 
             EditRoute(
                 todoId = todoId,
+                isCurrentTrashRoute = true,
                 navigateToTodo = { navigationActions.navigateToTodo() },
                 navigateToTrash = { navigationActions.navigateToTrash() },
                 navigateToEditDetails = { navigationActions.navigateToEditDetails(todoId) }
+            )
+        }
+        composable(
+            route = Tabs.COMPLETE_ROUTE,
+        ) {
+            ShareScreen(
+                navigationActions = navigationActions,
+                drawerState = drawerState,
+                currentRoute = currentRoute,
+                closeDrawer = closeDrawer,
+                content = {
+                    CompletedRoute(
+                        openDrawer = openDrawer,
+                        onEditTodoClick = { todoId ->
+                            navigationActions.navigateToEditTrash(todoId)
+                        }
+                    )
+                }
             )
         }
     }

@@ -1,4 +1,4 @@
-package app.todolist.presentation.screen.trash.viewmodel
+package app.todolist.presentation.screen.completed.viewmodel
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
@@ -12,7 +12,7 @@ import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class TrashScreenViewModel @Inject constructor(
+class CompleteScreenViewModel @Inject constructor(
     private val todoRepositoryImpl: TodoRepositoryImpl
 ) : ViewModel() {
     private val _uiState = MutableStateFlow(UIState.default)
@@ -25,7 +25,7 @@ class TrashScreenViewModel @Inject constructor(
 
     init {
         viewModelScope.launch {
-            todoRepositoryImpl.getAllTrashTodo().collect { todoList ->
+            todoRepositoryImpl.getAllFinishedTodo().collect { todoList ->
                 initializeTodo(todoList)
             }
         }

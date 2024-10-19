@@ -1,12 +1,10 @@
 package app.todolist.infrastructure.database
 
 import androidx.room.Dao
-import androidx.room.Delete
 import androidx.room.Insert
 import androidx.room.OnConflictStrategy
 import androidx.room.Query
 import app.todolist.domain.todo.entity.Todo
-import app.todolist.presentation.request.EditTodoDto
 import kotlinx.coroutines.flow.Flow
 import javax.inject.Singleton
 
@@ -31,8 +29,8 @@ interface TodoDao {
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun insertTodo(todo: Todo): Long
 
-    @Query("UPDATE todo SET status = :status WHERE id = :id")
-    suspend fun checkTodo(id: Long, status: Boolean)
+    @Query("UPDATE todo SET status = :status, completedAt = :completedAt WHERE id = :id")
+    suspend fun completeTodo(id: Long, status: Boolean, completedAt: Long)
 
     @Query("UPDATE todo SET content = :content, dueDate= :dueDate WHERE id = :id")
     suspend fun updateTodo(id: Long, content: String, dueDate: Long?)

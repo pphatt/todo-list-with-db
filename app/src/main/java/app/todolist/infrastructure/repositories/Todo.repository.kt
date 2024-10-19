@@ -10,7 +10,6 @@ import app.todolist.presentation.request.EditTodoDto
 import app.todolist.presentation.request.RestoreTodoDto
 import app.todolist.presentation.request.SoftDeleteTodoDto
 import kotlinx.coroutines.flow.Flow
-import java.util.UUID
 import javax.inject.Inject
 import javax.inject.Singleton
 
@@ -50,7 +49,7 @@ class TodoRepositoryImpl @Inject constructor(
     }
 
     override suspend fun checkTodo(body: CheckTodoDto) {
-        dao.checkTodo(id = body.id, status = !body.status)
+        dao.completeTodo(id = body.id, status = !body.status, completedAt = body.completedAt)
     }
 
     override suspend fun editTodo(body: EditTodoDto) {

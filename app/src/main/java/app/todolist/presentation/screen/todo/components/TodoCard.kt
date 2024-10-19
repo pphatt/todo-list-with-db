@@ -58,7 +58,13 @@ fun TodoCard(
                         return@CustomCheckBox
                     }
 
-                    onCheckTodo(CheckTodoDto(id = todo.id, status = todo.status))
+                    onCheckTodo(
+                        CheckTodoDto(
+                            id = todo.id,
+                            status = todo.status,
+                            completedAt = System.currentTimeMillis()
+                        )
+                    )
 
                     Toast.makeText(
                         context,
