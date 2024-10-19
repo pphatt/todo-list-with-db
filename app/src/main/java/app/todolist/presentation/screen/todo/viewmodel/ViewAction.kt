@@ -1,7 +1,7 @@
 package app.todolist.presentation.screen.todo.viewmodel
 
-import app.todolist.presentation.request.CheckTodoDto
+import app.todolist.presentation.request.CompleteTodoDto
 
 sealed interface ViewAction {
-    data class CheckTodo(val body: CheckTodoDto) : ViewAction
+    data class CompleteTodo(val body: CompleteTodoDto) : ViewAction
 }

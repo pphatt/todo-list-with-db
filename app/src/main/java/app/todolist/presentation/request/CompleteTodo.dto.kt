@@ -1,7 +1,6 @@
 package app.todolist.presentation.request
 
-data class CheckTodoDto(
+data class CompleteTodoDto(
     val id: Long,
-    val status: Boolean,
     val completedAt: Long,
 )

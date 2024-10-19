@@ -3,10 +3,11 @@ package app.todolist.infrastructure.repositories
 import app.todolist.domain.todo.entity.Todo
 import app.todolist.domain.todo.repository.TodoRepository
 import app.todolist.infrastructure.database.TodoDao
-import app.todolist.presentation.request.CheckTodoDto
+import app.todolist.presentation.request.CompleteTodoDto
 import app.todolist.presentation.request.CreateTodoDto
 import app.todolist.presentation.request.DeleteTodoDto
 import app.todolist.presentation.request.EditTodoDto
+import app.todolist.presentation.request.RestoreCompleteTodoDto
 import app.todolist.presentation.request.RestoreTodoDto
 import app.todolist.presentation.request.SoftDeleteTodoDto
 import kotlinx.coroutines.flow.Flow
@@ -48,8 +49,12 @@ class TodoRepositoryImpl @Inject constructor(
         return newTodo.copy(id = id)
     }
 
-    override suspend fun checkTodo(body: CheckTodoDto) {
-        dao.completeTodo(id = body.id, status = !body.status, completedAt = body.completedAt)
+    override suspend fun completeTodo(body: CompleteTodoDto) {
+        dao.completeTodo(id = body.id, completedAt = body.completedAt)
+    }
+
+    override suspend fun restoreCompleteTodo(body: RestoreCompleteTodoDto) {
+        dao.restoreCompleteTodo(id = body.id)
     }
 
     override suspend fun editTodo(body: EditTodoDto) {

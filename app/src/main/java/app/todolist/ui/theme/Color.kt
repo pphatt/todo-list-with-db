@@ -58,6 +58,8 @@ val primaryCardForegroundColorLight = Color(0xFFaeaeae)
 val secondaryCardForegroundColorLight = Color(0xFFed842f)
 val lightSecondaryCardForegroundColorLight = Color(0xFFed842f)
 
+val thirdCardForegroundColorLight = Color(0xFFcfcfcf)
+
 val cursorColorLight = Color(0xFF83cae8)
 
 val activeActionColorLight = Color(0xFF272828)
@@ -122,6 +124,8 @@ val cardBackgroundColorDark = Color(0xFF161616)
 val primaryCardForegroundColorDark = Color(0xFF666666)
 val secondaryCardForegroundColorDark = Color(0xFF9c6d52)
 val lightSecondaryCardForegroundColorDark = Color(0xFFdd9a5b)
+
+val thirdCardForegroundColorDark = Color(0xFF484848)
 
 val cursorColorDark = Color(0xFF4585a9)
 

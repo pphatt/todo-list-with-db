@@ -7,8 +7,12 @@ import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.statusBarsPadding
 import androidx.compose.foundation.shape.RoundedCornerShape
 import androidx.compose.material.icons.Icons
+import androidx.compose.material.icons.rounded.CheckBox
+import androidx.compose.material.icons.rounded.CheckCircle
+import androidx.compose.material.icons.rounded.CollectionsBookmark
 import androidx.compose.material.icons.rounded.Delete
 import androidx.compose.material.icons.rounded.LibraryAddCheck
+import androidx.compose.material.icons.rounded.LibraryBooks
 import androidx.compose.material3.HorizontalDivider
 import androidx.compose.material3.Icon
 import androidx.compose.material3.MaterialTheme
@@ -81,7 +85,7 @@ fun AppDrawer(
                     fontWeight = if (currentRoute == Tabs.TODO_ROUTE) FontWeight.Bold else FontWeight.Normal
                 )
             },
-            icon = { Icon(Icons.Rounded.LibraryAddCheck, null) },
+            icon = { Icon(Icons.Rounded.CollectionsBookmark, null) },
             selected = currentRoute == Tabs.TODO_ROUTE,
             onClick = { navigateToTodo(); closeDrawer() },
             shape = RoundedCornerShape(15),
@@ -110,7 +114,7 @@ fun AppDrawer(
             },
             icon = {
                 Icon(
-                    painterResource(id = R.drawable.anim_check), null
+                    Icons.Rounded.CheckBox, null
                 )
             },
             selected = currentRoute == Tabs.COMPLETE_ROUTE,

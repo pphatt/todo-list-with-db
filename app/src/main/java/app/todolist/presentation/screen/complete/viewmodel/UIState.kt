@@ -1,4 +1,4 @@
-package app.todolist.presentation.screen.completed.viewmodel
+package app.todolist.presentation.screen.complete.viewmodel
 
 import app.todolist.domain.todo.entity.Todo
 

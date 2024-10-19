@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import app.todolist.domain.todo.entity.Todo
 import app.todolist.infrastructure.repositories.TodoRepositoryImpl
-import app.todolist.presentation.request.CheckTodoDto
+import app.todolist.presentation.request.CompleteTodoDto
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.MutableStateFlow
 import kotlinx.coroutines.flow.asStateFlow
@@ -26,7 +26,7 @@ class TodoScreenViewModel @Inject constructor(
 
     fun execute(action: ViewAction) {
         when (action) {
-            is ViewAction.CheckTodo -> checkTodo(action.body)
+            is ViewAction.CompleteTodo -> onCompleteTodo(action.body)
         }
     }
 
@@ -42,9 +42,9 @@ class TodoScreenViewModel @Inject constructor(
         state = state.copy(list = todo)
     }
 
-    private fun checkTodo(body: CheckTodoDto) {
+    private fun onCompleteTodo(body: CompleteTodoDto) {
         viewModelScope.launch {
-            todoRepositoryImpl.checkTodo(body)
+            todoRepositoryImpl.completeTodo(body)
         }
     }
 }

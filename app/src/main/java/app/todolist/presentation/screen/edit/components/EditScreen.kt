@@ -21,6 +21,7 @@ import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.unit.dp
 import androidx.hilt.navigation.compose.hiltViewModel
 import app.todolist.presentation.request.DeleteTodoDto
+import app.todolist.presentation.request.RestoreCompleteTodoDto
 import app.todolist.presentation.request.RestoreTodoDto
 import app.todolist.presentation.request.SoftDeleteTodoDto
 import app.todolist.presentation.screen.edit.viewmodel.EditScreenViewModel
@@ -34,8 +35,10 @@ fun EditScreen(
     viewModel: EditScreenViewModel = hiltViewModel(),
     todoId: String?,
     isCurrentTrashRoute: Boolean = false,
+    isCurrentCompleteRoute: Boolean = false,
     navigateToTodo: () -> Unit,
     navigateToTrash: () -> Unit,
+    navigateToComplete: () -> Unit,
     navigateToEditDetails: (todoId: String?) -> Unit
 ) {
     val state = viewModel.uiState.collectAsState().value
@@ -64,10 +67,10 @@ fun EditScreen(
             containerColor = LocalColorScheme.current.primaryBackgroundColor,
             bottomBar = {
                 if (isCurrentTrashRoute) {
-                    TrashEditAppBottomBar(
+                    AppBottomBarResume(
                         onRestoreTodo = {
                             if (todoId == null) {
-                                return@TrashEditAppBottomBar
+                                return@AppBottomBarResume
                             }
 
                             viewModel.execute(
@@ -86,7 +89,7 @@ fun EditScreen(
                         },
                         onDeleteTodo = {
                             if (todoId == null) {
-                                return@TrashEditAppBottomBar
+                                return@AppBottomBarResume
                             }
 
                             viewModel.execute(
@@ -108,6 +111,53 @@ fun EditScreen(
                     return@Scaffold
                 }
 
+                if (isCurrentCompleteRoute) {
+                    AppBottomBarResume(
+                        onRestoreTodo = {
+                            if (todoId == null) {
+                                return@AppBottomBarResume
+                            }
+
+                            viewModel.execute(
+                                ViewAction.RestoreCompleteTodo(
+                                    RestoreCompleteTodoDto(todoId.toLong())
+                                )
+                            )
+
+                            Toast.makeText(
+                                context,
+                                "Restore complete task successfully",
+                                Toast.LENGTH_SHORT
+                            ).show()
+
+                            navigateToComplete()
+                        },
+                        onDeleteTodo = {
+                            if (todoId == null) {
+                                return@AppBottomBarResume
+                            }
+
+                            viewModel.execute(
+                                ViewAction.SoftDeleteTodo(
+                                    SoftDeleteTodoDto(
+                                        id = todoId.toLong()
+                                    )
+                                )
+                            )
+
+                            Toast.makeText(
+                                context,
+                                "Delete task successfully",
+                                Toast.LENGTH_SHORT
+                            ).show()
+
+                            navigateToComplete()
+                        }
+                    )
+
+                    return@Scaffold
+                }
+
                 AppBottomBar(
                     onNavigateToEditTodo = { navigateToEditDetails(todoId) },
                     onDeleteTodo = {
@@ -115,7 +165,13 @@ fun EditScreen(
                             return@AppBottomBar
                         }
 
-                        viewModel.execute(ViewAction.SoftDeleteTodo(SoftDeleteTodoDto(id = todoId.toLong())))
+                        viewModel.execute(
+                            ViewAction.SoftDeleteTodo(
+                                SoftDeleteTodoDto(
+                                    id = todoId.toLong()
+                                )
+                            )
+                        )
 
                         Toast.makeText(
                             context,

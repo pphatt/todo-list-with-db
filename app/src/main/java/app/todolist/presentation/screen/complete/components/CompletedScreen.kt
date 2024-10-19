@@ -1,4 +1,4 @@
-package app.todolist.presentation.screen.completed.components
+package app.todolist.presentation.screen.complete.components
 
 import android.annotation.SuppressLint
 import androidx.compose.foundation.background
@@ -31,7 +31,8 @@ import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.dp
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
-import app.todolist.presentation.screen.completed.viewmodel.CompleteScreenViewModel
+import app.todolist.presentation.screen.complete.viewmodel.CompleteScreenViewModel
+import app.todolist.presentation.screen.complete.viewmodel.ViewAction
 import app.todolist.ui.theme.LocalColorScheme
 import app.todolist.utils.convertMillisToDate
 import kotlinx.coroutines.Job
@@ -77,12 +78,22 @@ fun CompletedScreen(
                     }
 
                     Text(
-                        text = "Trash",
+                        text = "Completed Todo",
                         modifier = Modifier.weight(0.8f),
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold
                     )
                 }
+
+                Text(
+                    modifier = Modifier.padding(
+                        start = 25.dp,
+                        top = 5.dp,
+                        end = 25.dp,
+                        bottom = 20.dp
+                    ),
+                    text = "Completed todo will be displayed here."
+                )
 
                 val groupedTodoList = state.list
                     .sortedBy { it.completedAt }
@@ -99,7 +110,14 @@ fun CompletedScreen(
                             CompleteList(
                                 date = date,
                                 todos = todoList,
-                                onTodoClick = onEditTodoClick
+                                onTodoClick = onEditTodoClick,
+                                onRestoreCompleteTodo = {
+                                    viewModel.execute(
+                                        ViewAction.RestoreCompleteTodo(
+                                            it
+                                        )
+                                    )
+                                }
                             )
                         }
                     }

@@ -83,4 +83,13 @@ class NavigationActions(navHostController: NavHostController) {
             restoreState = true
         }
     }
+    val navigateToEditComplete: (todoId: String) -> Unit = {
+        navHostController.navigate("${Tabs.COMPLETE_ROUTE}/${it}") {
+            popUpTo(navHostController.graph.findStartDestination().id) {
+                saveState = true
+            }
+
+            launchSingleTop = true
+        }
+    }
 }

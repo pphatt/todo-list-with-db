@@ -15,7 +15,7 @@ import androidx.navigation.compose.composable
 import androidx.navigation.compose.rememberNavController
 import androidx.navigation.navArgument
 import app.todolist.domain.todo.entity.Todo
-import app.todolist.presentation.screen.completed.CompletedRoute
+import app.todolist.presentation.screen.complete.CompletedRoute
 import app.todolist.presentation.screen.details.DetailsRoute
 import app.todolist.presentation.screen.edit.EditRoute
 import app.todolist.presentation.screen.todo.TodoRoute
@@ -94,6 +94,7 @@ fun NavigationGraph(
                 todoId = todoId,
                 navigateToTodo = { navigationActions.navigateToTodo() },
                 navigateToTrash = { navigationActions.navigateToTrash() },
+                navigateToComplete = { navigationActions.navigateToComplete() },
                 navigateToEditDetails = { navigationActions.navigateToEditDetails(todoId) }
             )
         }
@@ -196,6 +197,7 @@ fun NavigationGraph(
                 isCurrentTrashRoute = true,
                 navigateToTodo = { navigationActions.navigateToTodo() },
                 navigateToTrash = { navigationActions.navigateToTrash() },
+                navigateToComplete = { navigationActions.navigateToComplete() },
                 navigateToEditDetails = { navigationActions.navigateToEditDetails(todoId) }
             )
         }
@@ -211,10 +213,43 @@ fun NavigationGraph(
                     CompletedRoute(
                         openDrawer = openDrawer,
                         onEditTodoClick = { todoId ->
-                            navigationActions.navigateToEditTrash(todoId)
+                            navigationActions.navigateToEditComplete(todoId)
                         }
                     )
                 }
+            )
+        }
+        composable(
+            route = "${Tabs.COMPLETE_ROUTE}/{${TODO_ID}}",
+            arguments = listOf(
+                navArgument("todoId") {
+                    type = NavType.StringType
+                }
+            ),
+            enterTransition = {
+                slideIntoContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Up,
+                    tween(300),
+                    initialOffset = { fullHeight -> fullHeight / 3 }
+                ) + fadeIn(animationSpec = tween(durationMillis = 300))
+            },
+            exitTransition = {
+                slideOutOfContainer(
+                    AnimatedContentTransitionScope.SlideDirection.Down,
+                    tween(300),
+                    targetOffset = { fullHeight -> fullHeight / 3 }
+                ) + fadeOut(animationSpec = tween(durationMillis = 200))
+            }
+        ) { backStackEntry ->
+            val todoId = backStackEntry.arguments?.getString(TODO_ID)
+
+            EditRoute(
+                todoId = todoId,
+                isCurrentCompleteRoute = true,
+                navigateToTodo = { navigationActions.navigateToTodo() },
+                navigateToTrash = { navigationActions.navigateToTrash() },
+                navigateToComplete = { navigationActions.navigateToComplete() },
+                navigateToEditDetails = { navigationActions.navigateToEditDetails(todoId) }
             )
         }
     }

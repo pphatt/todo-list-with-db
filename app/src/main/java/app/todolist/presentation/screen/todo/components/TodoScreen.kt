@@ -102,23 +102,21 @@ fun TodoScreen(
                 val currentTimeMillis = System.currentTimeMillis()
                 val currentCalendar = Calendar.getInstance()
 
-                val nonDeletedList = state.list.filter { todo -> todo.deletedAt == null }
-
-                val todoListFilteredByPastDate = nonDeletedList.filter { todo ->
+                val todoListFilteredByPastDate = state.list.filter { todo ->
                     todo.dueDate != null && todo.dueDate < currentTimeMillis && isSameDay(
                         todo.dueDate,
                         currentCalendar.timeInMillis
                     ).not()
                 }
 
-                val todoListFilteredByCurrentDate = nonDeletedList.filter { todo ->
+                val todoListFilteredByCurrentDate = state.list.filter { todo ->
                     todo.dueDate != null && isSameDay(
                         todo.dueDate,
                         currentCalendar.timeInMillis
                     )
                 }
 
-                val todoListFilteredByFutureDate = nonDeletedList.filter { todo ->
+                val todoListFilteredByFutureDate = state.list.filter { todo ->
                     todo.dueDate != null && todo.dueDate > currentTimeMillis && isSameDay(
                         todo.dueDate,
                         currentCalendar.timeInMillis
@@ -126,7 +124,7 @@ fun TodoScreen(
                 }
 
                 val todoListFilteredByNoDate =
-                    nonDeletedList.filter { todo -> todo.dueDate == null }
+                    state.list.filter { todo -> todo.dueDate == null }
 
                 LazyColumn(
                     modifier = Modifier
@@ -141,7 +139,7 @@ fun TodoScreen(
                                 todos = todoListFilteredByPastDate,
                                 temporalTodos = temporalTodos,
                                 onTodoClick = onTodoClick,
-                                onCheckTodo = { viewModel.execute(ViewAction.CheckTodo(it)) }
+                                onCompleteTodo = { viewModel.execute(ViewAction.CompleteTodo(it)) }
                             )
                         }
                     }
@@ -153,7 +151,7 @@ fun TodoScreen(
                                 todos = todoListFilteredByCurrentDate,
                                 temporalTodos = temporalTodos,
                                 onTodoClick = onTodoClick,
-                                onCheckTodo = { viewModel.execute(ViewAction.CheckTodo(it)) }
+                                onCompleteTodo = { viewModel.execute(ViewAction.CompleteTodo(it)) }
                             )
                         }
                     }
@@ -165,7 +163,7 @@ fun TodoScreen(
                                 todos = todoListFilteredByFutureDate,
                                 temporalTodos = temporalTodos,
                                 onTodoClick = onTodoClick,
-                                onCheckTodo = { viewModel.execute(ViewAction.CheckTodo(it)) }
+                                onCompleteTodo = { viewModel.execute(ViewAction.CompleteTodo(it)) }
                             )
                         }
                     }
@@ -177,7 +175,7 @@ fun TodoScreen(
                                 todos = todoListFilteredByNoDate,
                                 temporalTodos = temporalTodos,
                                 onTodoClick = onTodoClick,
-                                onCheckTodo = { viewModel.execute(ViewAction.CheckTodo(it)) }
+                                onCompleteTodo = { viewModel.execute(ViewAction.CompleteTodo(it)) }
                             )
                         }
                     }

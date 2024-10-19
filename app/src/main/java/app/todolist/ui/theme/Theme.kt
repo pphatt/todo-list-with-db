@@ -113,6 +113,8 @@ data class CustomColorScheme(
     val secondaryCardForegroundColor: Color,
     val lightSecondaryCardForegroundColor: Color,
 
+    val thirdCardForegroundColor: Color,
+
     val cursorColor: Color,
 
     val activeActionColor: Color,
@@ -136,6 +138,7 @@ private val customColorSchemeLight = CustomColorScheme(
     primaryCardForegroundColor = primaryCardForegroundColorLight,
     secondaryCardForegroundColor = secondaryCardForegroundColorLight,
     lightSecondaryCardForegroundColor = lightSecondaryCardForegroundColorLight,
+    thirdCardForegroundColor = thirdCardForegroundColorLight,
     cursorColor = cursorColorLight,
     activeActionColor = activeActionColorLight,
     disabledActionColor = disabledActionColorLight,
@@ -157,6 +160,7 @@ private val customColorSchemeDark = CustomColorScheme(
     primaryCardForegroundColor = primaryCardForegroundColorDark,
     secondaryCardForegroundColor = secondaryCardForegroundColorDark,
     lightSecondaryCardForegroundColor = lightSecondaryCardForegroundColorDark,
+    thirdCardForegroundColor = thirdCardForegroundColorDark,
     cursorColor = cursorColorDark,
     activeActionColor = activeActionColorDark,
     disabledActionColor = disabledActionColorDark,
@@ -179,6 +183,7 @@ val LocalColorScheme = staticCompositionLocalOf {
         primaryCardForegroundColor = Color.Unspecified,
         secondaryCardForegroundColor = Color.Unspecified,
         lightSecondaryCardForegroundColor = Color.Unspecified,
+        thirdCardForegroundColor = Color.Unspecified,
         cursorColor = Color.Unspecified,
         activeActionColor = Color.Unspecified,
         disabledActionColor = Color.Unspecified,
