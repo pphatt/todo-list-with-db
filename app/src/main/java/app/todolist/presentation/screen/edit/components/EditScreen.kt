@@ -195,9 +195,14 @@ fun EditScreen(
                 TodoTextPlaceholder(
                     content = state.todo?.content ?: "",
                     isCurrentTrashRoute = isCurrentTrashRoute,
+                    isCurrentCompleteRoute = isCurrentCompleteRoute,
                     onNavigateToEditTodo = { navigateToEditDetails(todoId) },
                     onNavigateBack = {
-                        if (isCurrentTrashRoute) navigateToTrash() else navigateToTodo()
+                        if (isCurrentTrashRoute)
+                            navigateToTrash()
+                        else if (isCurrentCompleteRoute)
+                            navigateToComplete()
+                        else navigateToTodo()
                     }
                 )
 
