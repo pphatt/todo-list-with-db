@@ -34,12 +34,15 @@ import app.todolist.ui.theme.LocalColorScheme
 import kotlinx.coroutines.Job
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.platform.LocalContext
+import androidx.compose.ui.res.painterResource
 import androidx.compose.ui.text.font.FontWeight
 import androidx.compose.ui.unit.sp
 import androidx.hilt.navigation.compose.hiltViewModel
+import app.todolist.R
 import app.todolist.domain.todo.entity.Todo
 import app.todolist.presentation.screen.todo.viewmodel.TodoScreenViewModel
 import app.todolist.presentation.screen.todo.viewmodel.ViewAction
+import app.todolist.ui.component.EmptyContentScreen
 import app.todolist.utils.isSameDay
 import java.util.Calendar
 
@@ -97,6 +100,15 @@ fun TodoScreen(
                         fontSize = 18.sp,
                         fontWeight = FontWeight.Bold
                     )
+                }
+
+                if (state.list.isEmpty()) {
+                    EmptyContentScreen(
+                        title = "Tasks you add appear here",
+                        painter = painterResource(id = R.drawable.anim_notes)
+                    )
+
+                    return@Scaffold
                 }
 
                 val currentTimeMillis = System.currentTimeMillis()
