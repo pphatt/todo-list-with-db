@@ -19,7 +19,12 @@ object Tabs {
 class NavigationActions(navHostController: NavHostController) {
     val navigateToTodo: () -> Unit = {
         navHostController.navigate(Tabs.TODO_ROUTE) {
+            popUpTo(navHostController.graph.findStartDestination().id) {
+                saveState = true
+            }
+
             launchSingleTop = true
+            restoreState = true
         }
     }
     val navigateToEditTodo: (todoId: String) -> Unit = {
@@ -51,7 +56,12 @@ class NavigationActions(navHostController: NavHostController) {
     }
     val navigateToTrash: () -> Unit = {
         navHostController.navigate(Tabs.TRASH_ROUTE) {
+            popUpTo(navHostController.graph.findStartDestination().id) {
+                saveState = true
+            }
+
             launchSingleTop = true
+            restoreState = true
         }
     }
     val navigateToEditTrash: (todoId: String) -> Unit = {
@@ -65,7 +75,12 @@ class NavigationActions(navHostController: NavHostController) {
     }
     val navigateToComplete: () -> Unit = {
         navHostController.navigate(Tabs.COMPLETE_ROUTE) {
+            popUpTo(navHostController.graph.findStartDestination().id) {
+                saveState = true
+            }
+
             launchSingleTop = true
+            restoreState = true
         }
     }
     val navigateToEditComplete: (todoId: String) -> Unit = {
