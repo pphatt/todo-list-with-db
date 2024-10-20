@@ -26,12 +26,24 @@ class TodoRepositoryImpl @Inject constructor(
         return dao.getAllUnfinishedTodo()
     }
 
+    override suspend fun getCountAllUnfinishedTodo(): Flow<Int> {
+        return dao.getCountAllUnfinishedTodo()
+    }
+
     override suspend fun getAllFinishedTodo(): Flow<List<Todo>> {
         return dao.getAllFinishedTodo()
     }
 
-    override suspend fun getAllTrashTodo(): Flow<List<Todo>> {
-        return dao.getAllTrashTodo()
+    override suspend fun getCountAllFinishedTodo(): Flow<Int> {
+        return dao.getCountAllFinishedTodo()
+    }
+
+    override suspend fun getAllDeletedTodo(): Flow<List<Todo>> {
+        return dao.getAllDeletedTodo()
+    }
+
+    override suspend fun getCountAllDeletedTodo(): Flow<Int> {
+        return dao.getCountAllDeletedTodo()
     }
 
     override suspend fun getTodoById(id: Long): Todo? {

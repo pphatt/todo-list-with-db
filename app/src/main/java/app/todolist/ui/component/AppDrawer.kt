@@ -38,7 +38,11 @@ fun AppDrawer(
     navigateToTodo: () -> Unit,
     navigateToComplete: () -> Unit,
     navigateToTrash: () -> Unit,
-    closeDrawer: () -> Unit
+    closeDrawer: () -> Unit,
+
+    unfinishedTodoCount: Int,
+    finishedTodoCount: Int,
+    deleteTodoCount: Int,
 ) {
     ModalDrawerSheet(
         modifier.statusBarsPadding(),
@@ -85,6 +89,12 @@ fun AppDrawer(
                     fontWeight = if (currentRoute == Tabs.TODO_ROUTE) FontWeight.Bold else FontWeight.Normal
                 )
             },
+            badge = {
+                Text(
+                    text = unfinishedTodoCount.toString(),
+                    fontWeight = if (currentRoute == Tabs.TODO_ROUTE) FontWeight.Bold else FontWeight.Normal
+                )
+            },
             icon = { Icon(Icons.Rounded.CollectionsBookmark, null) },
             selected = currentRoute == Tabs.TODO_ROUTE,
             onClick = { navigateToTodo(); closeDrawer() },
@@ -117,6 +127,12 @@ fun AppDrawer(
                     Icons.Rounded.CheckBox, null
                 )
             },
+            badge = {
+                Text(
+                    text = finishedTodoCount.toString(),
+                    fontWeight = if (currentRoute == Tabs.TODO_ROUTE) FontWeight.Bold else FontWeight.Normal
+                )
+            },
             selected = currentRoute == Tabs.COMPLETE_ROUTE,
             onClick = { navigateToComplete(); closeDrawer() },
             shape = RoundedCornerShape(15),
@@ -141,6 +157,12 @@ fun AppDrawer(
                 Text(
                     stringResource(id = R.string.trash_title),
                     fontWeight = if (currentRoute == Tabs.TRASH_ROUTE) FontWeight.Bold else FontWeight.Normal
+                )
+            },
+            badge = {
+                Text(
+                    text = deleteTodoCount.toString(),
+                    fontWeight = if (currentRoute == Tabs.TODO_ROUTE) FontWeight.Bold else FontWeight.Normal
                 )
             },
             icon = { Icon(Icons.Rounded.Delete, null) },

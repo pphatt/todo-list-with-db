@@ -13,8 +13,11 @@ import kotlinx.coroutines.flow.Flow
 interface TodoRepository {
     suspend fun getAllTodo(): Flow<List<Todo>>
     suspend fun getAllUnfinishedTodo(): Flow<List<Todo>>
+    suspend fun getCountAllUnfinishedTodo(): Flow<Int>
     suspend fun getAllFinishedTodo(): Flow<List<Todo>>
-    suspend fun getAllTrashTodo(): Flow<List<Todo>>
+    suspend fun getCountAllFinishedTodo(): Flow<Int>
+    suspend fun getAllDeletedTodo(): Flow<List<Todo>>
+    suspend fun getCountAllDeletedTodo(): Flow<Int>
     suspend fun getTodoById(id: Long): Todo?
     suspend fun createTodo(body: CreateTodoDto) : Todo
     suspend fun completeTodo(body: CompleteTodoDto)

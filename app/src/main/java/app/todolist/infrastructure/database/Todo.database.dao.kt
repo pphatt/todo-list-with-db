@@ -17,11 +17,20 @@ interface TodoDao {
     @Query("SELECT * FROM todo WHERE status = 0 and deletedAt is null")
     fun getAllUnfinishedTodo(): Flow<List<Todo>>
 
+    @Query("SELECT COUNT(id) FROM todo WHERE status = 0 and deletedAt is null")
+    fun getCountAllUnfinishedTodo(): Flow<Int>
+
     @Query("SELECT * FROM todo WHERE status = 1 and deletedAt is null")
     fun getAllFinishedTodo(): Flow<List<Todo>>
 
+    @Query("SELECT COUNT(id) FROM todo WHERE status = 1 and deletedAt is null")
+    fun getCountAllFinishedTodo(): Flow<Int>
+
     @Query("SELECT * FROM todo where deletedAt is not null")
-    fun getAllTrashTodo(): Flow<List<Todo>>
+    fun getAllDeletedTodo(): Flow<List<Todo>>
+
+    @Query("SELECT COUNT(id) FROM todo where deletedAt is not null")
+    fun getCountAllDeletedTodo(): Flow<Int>
 
     @Query("SELECT * FROM todo WHERE id = :id")
     suspend fun getTodoById(id: Long): Todo?
